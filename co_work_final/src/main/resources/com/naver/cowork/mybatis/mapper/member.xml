@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.MemberMapper">
+
+	<select id="isId" resultType="member">
+		select *
+		from member3 where id = #{id}
+	</select>
+
+	<insert id="insert">
+		insert into member3
+		values
+		(#{id}, #{password}, #{name}, #{age}, #{gender}, #{email}, #{auth})
+	</insert>
+
+	<select id="logincheck" resultType="member" parameterType="Map">
+		select * from member3 where id = #{id} and password = #{password}
+	</select>
+
+	<update id="update">
+		update member3
+		set
+		age = #{age},
+		name = #{name},
+		gender = #{gender},
+		email = #{email}
+		where id = #{id}
+	</update>
+
+	<select id="getSearchList" resultType="member">
+		select * from (select rownum rnum, b.*
+		from (select *
+		from member3
+		where
+		id != 'admin'
+		<include refid="search_" />
+
+		order by id
+		)b
+		where rownum &lt;= #{end}
+		)
+		where rnum between #{start} and #{end}
+	</select>
+
+	<select id="getSearchListCount" resultType="int">
+		select count(*) from member3
+		where id != 'admin'
+		<include refid="search_" />
+	</select>
+
+	<sql id="search_">
+		<if test="search_field != null">
+			and
+			<choose>
+				<when test='search_field == "id"'>id</when>
+				<when test='search_field == "name"'>name</when>
+				<when test='search_field == "age"'>age</when>
+				<when test='search_field == "gender"'>gender</when>
+			</choose>
+			like #{search_word}
+		</if>
+	</sql>
+	
+	<delete id="delete">
+		delete from member3
+		where id = #{id}
+	</delete>
+
+
+</mapper>
