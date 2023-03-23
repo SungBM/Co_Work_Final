@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -12,6 +13,8 @@
           type="text/css">
     <link href="${pageContext.request.contextPath }/resources/assets/libs/sweetalert2/sweetalert2.min.css"
           rel="stylesheet" type="text/css">
+  <meta name="_csrf" content="${_csrf.token }">
+  <meta name="_csrf_header" content="${_csrf.headerName}">
     <style>
         html, .main-content {
             background-color: #FFFFFF;
@@ -446,7 +449,10 @@
                         <img class="rounded-circle header-profile-user"
                              src="${pageContext.request.contextPath }/resources/assets/images/users/avatar-1.jpg"
                              alt="Header Avatar">
-                        <span class="d-none d-xl-inline-block ms-1" key="t-henry">Henry</span>
+                        <sec:authorize access="isAuthenticated()">
+                             <sec:authentication property="principal" var="pinfo" />
+                        <span class="d-none d-xl-inline-block ms-1" key="t-henry">${pinfo.username }</span>
+                        </sec:authorize>
                         <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
@@ -461,9 +467,13 @@
                         <a class="dropdown-item" href="#"><i class="bx bx-lock-open font-size-16 align-middle me-1"></i>
                             <span key="t-lock-screen">Lock screen</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="/member/logout"><i
+                        <form action="${pageContext.request.contextPath }/member/logout" id="logout" method="post">
+                          <a class="dropdown-item text-danger" ><i
                                 class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                key="t-logout">Logout</span></a>
+                                key="t-logout" id="submit">Logout</span></a>
+                          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">      
+                        </form>
+                      
                     </div>
                 </div>
 
@@ -499,7 +509,7 @@
                                             <span key="t-ecommerce">프로젝트</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a target="_self" href="../project/ProjectList" id="project_list" >전체</a>
+                                                <li><a target="_self" href="../project/ProjectList?id=HTA1" id="project_list" >전체</a>
                                                 </li>
                                                 <li><a>진행</a></li>
                                                 <li><a>마감</a></li>
@@ -532,7 +542,7 @@
                                             <span>커뮤니티</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a href="NoticeList.bon">공지사항 게시판</a></li>
+                                                <li><a href="../board/NoticeList">공지사항 게시판</a></li>
                                                 <li><a>자유 게시판</a></li>
                                             </ul>
                                         </li>
@@ -638,6 +648,11 @@
 <script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-datepicker/locales/bootstrap-datepicker.ko.min.js"></script>
 <script>
+	$(function(){
+		  $('#submit').click(function () {
+			  	$("#logout").submit();
+			  });
+	})
 
 </script>
 </html>

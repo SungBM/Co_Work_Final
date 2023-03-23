@@ -3,16 +3,15 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.MemberMapper">
-
-	<select id="isId" resultType="member">
+	<select id="isId" resultType="member" parameterType="String">
 		select *
-		from member3 where id = #{id}
+		from user_info where user_id = #{id}
 	</select>
 
 	<insert id="insert">
-		insert into member3
+		insert into user_info ( USER_ID,USER_PASSWORD,USER_EMAIL,USER_NAME,USER_IS_ADMIN,USER_JOIN_DATE )
 		values
-		(#{id}, #{password}, #{name}, #{age}, #{gender}, #{email}, #{auth})
+		(#{USER_ID}, #{USER_PASSWORD}, #{USER_EMAIL}, #{USER_NAME}, #{USER_IS_ADMIN}, #{USER_JOIN_DATE})
 	</insert>
 
 	<select id="logincheck" resultType="member" parameterType="Map">
