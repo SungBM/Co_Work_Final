@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.ProjectMapper">
+
+	<select id="getProjectList" resultType="project" parameterType="String" >
+		select *
+		from project where PROJECT_ADMIN = #{id}
+	</select>
+
+	<insert id="insert" parameterType="project">
+		insert into project
+		(#{PROJECT_NUM}, #{PROJECT_NAME}, #{PROJECT_STATE}, #{PROJECT_ADMIN}, #{PROJECT_START}, #{PROJECT_END}, #{PROJECT_priority}
+		values ( NVL((SELECT MAX(PROJECT_NUM)FROM PROJECT)+1,0 ), ?,?,?,?,?,?))
+	</insert>
+	
+	<insert id="insert_user">
+		insert into project_user
+		values( (select nvl(max #{PROJECT_NUM},0)+1 FROM PROJECT) 
+		                      , ? ,  
+		                   (SELECT MAX(ROWNUM)+3 FROM #{PROJECT_USER}) ) 
+	</insert>
+
+
+
+</mapper>

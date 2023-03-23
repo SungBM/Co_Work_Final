@@ -499,7 +499,7 @@
                                             <span key="t-ecommerce">프로젝트</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a target="_self" href="../project/ProjectList" id="project_list" >전체</a>
+                                                <li><a target="_self" href="../project/ProjectList?id=HTA1" id="project_list" >전체</a>
                                                 </li>
                                                 <li><a>진행</a></li>
                                                 <li><a>마감</a></li>

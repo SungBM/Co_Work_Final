@@ -8,6 +8,10 @@
 <jsp:include page="../main/header.jsp"/>
 <link href="${pageContext.request.contextPath }/resources/assets/css/project_Css/project.css" rel="stylesheet" type="text/css" />
 <style>
+.page-content{
+	margin-left: 400px;
+}
+
 #icon_id{
 	display: none;
 }

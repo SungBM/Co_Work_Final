@@ -74,7 +74,7 @@
                                         <p class="text-muted">오늘도 행복한 하루 되세요!</p>
                                     </div>
                                     <div class="mt-4">
-                                        <zform name="loginform" action="../member/main" method="get">
+                                        <form name="loginform" action="../member/main" method="get">
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">아이디</label>
                                                 <input type="text" class="form-control" id="id" name="id"
