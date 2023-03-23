@@ -8,53 +8,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.naver.cowork.domain.Member;
-import com.naver.cowork.mybatis.mapper.MemberMapper;
+import com.naver.cowork.domain.UserInfo;
+import com.naver.cowork.mybatis.mapper.UserInfoMapper;
 
 @Service
-public class MemberServiceImpl implements MemberService {
+public class UserInfoServiceImpl implements UserInfoService {
 
-	private MemberMapper dao;
+	private UserInfoMapper dao;
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	public MemberServiceImpl(MemberMapper dao, PasswordEncoder passwordEncoder) {
+	public UserInfoServiceImpl(UserInfoMapper dao, PasswordEncoder passwordEncoder) {
 		this.dao = dao;
 		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
 	public int isId(String id, String password) {
-		Member rmember = dao.isId(id);
-		int result = -1; // ���̵� �������� �ʴ� ��� - rmember�� null�� ���
-		if (rmember != null) { // ���̵� �����ϴ� ���
-			// passwordEncoder.matches(rawPassword, encodedPassword)
-			// ����ڿ��� �Է¹��� �н����带 ���ϰ��� �� �� ����ϴ� �޼����Դϴ�.
-			// rawPassword : ����ڰ� �Է��� �н�����
-			// encodedPassword : DB�� ����� �н�����
+		UserInfo rmember = dao.isId(id);
+		int result = -1; 
+		if (rmember != null) { 
 
-			if (passwordEncoder.matches(password, rmember.getPassword())) {
-				result = 1; // ���̵�� ��й�ȣ�� ��ġ�ϴ� ���
+			if (passwordEncoder.matches(password, rmember.getUSER_PASSWORD())) {
+				result = 1;
 			} else
-				result = 0; // ���̵�� ���������� ��й�ȣ�� ��ġ���� �ʴ� ���
+				result = 0;
 		}
 		return result;
 	}
 
 	@Override
-	public int insert(Member m) {
+	public int insert(UserInfo m) {
 		return dao.insert(m);
 	}
 
 	@Override
 	public int isId(String id) {
-		Member rmember = dao.isId(id);
+		UserInfo rmember = dao.isId(id);
 		return (rmember == null) ? -1 : 1; // -1�� ���̵� �������� �ʴ� ���
 											// 1�� ���̵� �����ϴ� ���
 	}
 
 	@Override
-	public Member member_info(String id) {
+	public UserInfo member_info(String id) {
 		return dao.isId(id);
 	}
 
@@ -64,12 +60,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int update(Member m) {
+	public int update(UserInfo m) {
 		return dao.update(m);
 	}
 
 	@Override
-	public List<Member> getSearchList(int index, String search_word, int page, int limit) {
+	public List<UserInfo> getSearchList(int index, String search_word, int page, int limit) {
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		// http://localhost:8088/myhome4/member/list�� �����ϴ� ���

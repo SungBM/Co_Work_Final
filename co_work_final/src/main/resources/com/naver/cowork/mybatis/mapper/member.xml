@@ -2,20 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.naver.cowork.mybatis.mapper.MemberMapper">
+<mapper namespace="com.naver.cowork.mybatis.mapper.UserInfoMapper">
 
-	<select id="isId" resultType="member">
-		select *
-		from member3 where id = #{id}
+	<select id="isId" resultType="int">
+		select USER_ID
+		from USER_INFO where USER_ID = #{USER_ID}
 	</select>
 
 	<insert id="insert">
-		insert into member3
+		insert into USER_INFO
 		values
-		(#{id}, #{password}, #{name}, #{age}, #{gender}, #{email}, #{auth})
+		(#{USER_ID}, #{USER_PASSWORD}, #{USER_EMAIL}, #{USER_CODE}, #{USER_NAME},
+		 #{USER_IMG}, #{USER_IS_ADMIN}, #{USER_DEPT}, #{USER_JOB}, #{USER_FAX},
+		 #{USER_INTRO}, #{USER_CARD}, #{USER_STATE}, #{USER_JOIN_DATE}, #{USER_PHONE},
+		 #{USER_LASTTIME}, #{USER_PASSWORD_CH}, #{CREATED_AT}, #{CREATEWHO}, #{UPDATE_AT},
+		 #{UPDATEWHO}, #{AUTH})
 	</insert>
 
-	<select id="logincheck" resultType="member" parameterType="Map">
+	<!-- <select id="logincheck" resultType="member" parameterType="Map">
 		select * from member3 where id = #{id} and password = #{password}
 	</select>
 
@@ -66,7 +70,7 @@
 	<delete id="delete">
 		delete from member3
 		where id = #{id}
-	</delete>
+	</delete> -->
 
 
 </mapper>

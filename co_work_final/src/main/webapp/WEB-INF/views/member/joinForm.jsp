@@ -1,7 +1,6 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
-
     <meta charset="utf-8" />
     <title>회원가입</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,11 +15,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/libs/owl.carousel/assets/owl.theme.default.min.css">
 
     <!-- Bootstrap Css -->
-   
+    <link href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
     <link href="${pageContext.request.contextPath }/resources/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="${pageContext.request.contextPath }/resources/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <script src="${pageContext.request.contextPath }/resources/assets/js/member/jquery-3.6.3.js"></script>
    
 <script>
 $(function(){
@@ -41,13 +41,14 @@ $(function(){
 		}
 		
 		$.ajax({
-			url : "idcheck.net",  //id값을 컨트롤러로 보내고
+			url : "idcheck",  //id값을 컨트롤러로 보내고
 			data : {"id" : id},
 			success : function(resp){
 				if(resp == -1){ //db에 해당 id가 없는 경우
 					$("#message").css('color','green').html("사용 가능한 아이디입니다.")
 					checkid=true;
 				}else{ //db에 해당 id가 있는 경우(0)
+					console.log(resp);
 					$("#message").css('color', 'blue').html("사용중인 아이디입니다.")
 					checkid=false;
 					}
@@ -125,7 +126,7 @@ $(function(){
 </head>
 
 <body>
-	<form name="joinform" action="joinProcess.net" method="post">
+	<form name="joinform" action="member/joinProcess" method="post">
     <div class="account-pages my-5 pt-sm-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -192,7 +193,6 @@ $(function(){
                                             placeholder="e-mail@naver.com" required>
                                             <span id="email_message"></span>
                                     </div>
-                                    
                                     <div class="mb-3">
                                     <div class="float-end">
                                     
@@ -226,56 +226,15 @@ $(function(){
                                             type="reset" onClick="history.back();">취소</button>
                                     </div>
 
-                                    <!-- <div class="mt-4 text-center">
-                                        <h5 class="font-size-14 mb-3">Sign up using</h5>
-
-                                        <ul class="list-inline">
-                                            <li class="list-inline-item">
-                                                <a href="javascript::void()"
-                                                    class="social-list-item bg-primary text-white border-primary">
-                                                    <i class="mdi mdi-facebook"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="javascript::void()"
-                                                    class="social-list-item bg-info text-white border-info">
-                                                    <i class="mdi mdi-twitter"></i>
-                                                </a>
-                                            </li>
-                                            <li class="list-inline-item">
-                                                <a href="javascript::void()"
-                                                    class="social-list-item bg-danger text-white border-danger">
-                                                    <i class="mdi mdi-google"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-
-                                    <div class="mt-4 text-center">
-                                        <p class="mb-0">By registering you agree to the Skote <a href="#"
-                                                class="text-primary">Terms of Use</a></p>
-                                    </div> -->
+                                  
                             </div>
 
                         </div>
                     </div>
-  <!-- 
-                    <div class="mt-5 text-center">
-
-                        <div>
-                            <p>Already have an account ? <a href="login.net" class="fw-medium text-primary">
-                                    Login</a> </p>
-                            <p>©
-                                <script>document.write(new Date().getFullYear())</script> Skote. Crafted with <i
-                                    class="mdi mdi-heart text-danger"></i> by Themesbrand
-                            </p>
-                        </div> -->
                     </div>
 
                 </div>
             </div>
-        </div>
-    </div>
  	<script src="${pageContext.request.contextPath }/resources/assets/libs/jquery/jquery.min.js"></script>
    	<script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/assets/libs/metismenu/metisMenu.min.js"></script>
@@ -287,6 +246,7 @@ $(function(){
     <script src="${pageContext.request.contextPath }/resources/assets/js/pages/auth-2-carousel.init.js"></script>
     <!-- App js -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/app.js"></script>
+ <!--     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">-->
 	</form>
 	<script>
 	  let re="";
@@ -298,7 +258,7 @@ $(function(){
 		  }else{
 		  $("#mail_submit").attr("disabled", true);
 		  $.ajax({
-		        url : "send.net",
+		        url : "send",
 		        data : {"receiver" : $("#receiver").val()},
 		        success : function(rdata){
 		        	//$("#code_check_message").css('color','green').html("인증번호 전송 완료되었습니다.");
@@ -310,7 +270,6 @@ $(function(){
 		  	})
 		  }
 	  })
-	  
 	  
 		            $("#code_submit").click(function(){
 		            	console.log(re)

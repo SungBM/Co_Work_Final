@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%-- <meta name="_csrf" content="${_csrf.token }">
+<meta name="_csrf_header" content="${_csrf.headerName}"> --%>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -21,7 +24,14 @@
             width: 1070px;
         }
     </style>
-
+  <script>
+   $(function(){
+	   $("#logout").click(function(event){
+		   event.preventDefault();
+		   $("form[name=logout]").submit();
+	   })
+   })
+  </script>
 </head>
 <body data-sidebar="dark">
 <div id="layout-wrapper">
@@ -461,9 +471,12 @@
                         <a class="dropdown-item" href="#"><i class="bx bx-lock-open font-size-16 align-middle me-1"></i>
                             <span key="t-lock-screen">Lock screen</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="/member/logout"><i
-                                class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                key="t-logout">Logout</span></a>
+                        <a class="dropdown-item text-danger"><form action="/member/logout" method="post" name="logout">
+                        <i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> 
+                        <span key="t-logout">Logout</span>
+                                <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+                                </form>
+                                </a>
                     </div>
                 </div>
 
@@ -517,7 +530,7 @@
                                                 <li><a>일별</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="chat.html" class="waves-effect">
+                                        <li><a class="waves-effect" href="../chat" id="chat">
                                             <i class="bx bx-chat"></i>
                                             <span>채팅</span>
                                         </a></li>
@@ -613,7 +626,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <!-- footer -->

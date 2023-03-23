@@ -22,7 +22,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		logger.info("Access Denied Handler");
 		String url = "/WEB-INF/views/error/403.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
-		request.setAttribute("key", "Á¢±Ù ±ÇÇÑÀÌ ¾ø´Â »ç¿ëÀÚ ÀÔ´Ï´Ù.");
+		request.setAttribute("key", "ì ‘ê·¼ ê¶Œí•œì´ ì—†ëŠ” ì‚¬ìš©ì ì…ë‹ˆë‹¤.");
 		dispatcher.forward(request, response);
 	}
 
