@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.JobMapper">
+
+	<select id="jobAll" resultType="job">
+		select *
+		from job
+		order by job_order
+	</select>
+
+    <select id="jmaxNo" resultType="Integer">
+        select NVL(MAX(job_no), 0) + 1
+        from job
+    </select>
+
+	<delete id="delete">
+        BEGIN
+        update job
+        set job_order = job_order - 1
+        where job_order > (select job_order
+                            from job
+                            where job_no = #{job_no});
+
+        delete
+        from job
+        where job_no = #{job_no};
+        END;
+    </delete>
+
+	<insert id="insert">
+		insert into job
+		values (#{job_no}, #{job_name}, (SELECT count(job_no) + 1 FROM job))
+	</insert>
+</mapper>

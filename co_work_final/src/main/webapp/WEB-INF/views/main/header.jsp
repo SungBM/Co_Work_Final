@@ -18,7 +18,7 @@
         }
 
         .page-content {
-            width: 1070px;
+            width: 980px;
         }
     </style>
 
@@ -36,7 +36,7 @@
                                          alt="" height="22">
                                 </span>
                         <span class="logo-lg">
-                            <img src="../resources/image/logo.png" style="width:200px;">
+                            <img src="../image/logo.png" style="width:200px;">
                                 </span>
                     </a>
                 </div>
@@ -512,7 +512,7 @@
                                             <span>일정</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a href="/calendar">월간</a></li>
+                                                <li><a href="../member/calendar">월간</a></li>
                                                 <li><a>주간</a></li>
                                                 <li><a>일별</a></li>
                                             </ul>
@@ -547,7 +547,7 @@
                                             </ul>
                                         </li>
 
-                                        <li><a id="mypage" class="waves-effect" href="/member/mypage">
+                                        <li><a id="mypage" class="waves-effect" href="../member/mypage">
                                             <i class="bx bx-user"></i>
                                             <span key="t-chat">내 프로필</span>
                                         </a></li>
@@ -558,8 +558,8 @@
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
                                                 <li><a id="notify" href="/config/notify">알림</a></li>
-                                                <li><a id="passwordchange" href="passwordchange.my">비밀번호 변경</a></li>
-                                                <li><a>보안(미구현)</a></li>
+                                                <li><a id="passwordchange" href="../member/modifyPassword">비밀번호 변경</a></li>
+                                                <li><a id="mysecurity" href="../member/mysecurity">보안</a></li>
                                                 <li><a>접속기기(미구현)</a></li>
                                             </ul>
                                         </li>
@@ -569,7 +569,7 @@
                                             <span>회사</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a id="companyinfo" href="/admin/companyinfo">회사정보</a></li>
+                                                <li><a id="companyinfo" href="../admin/company">회사정보</a></li>
                                                 <li><a>조직도 관리(미구현)</a></li>
                                                 <li><a>회의실 예약 현황(미구현)</a></li>
                                             </ul>
@@ -579,7 +579,7 @@
                                             <span>구성원</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a id="membersinfo" href="/member/memberlist">구성원 관리</a></li>
+                                                <li><a id="membersinfo" href="../admin/members">구성원 관리</a></li>
                                                 <li><a>구성원 초대(미구현)</a></li>
                                             </ul>
                                         </li>
@@ -620,7 +620,7 @@
 <footer class="footer text-center">
     <p>©
         <script>document.write(new Date().getFullYear())</script>
-        NOIN. <i class="mdi mdi-heart text-danger"></i> by Project
+        CO-WORK. <i class="mdi mdi-heart text-danger"></i> by Final Project
     </p>
 </footer>
 </body>
@@ -637,6 +637,17 @@
 <script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-datepicker/locales/bootstrap-datepicker.ko.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/TableDnD/0.9.1/jquery.tablednd.js" integrity="sha256-d3rtug+Hg1GZPB7Y/yTcRixO/wlI78+2m08tosoRn7A=" crossorigin="anonymous"></script>
+<script src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.min.js"></script>
+<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/libs/tui-dom/tui-dom.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/libs/tui-time-picker/tui-time-picker.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/libs/tui-date-picker/tui-date-picker.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/libs/tui-calendar/tui-calendar.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/js/pages/calendars.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/js/pages/schedules.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/js/pages/calendar.init.js"></script>
+
 <script>
 
 </script>
