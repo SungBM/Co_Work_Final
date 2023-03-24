@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -12,6 +13,8 @@
           type="text/css">
     <link href="${pageContext.request.contextPath }/resources/assets/libs/sweetalert2/sweetalert2.min.css"
           rel="stylesheet" type="text/css">
+  <meta name="_csrf" content="${_csrf.token }">
+  <meta name="_csrf_header" content="${_csrf.headerName}">
     <style>
         html, .main-content {
             background-color: #FFFFFF;
@@ -36,7 +39,7 @@
                                          alt="" height="22">
                                 </span>
                         <span class="logo-lg">
-                            <img src="../resources/image/logo.png" style="width:200px;">
+                            <img src="../image/logo.png" style="width:200px;">
                                 </span>
                     </a>
                 </div>
@@ -446,7 +449,10 @@
                         <img class="rounded-circle header-profile-user"
                              src="${pageContext.request.contextPath }/resources/assets/images/users/avatar-1.jpg"
                              alt="Header Avatar">
-                        <span class="d-none d-xl-inline-block ms-1" key="t-henry">Henry</span>
+                        <sec:authorize access="isAuthenticated()">
+                             <sec:authentication property="principal" var="pinfo" />
+                        <span class="d-none d-xl-inline-block ms-1" key="t-henry">${pinfo.username }</span>
+                        </sec:authorize>
                         <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
@@ -461,9 +467,13 @@
                         <a class="dropdown-item" href="#"><i class="bx bx-lock-open font-size-16 align-middle me-1"></i>
                             <span key="t-lock-screen">Lock screen</span></a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-danger" href="/member/logout"><i
+                        <form action="${pageContext.request.contextPath }/member/logout" id="logout" method="post">
+                          <a class="dropdown-item text-danger" ><i
                                 class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                key="t-logout">Logout</span></a>
+                                key="t-logout" id="submit">Logout</span></a>
+                          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">      
+                        </form>
+                      
                     </div>
                 </div>
 
@@ -499,7 +509,7 @@
                                             <span key="t-ecommerce">프로젝트</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a target="_self" href="../project/ProjectList" id="project_list" >전체</a>
+                                                <li><a target="_self" href="../project/ProjectList?id=HTA1" id="project_list" >전체</a>
                                                 </li>
                                                 <li><a>진행</a></li>
                                                 <li><a>마감</a></li>
@@ -512,7 +522,7 @@
                                             <span>일정</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a href="/calendar">월간</a></li>
+                                                <li><a href="../member/calendar">월간</a></li>
                                                 <li><a>주간</a></li>
                                                 <li><a>일별</a></li>
                                             </ul>
@@ -532,7 +542,7 @@
                                             <span>커뮤니티</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a href="NoticeList.bon">공지사항 게시판</a></li>
+                                                <li><a href="../board/NoticeList">공지사항 게시판</a></li>
                                                 <li><a>자유 게시판</a></li>
                                             </ul>
                                         </li>
@@ -558,8 +568,8 @@
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
                                                 <li><a id="notify" href="/config/notify">알림</a></li>
-                                                <li><a id="passwordchange" href="passwordchange.my">비밀번호 변경</a></li>
-                                                <li><a>보안(미구현)</a></li>
+                                                <li><a id="passwordchange" href="../member/modifyPassword">비밀번호 변경</a></li>
+                                                <li><a id="mysecurity" href="../member/mysecurity">보안</a></li>
                                                 <li><a>접속기기(미구현)</a></li>
                                             </ul>
                                         </li>
@@ -569,7 +579,7 @@
                                             <span>회사</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a id="companyinfo" href="/admin/companyinfo">회사정보</a></li>
+                                                <li><a id="companyinfo" href="../admin/company">회사정보</a></li>
                                                 <li><a>조직도 관리(미구현)</a></li>
                                                 <li><a>회의실 예약 현황(미구현)</a></li>
                                             </ul>
@@ -579,7 +589,7 @@
                                             <span>구성원</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a id="membersinfo" href="/member/memberlist">구성원 관리</a></li>
+                                                <li><a id="membersinfo" href="../admin/members">구성원 관리</a></li>
                                                 <li><a>구성원 초대(미구현)</a></li>
                                             </ul>
                                         </li>
@@ -618,9 +628,9 @@
 
 <!-- footer -->
 <footer class="footer text-center">
-    <p>© 2023 - 
+    <p>©
         <script>document.write(new Date().getFullYear())</script>
-        CO-WORK.  by Final Project<i class="mdi mdi-heart text-danger"></i>
+        CO-WORK. <i class="mdi mdi-heart text-danger"></i> by Final Project
     </p>
 </footer>
 </body>
@@ -637,7 +647,23 @@
 <script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-datepicker/locales/bootstrap-datepicker.ko.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/TableDnD/0.9.1/jquery.tablednd.js" integrity="sha256-d3rtug+Hg1GZPB7Y/yTcRixO/wlI78+2m08tosoRn7A=" crossorigin="anonymous"></script>
+<script src="https://uicdn.toast.com/tui.code-snippet/latest/tui-code-snippet.min.js"></script>
+<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/libs/tui-dom/tui-dom.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/libs/tui-time-picker/tui-time-picker.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/libs/tui-date-picker/tui-date-picker.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/libs/tui-calendar/tui-calendar.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/js/pages/calendars.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/js/pages/schedules.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/js/pages/calendar.init.js"></script>
+
 <script>
+	$(function(){
+		  $('#submit').click(function () {
+			  	$("#logout").submit();
+			  });
+	})
 
 </script>
 </html>

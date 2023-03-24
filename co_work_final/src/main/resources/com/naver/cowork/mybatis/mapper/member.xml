@@ -3,30 +3,29 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.MemberMapper">
-
-	<select id="isId" resultType="member">
+	<select id="isId" resultType="member" parameterType="String">
 		select *
-		from user_info where user_id = #{user_id}
+		from user_info where user_id = #{id}
 	</select>
 
 	<insert id="insert">
-		insert into member3
+		insert into user_info ( USER_ID,USER_PASSWORD,USER_EMAIL,USER_NAME,USER_IS_ADMIN,USER_JOIN_DATE )
 		values
-		(#{id}, #{password}, #{name}, #{age}, #{gender}, #{email}, #{auth})
+		(#{USER_ID}, #{USER_PASSWORD}, #{USER_EMAIL}, #{USER_NAME}, #{USER_IS_ADMIN}, #{USER_JOIN_DATE})
 	</insert>
 
 	<select id="logincheck" resultType="member" parameterType="Map">
-		select * from user_info where id = #{id} and password = #{password}
+		select * from user_info where user_id = #{user_id} and user_password = #{user_password}
 	</select>
 
 	<update id="update">
 		update user_info
 		set
-		age = #{age},
-		name = #{name},
-		gender = #{gender},
-		email = #{email}
-		where id = #{id}
+		user_phone = #{user_phone},
+		user_fax = #{user_fax},
+		user_img = #{originalfile},
+		user_card = #{user_card}
+		where user_id = #{user_id}
 	</update>
 
 

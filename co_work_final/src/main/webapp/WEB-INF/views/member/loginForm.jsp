@@ -74,10 +74,10 @@
                                         <p class="text-muted">오늘도 행복한 하루 되세요!</p>
                                     </div>
                                     <div class="mt-4">
-                                        <form name="loginform" action="../member/main" method="get">
+                                        <form name="loginform" action="../member/loginProcess" method="post">
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">아이디</label>
-                                                <input type="text" class="form-control" id="user_id" name="user_id"
+                                                <input type="text" class="form-control" id="id" name="id"
                                                     placeholder="Enter id" required>
                                             </div>
                                             <div class="mb-3">
@@ -86,8 +86,8 @@
                                                 </div> -->
                                                 <label class="form-label">비밀번호</label>
                                                 <div class="input-group auth-pass-inputgroup">
-                                                    <input type="password" class="form-control" id="user_password"
-                                                        aria-label="Password" placeholder="Enter password"  name="user_password" required
+                                                    <input type="password" class="form-control" id="pass"
+                                                        aria-label="Password" placeholder="Enter password"  name="pass" required
                                                         aria-describedby="password-addon">
                                                 </div>
                                             </div>
@@ -97,13 +97,15 @@
                                                     아이디 기억하기
                                                 </label>
                                             </div>
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                             <div class="mt-3 d-grid">
                                                 <button class="btn btn-primary waves-effect waves-light"
                                                     type="submit">로그인</button>
                                             </div>
+                                            
                                         </form>
                                         <div class="mt-5 text-center">
-                                            <p>Don't have an account ? <a href="join.net"
+                                            <p>Don't have an account ? <a href="../member/join"
                                                     class="fw-medium text-primary"> 회원가입 </a> </p>
                                         </div>
                                     </div>
