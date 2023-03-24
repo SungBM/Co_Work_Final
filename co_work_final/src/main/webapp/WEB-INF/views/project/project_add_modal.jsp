@@ -57,7 +57,8 @@
                                               <div class="mb-3">
                                                             <label for="message-text" class="col-form-label">참여자</label>
                                                             <textarea class="form-control" id="project_admin" name="project_admin"></textarea>
-                                                        </div></form>      
+                                                        </div>
+                                                   </form>      
                                                    </div>   
                                                 <div class="modal-footer">                                                                       
                                                     <button type="submit" id="submit_add" class="btn btn-primary">완료</button>

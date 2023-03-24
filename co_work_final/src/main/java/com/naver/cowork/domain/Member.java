@@ -9,7 +9,7 @@ public class Member {
 	private int user_code;
 	private String user_name;
 	private String user_img;
-	private String user_auth;
+	private String user_auth = "ROLE_MEMBER";
 	private int user_dept;
 	private int user_job;
 	private String user_fax;

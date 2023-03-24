@@ -9,9 +9,9 @@
 	</select>
 
 	<insert id="insert">
-		insert into user_info ( USER_ID,USER_PASSWORD,USER_EMAIL,USER_NAME,USER_IS_ADMIN,USER_JOIN_DATE )
+		insert into user_info ( user_id,user_password,user_email,user_name,user_auth,user_join_date )
 		values
-		(#{USER_ID}, #{USER_PASSWORD}, #{USER_EMAIL}, #{USER_NAME}, #{USER_IS_ADMIN}, #{USER_JOIN_DATE})
+		(#{user_id}, #{user_password}, #{user_email}, #{user_name}, #{user_auth}, sysdate)
 	</insert>
 
 	<select id="logincheck" resultType="member" parameterType="Map">

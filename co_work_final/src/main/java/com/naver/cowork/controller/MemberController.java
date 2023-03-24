@@ -77,7 +77,6 @@ public class MemberController {
 	
 
 
-
     @GetMapping("/mypage")
     public ModelAndView mypage(String user_id, ModelAndView mv, HttpServletRequest request) {
         logger.info("id = " + user_id);
@@ -249,7 +248,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/idcheck", method = RequestMethod.GET)
-	public void idcheck(@RequestParam("USER_ID") String id, // member_joinForm에서 가져온 id값이 String형 id로 저장됨.
+	public void idcheck(@RequestParam("user_id") String id, // member_joinForm에서 가져온 id값이 String형 id로 저장됨.
 			HttpServletResponse response) throws Exception {
 		int result = meberService.isId(id);
 		response.setContentType("text/html;charset=utf-8");
@@ -258,7 +257,7 @@ public class MemberController {
 	}
 	
 	@GetMapping(value = "/sendMail" )
-	public void sendMail(@RequestParam("USER_EMAIL")String receiver,HttpServletResponse response) 
+	public void sendMail(@RequestParam("user_email")String receiver,HttpServletResponse response) 
 			throws Exception {
 		MailVO mail = new MailVO();
 		mail.setTo(receiver);
