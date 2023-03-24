@@ -11,4 +11,6 @@ import com.naver.cowork.domain.Project;
 @Mapper
 public interface ProjectMapper {
 	public List<Project> getProjectList(String id);
+
+	public Project insert(Project p);
 }
