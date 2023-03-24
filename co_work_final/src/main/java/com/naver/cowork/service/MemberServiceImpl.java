@@ -1,9 +1,5 @@
 package com.naver.cowork.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +9,7 @@ import com.naver.cowork.mybatis.mapper.MemberMapper;
 
 @Service
 public class MemberServiceImpl implements MemberService {
+
 
     private MemberMapper dao;
     private PasswordEncoder passwordEncoder;
@@ -37,24 +34,15 @@ public class MemberServiceImpl implements MemberService {
         return result;
     }
 
-    //	@Override
-//	public int insert(Member m) {
-//		return dao.insert(m);
-//	}
-//
-    @Override
-    public int isId(String id) {
-        Member rmember = dao.isId(id);
-        return (rmember == null) ? -1 : 1;
-    }
 
-    //
+
+    
     @Override
     public Member member_info(String id) {
         return dao.isId(id);
     }
 
-    //
+    
 //	@Override
 //	public void delete(String id) {
 //		dao.delete(id);
@@ -65,7 +53,7 @@ public class MemberServiceImpl implements MemberService {
         return dao.update(m);
     }
 
-    //
+    
 //	@Override
 //	public List<Member> getSearchList(int index, String search_word, int page, int limit) {
 //		Map<String, Object> map = new HashMap<String, Object>();
@@ -96,10 +84,26 @@ public class MemberServiceImpl implements MemberService {
 //		}
 //		return dao.getSearchListCount(map);
 //	}
+
     @Override
     public List<Member> members(){
         return dao.members();
     }
+
+
+	@Override
+	public int insert(Member m) {
+		// TODO Auto-generated method stub
+		return dao.insert(m);
+	}
+
+
+	@Override
+	public int isId(String id) {
+		 Member rmemer = dao.isId(id);
+	     return (rmemer ==null)?-1:1;
+	}
+
 
 
 }
