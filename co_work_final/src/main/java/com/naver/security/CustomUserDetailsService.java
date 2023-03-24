@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
 
-		roles.add(new SimpleGrantedAuthority(users.getAuth()));
+		roles.add(new SimpleGrantedAuthority(users.getUser_auth()));
 
 		UserDetails user = new User(username, users.getPassword(), roles);
 

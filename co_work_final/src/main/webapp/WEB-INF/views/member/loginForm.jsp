@@ -74,10 +74,10 @@
                                         <p class="text-muted">오늘도 행복한 하루 되세요!</p>
                                     </div>
                                     <div class="mt-4">
-                                        <zform name="loginform" action="../member/main" method="get">
+                                        <form name="loginform" action="../member/main" method="get">
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">아이디</label>
-                                                <input type="text" class="form-control" id="id" name="id"
+                                                <input type="text" class="form-control" id="user_id" name="user_id"
                                                     placeholder="Enter id" required>
                                             </div>
                                             <div class="mb-3">
@@ -86,8 +86,8 @@
                                                 </div> -->
                                                 <label class="form-label">비밀번호</label>
                                                 <div class="input-group auth-pass-inputgroup">
-                                                    <input type="password" class="form-control" id="pass"
-                                                        aria-label="Password" placeholder="Enter password"  name="pass" required
+                                                    <input type="password" class="form-control" id="user_password"
+                                                        aria-label="Password" placeholder="Enter password"  name="user_password" required
                                                         aria-describedby="password-addon">
                                                 </div>
                                             </div>

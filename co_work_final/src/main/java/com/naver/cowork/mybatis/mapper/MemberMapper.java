@@ -10,7 +10,7 @@ import com.naver.cowork.domain.Member;
 @Mapper
 public interface MemberMapper {
 
-	public Member isId(String id);
+	public Member isId(String user_id);
 
 	public int insert(Member m);
 

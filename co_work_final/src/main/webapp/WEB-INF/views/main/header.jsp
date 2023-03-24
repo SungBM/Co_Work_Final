@@ -18,7 +18,7 @@
         }
 
         .page-content {
-            width: 1070px;
+            width: 980px;
         }
     </style>
 
@@ -547,7 +547,7 @@
                                             </ul>
                                         </li>
 
-                                        <li><a id="mypage" class="waves-effect" href="/member/mypage">
+                                        <li><a id="mypage" class="waves-effect" href="../member/mypage">
                                             <i class="bx bx-user"></i>
                                             <span key="t-chat">내 프로필</span>
                                         </a></li>
@@ -618,9 +618,9 @@
 
 <!-- footer -->
 <footer class="footer text-center">
-    <p>©
+    <p>© 2023 - 
         <script>document.write(new Date().getFullYear())</script>
-        NOIN. <i class="mdi mdi-heart text-danger"></i> by Project
+        CO-WORK.  by Final Project<i class="mdi mdi-heart text-danger"></i>
     </p>
 </footer>
 </body>

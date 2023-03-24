@@ -49,8 +49,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int isId(String id) {
 		Member rmember = dao.isId(id);
-		return (rmember == null) ? -1 : 1; // -1�� ���̵� �������� �ʴ� ���
-											// 1�� ���̵� �����ϴ� ���
+		return (rmember == null) ? -1 : 1; 
 	}
 
 	@Override

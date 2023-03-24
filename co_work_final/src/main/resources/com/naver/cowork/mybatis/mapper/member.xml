@@ -6,7 +6,7 @@
 
 	<select id="isId" resultType="member">
 		select *
-		from member3 where id = #{id}
+		from user_info where user_id = #{user_id}
 	</select>
 
 	<insert id="insert">
@@ -16,11 +16,11 @@
 	</insert>
 
 	<select id="logincheck" resultType="member" parameterType="Map">
-		select * from member3 where id = #{id} and password = #{password}
+		select * from user_info where id = #{id} and password = #{password}
 	</select>
 
 	<update id="update">
-		update member3
+		update user_info
 		set
 		age = #{age},
 		name = #{name},
@@ -28,45 +28,6 @@
 		email = #{email}
 		where id = #{id}
 	</update>
-
-	<select id="getSearchList" resultType="member">
-		select * from (select rownum rnum, b.*
-		from (select *
-		from member3
-		where
-		id != 'admin'
-		<include refid="search_" />
-
-		order by id
-		)b
-		where rownum &lt;= #{end}
-		)
-		where rnum between #{start} and #{end}
-	</select>
-
-	<select id="getSearchListCount" resultType="int">
-		select count(*) from member3
-		where id != 'admin'
-		<include refid="search_" />
-	</select>
-
-	<sql id="search_">
-		<if test="search_field != null">
-			and
-			<choose>
-				<when test='search_field == "id"'>id</when>
-				<when test='search_field == "name"'>name</when>
-				<when test='search_field == "age"'>age</when>
-				<when test='search_field == "gender"'>gender</when>
-			</choose>
-			like #{search_word}
-		</if>
-	</sql>
-	
-	<delete id="delete">
-		delete from member3
-		where id = #{id}
-	</delete>
 
 
 </mapper>
