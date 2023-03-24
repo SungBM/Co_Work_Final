@@ -81,7 +81,7 @@ public class MemberController {
     @GetMapping("/mypage")
     public ModelAndView mypage(String user_id, ModelAndView mv, HttpServletRequest request) {
         logger.info("id = " + user_id);
-        Member m = memberservice.member_info(user_id);
+        Member m = meberService.member_info(user_id);
         String saveFolder = mysavefolder.getSavefolder();
         String sFilePath = saveFolder + m.getUser_card();
         logger.info(sFilePath);
@@ -97,7 +97,7 @@ public class MemberController {
     @PostMapping("updateCheck")
     public void updateCheck(@RequestBody Member member, Principal principal, HttpServletResponse response) throws Exception {
         String user_id = member.getUser_id();
-        Member m = memberservice.member_info(user_id);
+        Member m = meberService.member_info(user_id);
         PrintWriter out = response.getWriter();
 
         if (!m.getUser_phone().equals(member.getUser_phone()) || !m.getUser_fax().equals(member.getUser_fax())) {
@@ -127,7 +127,7 @@ public class MemberController {
             member.setUser_card(fileDBName);
         }
 
-        int result = memberservice.update(member);
+        int result = meberService.update(member);
         return "redirect:../member/mypage";
     }
 
@@ -186,7 +186,7 @@ public class MemberController {
 
     @GetMapping("/mysecurity")
     public ModelAndView mysecurity(String user_id, ModelAndView mv, HttpServletRequest request) {
-        Member m = memberservice.member_info(user_id);
+        Member m = meberService.member_info(user_id);
         String saveFolder = mysavefolder.getSavefolder();
         String sFilePath = saveFolder + m.getUser_card();
         logger.info(sFilePath);
