@@ -81,7 +81,7 @@ public class MemberController {
     @GetMapping("/mypage")
     public ModelAndView mypage(String user_id, ModelAndView mv, HttpServletRequest request) {
         logger.info("id = " + user_id);
-        Member m = memberservice.member_info(user_id);
+        Member m = meberService.member_info(user_id);
         String saveFolder = mysavefolder.getSavefolder();
         String sFilePath = saveFolder + m.getUser_card();
         logger.info(sFilePath);
@@ -97,7 +97,7 @@ public class MemberController {
     @PostMapping("updateCheck")
     public void updateCheck(@RequestBody Member member, Principal principal, HttpServletResponse response) throws Exception {
         String user_id = member.getUser_id();
-        Member m = memberservice.member_info(user_id);
+        Member m = meberService.member_info(user_id);
         PrintWriter out = response.getWriter();
 
         if (!m.getUser_phone().equals(member.getUser_phone()) || !m.getUser_fax().equals(member.getUser_fax())) {
@@ -127,7 +127,7 @@ public class MemberController {
             member.setUser_card(fileDBName);
         }
 
-        int result = memberservice.update(member);
+        int result = meberService.update(member);
         return "redirect:../member/mypage";
     }
 
@@ -186,7 +186,7 @@ public class MemberController {
 
     @GetMapping("/mysecurity")
     public ModelAndView mysecurity(String user_id, ModelAndView mv, HttpServletRequest request) {
-        Member m = memberservice.member_info(user_id);
+        Member m = meberService.member_info(user_id);
         String saveFolder = mysavefolder.getSavefolder();
         String sFilePath = saveFolder + m.getUser_card();
         logger.info(sFilePath);
@@ -219,14 +219,14 @@ public class MemberController {
 	public String joinProcess(Member member, RedirectAttributes rattr, 
 			Model model, HttpServletRequest request) {
 		// 비밀번호 암호화 추가.
-		String id = member.getUSER_ID();
-		String email = member.getUSER_EMAIL();
-		String name = member.getUSER_NAME();
-		String encPassword = passwordEncoder.encode(member.getUSER_PASSWORD());
-		String role = member.getUSER_IS_ADMIN();
+		String id = member.getUser_id();
+		String email = member.getUser_email();
+		String name = member.getUser_name();
+		String encPassword = passwordEncoder.encode(member.getUser_password());
+		String role = member.getUser_auth();
 	
 
-		member.setUSER_PASSWORD(encPassword);
+		member.setUser_password(encPassword);
 
 		int result = meberService.insert(member);
 
