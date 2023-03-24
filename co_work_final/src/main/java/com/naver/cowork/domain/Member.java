@@ -1,153 +1,215 @@
 package com.naver.cowork.domain;
 
-public class Member {
-	private String USER_ID;                                  
-	private String USER_PASSWORD;                                      
-	private String USER_EMAIL;                                   
-	private int USER_CODE;                                         
-	private String USER_NAME;                                        
-	private String USER_IMG;                                           
-	private String USER_IS_ADMIN ="ROLE_MEMBER";                                     
-	private int USER_DEPT;                                          
-	private int USER_JOB;                                         
-	private String USER_FAX;                                          
-	private String USER_INTRO;                                        
-	private String USER_CARD;                                         
-	private int 	USER_STATE;                                       
-	private String USER_JOIN_DATE;                                    
-	private String USER_PHONE;                                       
-	private String USER_LASTTIME;                                    
-	private String USER_PASSWORD_CH;                                  
-	private String CREATED_AT;                                        
-	private String CREATEWHO;                                       
-	private String UPDATE_AT;                                         
-	private String UPDATEWHO;
-	public String getUSER_ID() {
-		return USER_ID;
-	}
-	public void setUSER_ID(String uSER_ID) {
-		USER_ID = uSER_ID;
-	}
-	public String getUSER_PASSWORD() {
-		return USER_PASSWORD;
-	}
-	public void setUSER_PASSWORD(String uSER_PASSWORD) {
-		USER_PASSWORD = uSER_PASSWORD;
-	}
-	public String getUSER_EMAIL() {
-		return USER_EMAIL;
-	}
-	public void setUSER_EMAIL(String uSER_EMAIL) {
-		USER_EMAIL = uSER_EMAIL;
-	}
-	public int getUSER_CODE() {
-		return USER_CODE;
-	}
-	public void setUSER_CODE(int uSER_CODE) {
-		USER_CODE = uSER_CODE;
-	}
-	public String getUSER_NAME() {
-		return USER_NAME;
-	}
-	public void setUSER_NAME(String uSER_NAME) {
-		USER_NAME = uSER_NAME;
-	}
-	public String getUSER_IMG() {
-		return USER_IMG;
-	}
-	public void setUSER_IMG(String uSER_IMG) {
-		USER_IMG = uSER_IMG;
-	}
-	public String getUSER_IS_ADMIN() {
-		return USER_IS_ADMIN;
-	}
-	public void setUSER_IS_ADMIN(String uSER_IS_ADMIN) {
-		USER_IS_ADMIN = uSER_IS_ADMIN;
-	}
-	public int getUSER_DEPT() {
-		return USER_DEPT;
-	}
-	public void setUSER_DEPT(int uSER_DEPT) {
-		USER_DEPT = uSER_DEPT;
-	}
-	public int getUSER_JOB() {
-		return USER_JOB;
-	}
-	public void setUSER_JOB(int uSER_JOB) {
-		USER_JOB = uSER_JOB;
-	}
-	public String getUSER_FAX() {
-		return USER_FAX;
-	}
-	public void setUSER_FAX(String uSER_FAX) {
-		USER_FAX = uSER_FAX;
-	}
-	public String getUSER_INTRO() {
-		return USER_INTRO;
-	}
-	public void setUSER_INTRO(String uSER_INTRO) {
-		USER_INTRO = uSER_INTRO;
-	}
-	public String getUSER_CARD() {
-		return USER_CARD;
-	}
-	public void setUSER_CARD(String uSER_CARD) {
-		USER_CARD = uSER_CARD;
-	}
-	public int getUSER_STATE() {
-		return USER_STATE;
-	}
-	public void setUSER_STATE(int uSER_STATE) {
-		USER_STATE = uSER_STATE;
-	}
-	public String getUSER_JOIN_DATE() {
-		return USER_JOIN_DATE;
-	}
-	public void setUSER_JOIN_DATE(String uSER_JOIN_DATE) {
-		USER_JOIN_DATE = uSER_JOIN_DATE;
-	}
-	public String getUSER_PHONE() {
-		return USER_PHONE;
-	}
-	public void setUSER_PHONE(String uSER_PHONE) {
-		USER_PHONE = uSER_PHONE;
-	}
-	public String getUSER_LASTTIME() {
-		return USER_LASTTIME;
-	}
-	public void setUSER_LASTTIME(String uSER_LASTTIME) {
-		USER_LASTTIME = uSER_LASTTIME;
-	}
-	public String getUSER_PASSWORD_CH() {
-		return USER_PASSWORD_CH;
-	}
-	public void setUSER_PASSWORD_CH(String uSER_PASSWORD_CH) {
-		USER_PASSWORD_CH = uSER_PASSWORD_CH;
-	}
-	public String getCREATED_AT() {
-		return CREATED_AT;
-	}
-	public void setCREATED_AT(String cREATED_AT) {
-		CREATED_AT = cREATED_AT;
-	}
-	public String getCREATEWHO() {
-		return CREATEWHO;
-	}
-	public void setCREATEWHO(String cREATEWHO) {
-		CREATEWHO = cREATEWHO;
-	}
-	public String getUPDATE_AT() {
-		return UPDATE_AT;
-	}
-	public void setUPDATE_AT(String uPDATE_AT) {
-		UPDATE_AT = uPDATE_AT;
-	}
-	public String getUPDATEWHO() {
-		return UPDATEWHO;
-	}
-	public void setUPDATEWHO(String uPDATEWHO) {
-		UPDATEWHO = uPDATEWHO;
-	}                                         
+import org.springframework.web.multipart.MultipartFile;
 
+public class Member {
+	private String user_id;
+	private String user_password;
+	private String user_email;
+	private int user_code;
+	private String user_name;
+	private String user_img;
+	private String user_auth;
+	private int user_dept;
+	private int user_job;
+	private String user_fax;
+	private String user_intro;
+	private String user_card;
+	private String user_state;
+	private String user_join_date;
+	private String user_phone;
+	private String user_lasttime;
+	private String user_password_ch;
+	private String created_at;
+	private String createwho;
+	private String update_at;
+	private String updatewho;
+	private MultipartFile imgupload;
+	private String originalfile;
+
+	public String getOriginalfile() {
+		return originalfile;
+	}
+
+	public void setOriginalfile(String originalfile) {
+		this.originalfile = originalfile;
+	}
+
+	public MultipartFile getImgupload() {
+		return imgupload;
+	}
+
+	public void setImgupload(MultipartFile imgupload) {
+		this.imgupload = imgupload;
+	}
+
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getUser_password() {
+		return user_password;
+	}
+
+	public void setUser_password(String user_password) {
+		this.user_password = user_password;
+	}
+
+	public String getUser_email() {
+		return user_email;
+	}
+
+	public void setUser_email(String user_email) {
+		this.user_email = user_email;
+	}
+
+	public int getUser_code() {
+		return user_code;
+	}
+
+	public void setUser_code(int user_code) {
+		this.user_code = user_code;
+	}
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+
+	public String getUser_img() {
+		return user_img;
+	}
+
+	public void setUser_img(String user_img) {
+		this.user_img = user_img;
+	}
+
+	public String getUser_auth() {
+		return user_auth;
+	}
+
+	public void setUser_auth(String user_auth) {
+		this.user_auth = user_auth;
+	}
+
+	public int getUser_dept() {
+		return user_dept;
+	}
+
+	public void setUser_dept(int user_dept) {
+		this.user_dept = user_dept;
+	}
+
+	public int getUser_job() {
+		return user_job;
+	}
+
+	public void setUser_job(int user_job) {
+		this.user_job = user_job;
+	}
+
+	public String getUser_fax() {
+		return user_fax;
+	}
+
+	public void setUser_fax(String user_fax) {
+		this.user_fax = user_fax;
+	}
+
+	public String getUser_intro() {
+		return user_intro;
+	}
+
+	public void setUser_intro(String user_intro) {
+		this.user_intro = user_intro;
+	}
+
+	public String getUser_card() {
+		return user_card;
+	}
+
+	public void setUser_card(String user_card) {
+		this.user_card = user_card;
+	}
+
+	public String getUser_state() {
+		return user_state;
+	}
+
+	public void setUser_state(String user_state) {
+		this.user_state = user_state;
+	}
+
+	public String getUser_join_date() {
+		return user_join_date.substring(0, 10);
+	}
+
+	public void setUser_join_date(String user_join_date) {
+		this.user_join_date = user_join_date;
+	}
+
+	public String getUser_phone() {
+		return user_phone;
+	}
+
+	public void setUser_phone(String user_phone) {
+		this.user_phone = user_phone;
+	}
+
+	public String getUser_lasttime() {
+		return user_lasttime;
+	}
+
+	public void setUser_lasttime(String user_lasttime) {
+		this.user_lasttime = user_lasttime;
+	}
+
+	public String getUser_password_ch() {
+		return user_password_ch;
+	}
+
+	public void setUser_password_ch(String user_password_ch) {
+		this.user_password_ch = user_password_ch;
+	}
+
+	public String getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
+	}
+
+	public String getCreatewho() {
+		return createwho;
+	}
+
+	public void setCreatewho(String createwho) {
+		this.createwho = createwho;
+	}
+
+	public String getUpdate_at() {
+		return update_at;
+	}
+
+	public void setUpdate_at(String update_at) {
+		this.update_at = update_at;
+	}
+
+	public String getUpdatewho() {
+		return updatewho;
+	}
+
+	public void setUpdatewho(String updatewho) {
+		this.updatewho = updatewho;
+             
+  }
 	
 }

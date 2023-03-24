@@ -8,6 +8,7 @@ import com.naver.cowork.domain.Member;
 
 @Service
 public interface MemberService {
+	
 
 	public int insert(Member m);
 

@@ -62,14 +62,14 @@ public class MemberController {
 	public String joinProcess(Member member, RedirectAttributes rattr, 
 			Model model, HttpServletRequest request) {
 		// 비밀번호 암호화 추가.
-		String id = member.getUSER_ID();
-		String email = member.getUSER_EMAIL();
-		String name = member.getUSER_NAME();
-		String encPassword = passwordEncoder.encode(member.getUSER_PASSWORD());
-		String role = member.getUSER_IS_ADMIN();
+		String id = member.getUser_id();
+		String email = member.getUser_email();
+		String name = member.getUser_name();
+		String encPassword = passwordEncoder.encode(member.getUser_password());
+		String role = member.getUser_auth();
 	
 
-		member.setUSER_PASSWORD(encPassword);
+		member.setUser_password(encPassword);
 
 		int result = meberService.insert(member);
 
