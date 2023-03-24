@@ -9,13 +9,16 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>CO_WORK</artifactId>
+    <artifactId>CO_WORK_Final</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>CO_WORK</name>
-    <description>CO_WORK</description>
+    <name>CO_WORK_Final</name>
+    <description>CO_WORK_Final</description>
     <properties>
         <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
     </properties>
     <dependencies>
         <!-- 스프링 시큐리티 tag 라이브러리 -->
@@ -97,6 +100,14 @@
             <artifactId>commons-fileupload</artifactId>
             <version>1.3.1</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.webjars.npm/tablednd -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>tablednd</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -105,6 +116,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
 </project>

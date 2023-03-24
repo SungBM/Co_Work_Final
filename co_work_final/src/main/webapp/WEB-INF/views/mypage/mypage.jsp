@@ -1,236 +1,179 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
-<jsp:include page="../main/header.jsp"></jsp:include>
-<style>
-label {
-	text-align: center
-}
+<jsp:include page="../main/header.jsp"/>
+<head>
+    <title>내 프로필</title>
+    <style>
+    input[type=file] {
+        display: none;
+    }
 
-input[type=file] {
-	display: none;
-}
+    #showImage1 > img {
+        width: 200px;
+        height: 200px;
+    }
 
-#showImage1>img, #showImage2>img {
-	width: 200px;
-	height: 200px;
-}
-</style>
+    #showImage2 > img {
+        width: 200px;
+        height: 111px;
+    }
+
+    .form-control {
+        border: none;
+        border-bottom: 1px solid #CCC;
+        border-radius: 0;
+    }
+
+    .form-control:read-write:focus {
+        border-bottom: 2px solid blue;
+    }
+
+    </style>
 </head>
 
 <body>
-	<div class="page-content ">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-8">
-					<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+<div class="main-content">
+    <div class="page-content ">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex">
+                        <h4 class="mb-sm-0 font-size-18">내 프로필> 수정</h4>
+                    </div>
+                </div>
+            </div>
 
-						<h4 class="mb-sm-0 font-size-18">내 프로필> 수정</h4>
+            <form name="update" action="../member/updateProcess" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row d-flex justify-content-center mb-5">
+                            <div class="col-3">
+                                <div>
+                                    <img class="card-img-top img-fluid" src="${pageContext.request.contextPath }/resources/upload${path}">
+                                    <div class="d-flex justify-content-center mt-3 filebox">
+                                        <input class="form-control" type="file" id="imgupload" name="imgupload">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-3">
-					<form action="ImgupdateProcess.my" method="post" enctype="multipart/form-data" id="profile">
-						<div class="card h-50">
-							<label>
-								<span id="showImage1">
-									<c:if test='${empty memberinfo.USER_IMG }'>
-										<c:set var='src' value='image/profile.png' />
-									</c:if>
-									<c:if test='${!empty memberinfo.USER_IMG }'>
-										<c:set var='src' value='${memberinfo.USER_IMG }' />
-										<input type="hidden" name="check" value="${memberinfo.USER_IMG }">
-									</c:if>
-									<img src="image/${src }" alt="profile">
-								</span>
-								<input class="form-control" type="file" name="user_img" id="formFile1">
-								<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-								<input type="hidden" name="value" value="user_img">
-							</label>
-							<div class="col-md-4">
-								<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-							</div>
-						</div>
-					</form>
-					<form action="ImgupdateProcess.my" method="post" enctype="multipart/form-data" id="card">
-						<div class="card h-50">
-							<label>
-								<span id="showImage2">
-									<c:if test='${empty memberinfo.USER_CARD }'>
-										<c:set var='src' value='image/card.jpg' />
-									</c:if>
-									<c:if test='${!empty memberinfo.USER_CARD }'>
-										<c:set var='src' value='${"image/" }${memberinfo.USER_CARD }' />
-										<input type="hidden" name="check" value="${memberinfo.USER_CARD }">
-									</c:if>
-									<img src="${src }" alt="card">
-								</span>
-								<input class="form-control" type="file" name="user_card" id="formFile2">
-								<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-								<input type="hidden" name="value" value="user_card">
-							</label>
+                    <div class="col-6">
+                        <div class="col-10  align-items-center container-fluid">
+                            <label class="form-label" for="user_id"><b>아이디</b></label>
+                            <div class="input-group" id="user_id">
+                                <input type="text" class="form-control" name="user_id" value="${memberinfo.user_id}"
+                                       readonly>
+                            </div>
+                        </div>
 
-							<div class="col-md-6">
-								<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-							</div>
-						</div>
-					</form>
-				</div>
+                        <div class="col-10 mt-5  align-items-center container-fluid">
+                            <label class="form-label" for="user_dept"><b>부서</b></label>
+                            <div class="input-group" id="user_dept">
+                                <input type="text" class="form-control" name="user_dept"
+                                       value="${memberinfo.user_dept}" readonly>
+                            </div>
+                        </div>
 
-				<div class="col-xl-6">
-					<div class="card" style="height: 510px">
-						<div class="card-body">
-							<form action="updateProcess.my" method="post" id="up">
-								<div class="mb-3 row">
-									<label for="value-name" class="col-md-3 col-form-label">이름</label>
-									<div class="col-md-6">
-										<input class="form-control" type="text" value="${memberinfo.USER_NAME }" name="user_name" readOnly>
-										<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-										<input type="hidden" name="value" value="user_name">
-									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success waves-effect waves-light update" type="submit">수정</button>
-										<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-									</div>
-								</div>
-							</form>
+                        <div class="col-10 mt-5  align-items-center container-fluid">
+                            <label class="form-label" for="user_phone"><b>연락처</b></label>
+                            <div class="input-group" id="user_phone">
+                                <input type="text" class="form-control" name="user_phone"
+                                       value="${memberinfo.user_phone}">
+                            </div>
+                        </div>
 
-							<form action="updateProcess.my" method="post" id="up">
-								<div class="mb-3 row">
-									<label for="value-name" class="col-md-3 col-form-label">부서</label>
-									<div class="col-md-6">
-										<select class="form-select" name="user_dept" disabled required>
+                        <div class="col-10 mt-5  align-items-center container-fluid">
+                            <label class="form-label" for="user_email"><b>이메일</b></label>
+                            <div class="input-group" id="user_email">
+                                <input type="text" class="form-control" name="user_email"
+                                       value="${memberinfo.user_email}" readonly>
+                            </div>
+                        </div>
 
-											<c:if test="${!empty list.dept_name }">
-												<c:forEach var="list" items="${dept }" varStatus="i">
-													<option value="${list.dept_name }">${list.dept_name}</option>
-												</c:forEach>
-											</c:if>
+                    </div>
 
-											<c:if test="${empty list.dept_name }">
-												<option value="" selected style="display: none">부서를 선택해주세요.</option>
-												<c:forEach var="list" items="${dept }" varStatus="i">
-													<option value="${list.dept_name }">${list.dept_name}</option>
-												</c:forEach>
-											</c:if>
+                    <div class="col-6" style="">
+                        <div class="col-10  align-items-center container-fluid">
+                            <label class="form-label" for="user_name"><b>이름</b></label>
+                            <div class="input-group" id="user_name">
+                                <input type="text" class="form-control" name="user_name" value="${memberinfo.user_name}"
+                                       readonly>
+                            </div>
+                        </div>
 
-										</select>
-										<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-										<input type="hidden" name="value" value="user_dept">
-									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success waves-effect waves-light update" type="submit">수정</button>
-										<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-									</div>
-								</div>
-							</form>
+                        <div class="col-10 mt-5  align-items-center container-fluid">
+                            <label class="form-label" for="user_job"><b>직급</b></label>
+                            <div class="input-group" id="user_job">
+                                <input type="text" class="form-control" name="user_job" value="${memberinfo.user_job}"
+                                       readonly>
+                            </div>
+                        </div>
 
-							<form action="updateProcess.my" method="post" id="up">
-								<div class="mb-3 row">
-									<label for="value-name" class="col-md-3 col-form-label">직함</label>
-									<div class="col-md-6">
-										<select class="form-select" name="user_job" disabled>
+                        <div class="col-10 mt-5  align-items-center container-fluid">
+                            <label class="form-label" for="user_fax"><b>팩스번호</b></label>
+                            <div class="input-group" id="user_fax">
+                                <input type="text" class="form-control" name="user_fax" value="${memberinfo.user_fax}">
+                            </div>
+                        </div>
 
-											<c:if test="${!empty list.job_name }">
-												<c:forEach var="list" items="${job }" varStatus="i">
-													<option value="${list.job_name }">${list.job_name}</option>
-												</c:forEach>
-											</c:if>
+                        <div class="col-10 mt-5  align-items-center container-fluid">
+                            <label class="form-label" for="user_join_date"><b>입사일</b></label>
+                            <div class="input-group" id="user_join_date">
+                                <input type="text" class="form-control" name="user_join_date"
+                                       value="${memberinfo.user_join_date}" readonly>
+                            </div>
+                        </div>
 
-											<c:if test="${empty list.job_name }">
-												<option value="" selected style="display: none">직함을 선택해주세요.</option>
-												<c:forEach var="list" items="${job }" varStatus="i">
-													<option value="${list.job_name }">${list.job_name}</option>
-												</c:forEach>
-											</c:if>
-											
-										</select>
-										<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-										<input type="hidden" name="value" value="user_job">
-									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success waves-effect waves-light update" type="submit">수정</button>
-										<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-									</div>
-								</div>
-							</form>
 
-							<form action="updateProcess.my" method="post" id="up">
-								<div class="mb-3 row">
-									<label for="value-name" class="col-md-3 col-form-label">이메일 주소</label>
-									<div class="col-md-6">
-										<input class="form-control" type="email" value="${memberinfo.USER_EMAIL }" name="user_email" readOnly>
-										<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-										<input type="hidden" name="value" value="user_email">
+                    </div>
 
-									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success waves-effect waves-light update" type="submit">수정</button>
-										<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-									</div>
-								</div>
-							</form>
+                    <div class="col-xl-12 mt-5 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary waves-effect waves-light m-1" disabled>정보변경
+                        </button>
+                    </div>
+                </div>
+            </form>
 
-							<form action="updateProcess.my" method="post" id="up">
-								<div class="mb-3 row">
-									<label for="value-name" class="col-md-3 col-form-label">FAX</label>
-									<div class="col-md-6">
-										<input class="form-control" type="text" value="${memberinfo.USER_FAX}" placeholder="Enter fax" name="user_fax" readOnly>
-										<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-										<input type="hidden" name="value" value="user_fax">
-
-									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success waves-effect waves-light update" type="submit">수정</button>
-										<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-									</div>
-								</div>
-							</form>
-							<form action="updateProcess.my" method="post" id="up">
-								<div class="mb-3 row">
-									<label for="value-name" class="col-md-3 col-form-label">연락처</label>
-									<div class="col-md-6">
-										<input class="form-control" type="text" value="${memberinfo.USER_PHONE }" placeholder="Enter phone" name="user_phone" readOnly>
-										<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-										<input type="hidden" name="value" value="user_phone">
-									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success waves-effect waves-light update" type="submit">수정</button>
-										<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-									</div>
-								</div>
-							</form>
-
-							<form action="updateProcess.my" method="post" id="up">
-								<div class="mb-3 row">
-									<label for="value-name" class="col-md-3 col-form-label">자기소개</label>
-									<div class="col-md-6">
-										<textarea class="form-control" placeholder="Enter INTRO" name="user_intro" rows="4" style="resize: none;" readOnly>${memberinfo.USER_INTRO }</textarea>
-										<input type="hidden" name="user_id" value="${memberinfo.USER_ID}">
-										<input type="hidden" name="value" value="user_intro">
-									</div>
-									<div class="col-md-3">
-										<button class="btn btn-success waves-effect waves-light update" type="submit">수정</button>
-										<input class='btn btn-warning waves-effect waves-light' type="reset" id='second' style="display: none" value="취소">
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
+    <!-- End Page-content -->
+</div>
 </body>
-
-<jsp:include page="../main/footer.jsp"></jsp:include>
-<script src="${pageContext.request.contextPath }/resources/assets/js/mypage_js/mypage.js"></script>
 <script>
-	$("select[name=user_dept]").val('${memberinfo.USER_DEPT}').prop("selected",	true);
-	$("option[value='${memberinfo.USER_JOB }']").prop("selected", true);
+    $(function () {
+
+        // 정보 변경 시 버튼 활성화
+        $("input[name=user_phone], input[name=user_fax], input[type=file]").on('keyup change', function () {
+            const phone = $("input[name=user_phone]").val();
+            const fax = $("input[name=user_fax]").val();
+            const id = $("input[name=user_id]").val();
+            const img = $("input[type=file]").val();
+
+            $.ajax({
+                url: "updateCheck",
+                type: "post",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    "user_phone": phone,
+                    "user_fax": fax,
+                    "user_id": id
+                }),
+                success: function (resp) {
+                    console.log("ajax = " + phone, fax, img);
+                    if (resp == 'success' || img) {
+                        $("button[type=submit]").attr("disabled", false);
+                    } else if (resp == 'fail' || !img) {
+                        $("button[type=submit]").attr("disabled", true);
+                    }
+                }
+            })
+        }) // 연락처, 팩스번호 바뀌면 정보변경 버튼 활성화 end
+
+
+    })
 </script>
 </html>
