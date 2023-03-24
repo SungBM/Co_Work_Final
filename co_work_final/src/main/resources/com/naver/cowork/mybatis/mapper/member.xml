@@ -3,36 +3,35 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.MemberMapper">
-
-	<select id="isId" resultType="member">
+	<select id="isId" resultType="member" parameterType="String">
 		select *
-		from member3 where id = #{id}
+		from user_info where user_id = #{id}
 	</select>
 
 	<insert id="insert">
-		insert into member3
+		insert into user_info ( USER_ID,USER_PASSWORD,USER_EMAIL,USER_NAME,USER_IS_ADMIN,USER_JOIN_DATE )
 		values
-		(#{id}, #{password}, #{name}, #{age}, #{gender}, #{email}, #{auth})
+		(#{USER_ID}, #{USER_PASSWORD}, #{USER_EMAIL}, #{USER_NAME}, #{USER_IS_ADMIN}, #{USER_JOIN_DATE})
 	</insert>
 
 	<select id="logincheck" resultType="member" parameterType="Map">
-		select * from member3 where id = #{id} and password = #{password}
+		select * from user_info where user_id = #{user_id} and user_password = #{user_password}
 	</select>
 
 	<update id="update">
-		update member3
+		update user_info
 		set
-		age = #{age},
-		name = #{name},
-		gender = #{gender},
-		email = #{email}
-		where id = #{id}
+		user_phone = #{user_phone},
+		user_fax = #{user_fax},
+		user_img = #{originalfile},
+		user_card = #{user_card}
+		where user_id = #{user_id}
 	</update>
 
 	<select id="getSearchList" resultType="member">
 		select * from (select rownum rnum, b.*
 		from (select *
-		from member3
+		from user_info
 		where
 		id != 'admin'
 		<include refid="search_" />
@@ -45,7 +44,7 @@
 	</select>
 
 	<select id="getSearchListCount" resultType="int">
-		select count(*) from member3
+		select count(*) from user_info
 		where id != 'admin'
 		<include refid="search_" />
 	</select>
@@ -64,9 +63,19 @@
 	</sql>
 	
 	<delete id="delete">
-		delete from member3
+		delete from user_info
 		where id = #{id}
 	</delete>
 
+	<update id="modifypassword">
+        update user_info
+        set user_password = ?
+        WHERE USER_ID = ?
+    </update>
+
+	<select id="members" resultType="member">
+		select *
+		from user_info
+	</select>
 
 </mapper>

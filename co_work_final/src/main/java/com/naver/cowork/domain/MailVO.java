@@ -1,10 +1,10 @@
 package com.naver.cowork.domain;
 
 public class MailVO {
-	private String from = "admin"; // mail.properties���� �ۼ��� ���̵� �ش��ϴ� �̸��� �ּ� �ۼ�
+	private String from = "msb9876";
 	private String to;
-	private String subject = "제목";
-	private String content = "내용";
+	private String subject = "Co_Work에서 발송한 인증번호입니다";
+	private String content = "" + (int)Math.floor((Math.random()*(99999-10000+1)))+10000;
 
 	public String getFrom() {
 		return from;
