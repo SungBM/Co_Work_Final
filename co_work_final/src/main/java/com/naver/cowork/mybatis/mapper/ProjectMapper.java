@@ -13,6 +13,6 @@ public interface ProjectMapper {
 	
 	public List<Project> getProjectList(String id);
 
-	public int insert(Project p);
+	public Project insert(Project p);
 	
 }

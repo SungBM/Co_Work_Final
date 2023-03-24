@@ -11,15 +11,15 @@
 
 	<insert id="insert" parameterType="project">
 		insert into project
-		(#{PROJECT_NUM}, #{PROJECT_NAME}, #{PROJECT_STATE}, #{PROJECT_ADMIN}, #{PROJECT_START}, #{PROJECT_END}, #{PROJECT_priority}
-		values ( NVL((SELECT MAX(PROJECT_NUM)FROM PROJECT)+1,0 ), ?,?,?,?,?,?))
+		(PROJECT_NUM, PROJECT_NAME, PROJECT_STATE, PROJECT_ADMIN, PROJECT_START, PROJECT_END, PROJECT_priority)
+		values ( NVL((SELECT MAX(#{PROJECT_NUM})FROM PROJECT)+1,0 ), ?,?,?,?,?,?))
 	</insert>
 	
 	<insert id="insert_user">
 		insert into project_user
 		values( (select nvl(max #{PROJECT_NUM},0)+1 FROM PROJECT) 
 		                      , ? ,  
-		                   (SELECT MAX(ROWNUM)+3 FROM #{PROJECT_USER}) ) 
+		                   (SELECT MAX(ROWNUM)+3 FROM PROJECT_USER) ) 
 	</insert>
 
 

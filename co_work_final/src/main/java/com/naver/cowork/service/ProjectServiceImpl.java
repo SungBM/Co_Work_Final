@@ -63,7 +63,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public int insert(Project p) {
+	public Project insert(Project p) {
 		// TODO Auto-generated method stub
 		return dao.insert(p);
 	}

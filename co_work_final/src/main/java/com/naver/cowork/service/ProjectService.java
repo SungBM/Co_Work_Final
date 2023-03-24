@@ -41,6 +41,8 @@ public interface ProjectService {
 	public Project getDetailProject();
 
 	public Project insert(Project p);
+	
+	//public Project inser_user(Project_user u);
 
 
 }

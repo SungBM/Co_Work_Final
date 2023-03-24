@@ -52,18 +52,12 @@ public class ProjectController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/ProjectAddProcess" , method =  RequestMethod.POST)
-	public ModelAndView insert(ModelAndView mv , @RequestParam(value = "project") {
-		Project p = new Project();
-		
-		p.setProject_name("프로젝트1");
-		p.setProject_state("진행중");
-		p.setProject_admin("HTA1");
-		p.setProject_start("2023-03-23");
-		p.setProject_end("2023-03-23");
-		p.setProject_priority("HTA1");
-		
+	@RequestMapping(value = "/ProjectAddProcess" , method =  RequestMethod.GET)
+	public ModelAndView insert(ModelAndView mv , Project project){
+		System.out.println(project.getProject_name());
 		System.out.println("프로젝트 모달 컨트롤러 들어옴");
+		
+		
 		mv.setViewName("project/project_add_modal");
 		return mv;
 	}
