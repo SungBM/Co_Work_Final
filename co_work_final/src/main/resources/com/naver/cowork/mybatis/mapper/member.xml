@@ -5,13 +5,13 @@
 <mapper namespace="com.naver.cowork.mybatis.mapper.MemberMapper">
 	<select id="isId" resultType="member" parameterType="String">
 		select *
-		from user_info where user_id = #{id}
+		from user_info where user_id = #{user_id}
 	</select>
 
 	<insert id="insert">
-		insert into user_info ( USER_ID,USER_PASSWORD,USER_EMAIL,USER_NAME,USER_IS_ADMIN,USER_JOIN_DATE )
+		insert into user_info ( USER_ID,USER_PASSWORD,USER_EMAIL,USER_NAME)
 		values
-		(#{USER_ID}, #{USER_PASSWORD}, #{USER_EMAIL}, #{USER_NAME}, #{USER_IS_ADMIN}, #{USER_JOIN_DATE})
+		(#{user_id}, #{user_password}, #{user_email}, #{user_name})
 	</insert>
 
 	<select id="logincheck" resultType="member" parameterType="Map">
