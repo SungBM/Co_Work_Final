@@ -30,7 +30,7 @@ $(function(){
 	let checkpass=false;
 	let checkCode=false;
 	
-	$("input[name=USER_ID]").on('keyup', function(){
+	$("input[name=user_id]").on('keyup', function(){
 		$("#message").empty(); //처음에 pattern에 적합하지 않은 경우 메시지 출력 후 적합한 데이터를 입력해도
 							   //계속 같은 데이터 출력하므로 이벤트 시작할 때마다 비워둡니다.
 		//[A-Za-z0-9_]의 의미는 \w
@@ -45,7 +45,7 @@ $(function(){
 		
 		$.ajax({
 			url : "../member/idcheck",  //id값을 컨트롤러로 보내고
-			data : {"USER_ID" : id},
+			data : {"user_id" : id},
 			success : function(resp){
 				if(resp == -1){ //db에 해당 id가 없는 경우
 					$("#message").css('color','green').html("사용 가능한 아이디입니다.")
@@ -59,7 +59,7 @@ $(function(){
 			})//ajax end
 		});//id keyup end
 		
-		$("input[name=USER_EMAIL]").on('keyup', function(){
+		$("input[name=user_email]").on('keyup', function(){
 			//$("#email_message").empty();
 			//[A-Za-z0-9_]와 동일한 것이 \w입니다.
 			//+는 1회 이상 반복을 의미하고 {1,}와 동일합니다.
@@ -85,7 +85,7 @@ $(function(){
               return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
           }
 
-          if($('#USER_PASSWORD').val()!=$('#pw2').val()){
+          if($('#user_password').val()!=$('#pw2').val()){
               // 만약 pw1과 pw2가 알치하지 않는다면
               $("#checkPw").html('비밀번호가 일치하지 않습니다'); // 문구 출력
               $("#checkPw").attr('color', 'red');
@@ -103,19 +103,19 @@ $(function(){
         $('form').submit(function(){
         	if(!checkid){
 				alert("사용 가능한 아이디로 입력하세요.");
-				$("input[name=USER_ID]").val('').focus();
+				$("input[name=user_id]").val('').focus();
 				return false;
 			}
         	
         	if(!checkpass){
         		alert("사용 가능한 비밀번호로 입력하세요.");
-        		$("input[name=USER_PASSWORD]").val('').focus();
+        		$("input[name=user_password]").val('').focus();
         		return false;
         	}
 			
 			if(!checkemail){
 				alert("email 형식을 확인하세요.");
-				$("input[name=USER_EMAIL]").focus();
+				$("input[name=user_email]").focus();
 				return false;
 			}
 			if(!checkCode){
@@ -127,16 +127,16 @@ $(function(){
 		
   	  let re="";
 	  $("#mail_submit").click(function(){
-	     let receiver=$("#USER_EMAIL").val();   //이메일 주소 작성할때마다 확인
+	     let receiver=$("#user_email").val();   //이메일 주소 작성할때마다 확인
 		  if(receiver===""){
 			  alert("이메일을 입력하세요.")
-			  $("input[name=USER_EMAIL]").val('').focus();
+			  $("input[name=user_email]").val('').focus();
 		  }else{
-		  let receiver = $("#USER_EMAIL").val();
+		  let receiver = $("#user_email").val();
 		  console.log(receiver);
 			$.ajax({
 				url		: "../member/sendMail", //요청 경로
-				data  : {"USER_EMAIL" : receiver }, //요청 시 포함되어질 데이터
+				data  : {"user_email" : receiver }, //요청 시 포함되어질 데이터
 				success : function(resp){
 					alert("인증번호 전송 되었습니다.")
 					$("#code_num_check").text(resp);
@@ -199,15 +199,15 @@ $(function(){
                                 <form class="needs-validation" novalidate action="index.html">
                                 
                                 	<div class="mb-3">
-                                        <label for="USER_ID" class="form-label">아이디</label>
-                                        <input type="text" class="form-control" id="USER_ID" name="USER_ID"
+                                        <label for="user_id" class="form-label">아이디</label>
+                                        <input type="text" class="form-control" id="user_id" name="user_id"
                                             placeholder="아이디(6~15자 영문, 숫자, _로 가능합니다.)" required>
                                             <span id="message"></span>
                                     </div>
                                     	
                                     <div class="mb-3">
-                                        <label for="USER_PASSWORD" class="form-label">비밀번호</label>
-                                        <input type="password" class="form-control" id="USER_PASSWORD" name="USER_PASSWORD"
+                                        <label for="user_password" class="form-label">비밀번호</label>
+                                        <input type="password" class="form-control" id="user_password" name="user_password"
                                             placeholder="비밀번호(6~15자 영문, 숫자, _로 가능합니다.)" required>
                                     </div>
                                     
@@ -227,8 +227,8 @@ $(function(){
                                     </div>
                                                 
                                                 
-                                        <label for="useremail" class="form-label">이메일</label>
-                                        <input type="email" class="form-control" id="USER_EMAIL" name="USER_EMAIL"
+                                        <label for="user_email" class="form-label">이메일</label>
+                                        <input type="email" class="form-control" id="user_email" name="user_email"
                                             placeholder="e-mail@naver.com" required>
                                             <span id="email_message"></span>
                                     </div>
