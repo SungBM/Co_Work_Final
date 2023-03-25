@@ -9,7 +9,7 @@ import com.naver.cowork.domain.Member;
 
 @Mapper
 public interface MemberMapper {
-
+	
 	public Member isId(String id);
 
 	public int insert(Member m);
@@ -21,5 +21,6 @@ public interface MemberMapper {
 	public int getSearchListCount(Map<String, String> map);
 
 	public List<Member> getSearchList(Map<String, Object> map);
+	public List<Member> members();
 
 }

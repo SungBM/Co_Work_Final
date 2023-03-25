@@ -1,4 +1,4 @@
-package com.naver.cowork;
+package com;
 
 import javax.servlet.ServletContext;
 

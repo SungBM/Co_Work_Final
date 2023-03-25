@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.DeptMapper">
+
+	<select id="deptAll" resultType="dept">
+		select *
+		from dept
+		order by dept_order
+	</select>
+
+    <select id="dmaxNo" resultType="Integer">
+        select NVL(MAX(dept_no), 0) + 1
+        from dept
+    </select>
+
+	<delete id="delete">
+        BEGIN
+        update dept
+        set dept_order = dept_order - 1
+        where dept_order > (select dept_order
+                            from dept
+                            where dept_no = #{dept_no});
+
+        delete
+        from dept
+        where dept_no = #{dept_no};
+        END;
+    </delete>
+
+	<insert id="insert">
+		insert into dept
+		values (#{dept_no}, #{dept_name}, (SELECT count(dept_no) + 1 FROM dept))
+	</insert>
+</mapper>

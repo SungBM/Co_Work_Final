@@ -8,6 +8,9 @@
 <jsp:include page="../main/header.jsp"/>
 <link href="${pageContext.request.contextPath }/resources/assets/css/project_Css/project.css" rel="stylesheet" type="text/css" />
 <style>
+.page-content{
+	margin-left: 400px;
+}
 #icon_id{
 	display: none;
 }
@@ -199,9 +202,7 @@
 <script src="project_js/project_list_onload.js"></script>
 <script type="text/javascript">
 $(function(){
-
 })
-
 </script>
 <jsp:include page="../main/footer.jsp"></jsp:include>
   <script src="${pageContext.request.contextPath }/resources/assets/js/project_js/project_add.js"></script>
@@ -232,8 +233,3 @@ $(function(){
 	});
 	</script>
 </html>
-
-
-
-
-
