@@ -542,7 +542,11 @@
                                             <span>커뮤니티</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
+<<<<<<< HEAD
+                                                <li><a href="../board/noticeList">공지사항 게시판</a></li>
+=======
                                                 <li><a href="../board/NoticeList">공지사항 게시판</a></li>
+>>>>>>> branch 'main' of https://github.com/SungBM/Co_Work_Final.git
                                                 <li><a>자유 게시판</a></li>
                                             </ul>
                                         </li>
