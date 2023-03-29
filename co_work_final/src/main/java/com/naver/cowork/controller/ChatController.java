@@ -28,20 +28,26 @@ public class ChatController {
 		this.memberservice = memberservice;
 	}
 	
-	@GetMapping("")
-	public String chat() {
-		return "chat/chatForm";
-	}
 	
-	@RequestMapping(value="/list", method = RequestMethod.GET)
-	public ModelAndView memberList(String user_id, ModelAndView mv, HttpServletRequest request) {
+	@GetMapping("")
+	public ModelAndView memberList( ModelAndView mv, HttpServletRequest request) {
 		
-		Member m = memberservice.member_info(user_id);
+		List<Member> m = memberservice.members();
 		
-		//List<UserInfo> list = userinfoservice.getSearchList(0, user_id, 0, 0)
 		mv.setViewName("chat/chatForm");
-		mv.addObject("userinfoservice", m);
+		mv.addObject("members", m);
 		return mv;
 	}
+	
+	
+	
+	//채팅창으로 이동
+	@GetMapping("/chatting")
+		public ModelAndView getChatting(ModelAndView mv, HttpServletRequest request) {
+			mv.setViewName("chat/chatting");
+			return mv;
+		}
 
+	
+	
 }

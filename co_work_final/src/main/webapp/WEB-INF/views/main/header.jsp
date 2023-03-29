@@ -33,13 +33,13 @@
             <div class="d-flex">
                 <!-- LOGO -->
                 <div class="navbar-brand-box">
-                    <a href="../member/main" class="logo logo-light">
+                    <a href="../main/main" class="logo logo-light">
                                 <span class="logo-sm">
                                     <img src="${pageContext.request.contextPath }/resources/assets/images/logo-light.svg"
                                          alt="" height="22">
                                 </span>
                         <span class="logo-lg">
-                            <img src="../image/logo.png" style="width:200px;">
+                            <img src="${pageContext.request.contextPath }/resources/image/logo.png" style="width:200px;">
                                 </span>
                     </a>
                 </div>
