@@ -9,8 +9,10 @@
 	</select>
 
 	<insert id="insert">
+		insert into user_info ( USER_ID,USER_PASSWORD,USER_EMAIL,USER_NAME)
 		insert into user_info ( user_id,user_password,user_email,user_name,user_auth,user_join_date )
 		values
+		(#{user_id}, #{user_password}, #{user_email}, #{user_name})
 		(#{user_id}, #{user_password}, #{user_email}, #{user_name}, #{user_auth}, sysdate)
 	</insert>
 
@@ -28,54 +30,5 @@
 		where user_id = #{user_id}
 	</update>
 
-	<select id="getSearchList" resultType="member">
-		select * from (select rownum rnum, b.*
-		from (select *
-		from user_info
-		where
-		id != 'admin'
-		<include refid="search_" />
-
-		order by id
-		)b
-		where rownum &lt;= #{end}
-		)
-		where rnum between #{start} and #{end}
-	</select>
-
-	<select id="getSearchListCount" resultType="int">
-		select count(*) from user_info
-		where id != 'admin'
-		<include refid="search_" />
-	</select>
-
-	<sql id="search_">
-		<if test="search_field != null">
-			and
-			<choose>
-				<when test='search_field == "id"'>id</when>
-				<when test='search_field == "name"'>name</when>
-				<when test='search_field == "age"'>age</when>
-				<when test='search_field == "gender"'>gender</when>
-			</choose>
-			like #{search_word}
-		</if>
-	</sql>
-	
-	<delete id="delete">
-		delete from user_info
-		where id = #{id}
-	</delete>
-
-	<update id="modifypassword">
-        update user_info
-        set user_password = ?
-        WHERE USER_ID = ?
-    </update>
-
-	<select id="members" resultType="member">
-		select *
-		from user_info
-	</select>
 
 </mapper>

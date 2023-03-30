@@ -11,7 +11,7 @@ public interface MemberService {
 	
 
 
-	public int isId(String id, String pass);
+	public int isId(String user_id, String user_password);
 
 	public Member member_info(String id);
 
@@ -26,7 +26,7 @@ public List<Member> members();
 
 	public int insert(Member m);
 
-	public int isId(String id);
+	public int isId(String user_id);
 
 
 }
