@@ -110,8 +110,10 @@ public class ProjectController {
 		Logger.info("접속중인 ID : " + id);
 		Logger.info("선택한 프로젝트 번호 : " + p_num);
 		List<Project_Board> pb_list = projectService.getPojectBoardFeed(p_num);
-		mv.addObject("pb",pb_list);
-		
+		String project_Name = projectService.getProjectName(p_num);
+		mv.addObject("pblist",pb_list);
+		mv.addObject("projectName",project_Name);
+		mv.addObject("id",id);
 		mv.setViewName("project/project_Detail_Feed");
 		
 		return mv;

@@ -26,4 +26,6 @@ public interface ProjectMapper {
 	public List<Project> getDeadLineProjects(String logingID);
 
 	public List<Project_Board> getPojectBoardFeed(int p_num);
+
+	public String getProjectName(int p_num);
 }

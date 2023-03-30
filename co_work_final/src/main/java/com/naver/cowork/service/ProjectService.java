@@ -45,6 +45,8 @@ public interface ProjectService {
 	public Project insert(Project p);
 
 	public List<Project_Board> getPojectBoardFeed(int p_num);
+
+	public String getProjectName(int p_num);
 	
 	//public Project inser_user(Project_user u);
 

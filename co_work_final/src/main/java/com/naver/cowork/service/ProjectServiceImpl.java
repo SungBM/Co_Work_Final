@@ -98,6 +98,12 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Project_Board> getPojectBoardFeed(int p_num) {
 		return dao.getPojectBoardFeed(p_num);
 	}
+
+	@Override
+	public String getProjectName(int p_num) {
+		// TODO Auto-generated method stub
+		return dao.getProjectName(p_num);
+	}
 }
 
 
