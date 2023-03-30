@@ -80,11 +80,11 @@ public class MemberController {
     @GetMapping("/mypage")
     public ModelAndView mypage(String user_id, ModelAndView mv, HttpServletRequest request) {
         logger.info("id = " + user_id);
-        Member m = meberService.member_info(user_id);
+        Member m = meberService.member_info("HTA1");
         String saveFolder = mysavefolder.getSavefolder();
         String sFilePath = saveFolder + m.getUser_card();
         logger.info(sFilePath);
-
+        
 
         mv.setViewName("mypage/mypage");
         mv.addObject("memberinfo", m);

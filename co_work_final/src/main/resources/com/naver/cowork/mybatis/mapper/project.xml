@@ -3,10 +3,43 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.ProjectMapper">
+	<select id="getPojectBoardFeed" parameterType="int" resultType="Project_Board">
+		SELECT * FROM PROJECT_BOARD WHERE PROJECT_NUM = ${p_num}
+	</select>
+
 	<select id="getProjectList" resultType="Project" parameterType="String">
-		select * from project where project_admin = #{id}
+	SELECT PR.*, U.USER_IMG project_admin_img FROM ( SELECT * FROM 
+					    (SELECT ROWNUM row_num,P.* FROM (SELECT * FROM PROJECT ORDER BY PROJECT_END)P 
+					     WHERE <![CDATA[  ROWNUM <= 20 ]]>) 
+					WHERE ROWNUM >= 1
+					AND ROWNUM <![CDATA[  <= 20 ]]>
+					AND PROJECT_END > SYSDATE 
+					OR PROJECT_END IS NULL )PR 
+					INNER JOIN USER_INFO U 
+					ON PR.PROJECT_ADMIN = U.USER_ID 
+					ORDER BY PROJECT_END
+	</select>
+	<select id="getDeadLineProjects" resultType="Project" parameterType="String">
+		SELECT PR.*,U.USER_IMG project_admin_img FROM ( SELECT * FROM (SELECT ROWNUM row_num,P.* FROM (SELECT * FROM PROJECT ORDER BY PROJECT_END)P 
+								                WHERE ROWNUM <![CDATA[ <= 20 ]]>) WHERE ROWNUM >= 1 AND ROWNUM  <![CDATA[ <= 20 ]]> 
+								                AND PROJECT_END <![CDATA[ < SYSDATE  ]]> )PR 
+								INNER JOIN USER_INFO U 
+								ON PR.PROJECT_ADMIN = U.USER_ID 
 	</select>
 	
+	<select id="getListCount" resultType="int">
+		select count(*) from project
+	</select>
 	
+	<select id="getProjectUser" parameterType="int" resultType="com.naver.cowork.domain.Project_User">
+		SELECT P.USER_ID,P.PROJECT_NUM , U.USER_NAME, U.USER_IMG FROM PROJECT_USER P
+								INNER JOIN USER_INFO U 
+								ON P.USER_ID = U.USER_ID 
+								WHERE PROJECT_NUM = #{project_num}
+	</select>
+	
+	<select id="getProjectUserCount" parameterType="int" resultType="int">
+		select count(*) from project_user where project_num = #{project_num}
+	</select> 
 
 </mapper>

@@ -26,6 +26,7 @@ $(function(){
 			console.log("this의 속성값" + prog_num);
 			if(prog_num >= 100 ) {
 				$(this).removeClass("progress-bar progress-bar-striped progress-bar-animated");
+				//100이 넘으면 마감속성으로 변경하는 로직 수행 db통신 필요 
 			} else {
 				if(prog_num >= 75) {
 					console.log("if 들어옴");
@@ -43,6 +44,7 @@ $(function(){
 		
 		$(".badge").each(function(){
 			var state = $(this).attr("aria-valuenow");
+			state = String(state).trim();
 			switch(state) {
 				case "마감 임박" :
 					$(this).addClass('bg-danger');
@@ -60,24 +62,42 @@ $(function(){
 			
 		});
 		
-		
-		$(".text-truncate").each(function(){
-			var state = $(this).attr("aria-valuenow");
+		$(".state").each(function(){
+			let state = $(this).text();
+			state = state.trim();
 			console.log("state의 속성값" + state);
-			switch(state) {
+				switch(state) {
 				case "마감 임박" :
-					$(this).css('color','#f46a6a');
+					$(this).css({'color':'#f46a6a'});
 					break;
 				case "진행중" :
-					$(this).css('color','#50a5f1');
+					$(this).css({'color':'#50a5f1'});
 					break;
 				case "마감" :
-					$(this).css('color','darkgray');
+					$(this).css({'color':'darkgray'});
 					break;	
 				case "요청 확인" :
-					$(this).css('color','#f1b44c');
+					$(this).css({'color':'#f1b44c'});
 					break;
 			}
+			/*
+				if(state == "마감 임박") {
+					console.log("state if 들어옴");
+					$(this).css({'color':'#f46a6a'});
+				} 
+				 if( state == "진행중"  ) {
+					 console.log("state if 들어옴");
+					$(this).css({'color':'#50a5f1'});
+				} 
+				 if ( state == "마감" ) {
+					 console.log("state if 들어옴");
+					$(this).css({'color':'darkgray'});
+				} 
+				 if (state == "요청 확인" ) {
+					 console.log("state if 들어옴");
+					$(this).css({'color':'#f1b44c'});
+				} 
+			*/
 			
 		});
 		
@@ -86,6 +106,12 @@ $(function(){
 			$(".team_btn").click();
 			console.log("a 클릭 after");
 		})
+		
+		$("#projectDetail").click(function(){
+			let id = $("#loginId").text();
+			let p_num = $(this).attr("aria-value");
+			location.href="projectDetailFeed?id=" + id + "&p_num=" + p_num;
+		});
 		
 		
 		

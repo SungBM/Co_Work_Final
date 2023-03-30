@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.naver.cowork.domain.Project;
+import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.domain.Project_User;
 
 @Service
@@ -23,7 +24,7 @@ public interface ProjectService {
 
 	public int getDayCount(String date1, String date2);
 
-	public List<Project> getDeadLineProjects(int page, int limit);
+	public List<Project> getDeadLineProjects(String logingID);
 
 	public List<Project> getProjectList(String logingID);
 
@@ -42,6 +43,8 @@ public interface ProjectService {
 	public Project getDetailProject();
 
 	public Project insert(Project p);
+
+	public List<Project_Board> getPojectBoardFeed(int p_num);
 	
 	//public Project inser_user(Project_user u);
 
