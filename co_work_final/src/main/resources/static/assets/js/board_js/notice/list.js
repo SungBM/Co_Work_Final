@@ -1,3 +1,4 @@
+/*
 function go(page){
 	const limit = $("#viewcount").val();  //boardList.jsp에 viewcount임.
 	const data = `limit=${limit}&state=ajax&page=${page}`;  //object형식. limit, page는 변수라서 ""쓰지않음.
@@ -128,10 +129,10 @@ function ajax(sdata) {
 			}
 		}) //ajax end
 } //function ajax end
-
+*/
 $(function(){
 	$("#write-button").click(function(){		//
-		location.href="NoticeWrite.bon";
+		location.href='/write';
 	})
 	
 	$("#viewcount").change(function(){

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.NoticeMapper">
+
+	<select id="getListCount" resultType="int">
+		select count(*) from notice
+	</select>
+	
+	<select id="getNoticeList" parameterType="map" resultType="notice">
+		select * from
+			(select rownum rnum, b.*
+			 from
+				(select * from notice
+				 order by notice_re_ref desc,
+				 notice_re_seq asc) b
+			 where rownum &lt; #{end}
+			)
+		where rnum &gt;= #{start} and rnum &lt;= #{end}
+			
+	</select>
+
+</mapper>
