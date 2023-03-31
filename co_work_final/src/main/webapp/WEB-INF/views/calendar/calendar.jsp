@@ -266,21 +266,26 @@
                     },
 
                     // 이벤트 객체 필드 document : https://fullcalendar.io/docs/event-object
-                    events: [
-                        <c:forEach var="c" items="${callist}">
-                        {
-                            calno: '${c.cal_no}',
-                            caltype: '${c.cal_type}',
-                            title: '${c.cal_title}',
-                            start: '${c.cal_start_date}',
-                            end: '${c.cal_end_date}',
-                            content: '${c.cal_content}',
-                            allDay: '${c.cal_allday}',
-                            color: "${c.cal_color}"
-                        }
-                        <c:if test="${!empty callist}">, </c:if>
-                        </c:forEach>
-                    ]
+                    events: function (d, c, f) {
+                        console.log("성공1")
+                        var events = [];
+                        $("input[type=checkbox][name=cal_type]").change(function () {
+                            var cal_type = [];
+                            $("input[type=checkbox][name=cal_type]:checked").each(function (i) {
+                                cal_type.push($(this).val());
+                            })
+                            $.ajax({
+                                url: '../member/calSelect',
+                                data: {
+                                    "cal_type": cal_type
+                                },
+                                traditional: true,
+                                success: function (resp) {
+                                    console.log(cal_type)
+                                }
+                            }) // ajax end
+                        }) // change end
+                    }
                 });
 
             calendar.render();
@@ -317,30 +322,26 @@
                 });//datepicker end
 
                 // 일정 체크박스에 따른 데이터 표현
-                $("input[type=checkbox][name=cal_type]").change(function () {
-                    var cal_type = [];
-                    $("input[type=checkbox][name=cal_type]:checked").each(function (i) {
-                        cal_type.push($(this).val());
-                    })
-
-                    $.ajax({
-                        url: '../member/calSelect',
-                        type: 'post',
-                        data: {
-                            "cal_type": cal_type
-                        },
-                        traditional: true,
-                        success: function (data, status, xhr) {
-                            if (data == 'success') {
-                                console.log("조회 성공")
-                            } else {
-                                console.log("실패애")
-                            }
-                        }
-                    }) // ajax end
-                }) // change end
+                // $("input[type=checkbox][name=cal_type]").change(function () {
+                //     var cal_type = [];
+                //     $("input[type=checkbox][name=cal_type]:checked").each(function (i) {
+                //         cal_type.push($(this).val());
+                //     })
+                //     console.log(cal_type)
+                //
+                //     $.ajax({
+                //         url: '../member/calSelect',
+                //         data: {
+                //             "cal_type": cal_type
+                //         },
+                //         traditional: true,
+                //         success: function (resp) {
+                //             console.log(resp);
+                //         }
+                //     }) // ajax end
+                // }) // change end
             }) // document end
-        }); // addEventListener end
+        }) // addEventListener end
     </script>
     <style>
         .datepicker {
@@ -366,30 +367,41 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-xl-2">
+                <div class="col-md-6 col-xl-3">
 
                     <!-- Simple card -->
                     <div class="card">
-                        <div class="card-body" style="margin: 0 auto; width: 100%">
-                            <button type="button" class="btn btn-primary waves-effect waves-light m-1"
-                                    style="width: 100%" onclick="$('#myModal').modal('show')">+ 일정추가
-                            </button>
-                        </div>
-                        <div class="m-2" style="background-color: #ffc107; width: 90px; text-align: center;">
-                            <label>
-                                <%--                                <input class="form-input" type="text" value="P" checked="" name="cal_type"> --%>
-                                개인 일정
-                            </label>
-                        </div>
-                        <div class="m-2" style="background-color: #28a745; width: 90px; text-align: center;">
-                            <label>
-                                <%--                                <input class="form-input" type="text" value="C" name="cal_type">--%>
-                                회사 일정
-                            </label>
+                        <div class="card-body">
+                            <div class="d-grid">
+                                <button class="btn font-16 btn-primary" id="btn-new-event"
+                                        onclick="$('#myModal').modal('show')"><i
+                                        class="mdi mdi-plus-circle-outline"></i> 일정생성
+                                </button>
+                            </div>
+                            <div id="external-events" class="mt-4">
+                                <div class="external-event bg-success text-white" data-class="bg-success">
+                                    <input class="form-check-input" type="checkbox" name="cal_type" value="P"
+                                           id="formCheckcolor2" checked="">
+                                    <label class="form-check-label" for="formCheckcolor2">
+                                        개인 일정
+                                    </label>
+                                </div>
+                                <div class="external-event bg-info mt-2 text-white" data-class="bg-info">
+                                    <input class="form-check-input" type="checkbox" name="cal_type" value="C"
+                                           id="formCheckcolor3" checked="">
+                                    <label class="form-check-label" for="formCheckcolor3">
+                                        부서 일정
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-center mt-5">
+                                <img src="assets/images/verification-img.png" alt="" class="img-fluid d-block">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card col-10">
+                <div class="card col-9">
                     <div class="card-body">
                         <div id='calendar'></div>
 
