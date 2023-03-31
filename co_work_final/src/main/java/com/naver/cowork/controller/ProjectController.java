@@ -9,12 +9,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.cowork.domain.Project;
+import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.service.ProjectService;
 
 @Controller
@@ -61,6 +63,23 @@ public class ProjectController {
 		mv.setViewName("project/project_add_modal");
 		return mv;
 	}
-}
 	
-
+	@RequestMapping(value = "/ProjectDetailList" , method =  RequestMethod.GET)
+	public ModelAndView project_detail_list(ModelAndView mv) {
+		
+		List<Project_Board> detaillist = projectService.getProjectDetailList();
+		mv.addObject("ProjectDetailList", detaillist);
+		System.out.println(detaillist);
+		System.out.println("프로젝트 디테일 리스트 들어옴");
+		
+			
+		mv.setViewName("project/project_detail_List");
+		
+		return mv;
+	}
+	
+	@GetMapping("/add")
+	  public String showaddPage() {
+	      return "project/add";
+	}
+}

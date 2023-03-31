@@ -3,17 +3,17 @@ package com.naver.cowork.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.naver.cowork.domain.Project;
+import com.naver.cowork.domain.Project_Board;
+import com.naver.cowork.domain.Project_User;
 import com.naver.cowork.mybatis.mapper.ProjectMapper;
-
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -64,8 +64,16 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public Project insert(Project p) {
-		// TODO Auto-generated method stub
+		
 		return dao.insert(p);
+	}
+	
+	@Transactional
+	public Project insert_user(Project p) {
+		insert(p);
+		
+		p.setProject_num(p.getProject_num()+1);
+		return dao.insert_user(p);
 	}
 
 	@Override
@@ -74,6 +82,22 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.getProjectList(logingID);
 	}
 
-	
+	@Override
+	public Project insert_user(Project_User u) {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	@Override
+	public List<Project_Board> getProjectDetailList() {
+		// TODO Auto-generated method stub
+		return dao.getProjectDetailList();
+	}
+
+
+	
+}
+
+
+
 

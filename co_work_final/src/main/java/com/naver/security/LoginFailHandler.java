@@ -22,10 +22,11 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		HttpSession session = request.getSession();
+		exception.printStackTrace();
 		logger.info(exception.getMessage());
 		logger.info("로그인 실패");
 		session.setAttribute("loginfail", "loginFailMsg");
-		String url = request.getContextPath() + "/member/main";
+		String url = request.getContextPath() + "/member/login";
 		response.sendRedirect(url);
 	}
 }

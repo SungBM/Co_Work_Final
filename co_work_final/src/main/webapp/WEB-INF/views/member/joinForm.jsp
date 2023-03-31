@@ -3,12 +3,12 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>회원가입</title>
+    <title>로그인</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-	    <meta content="Themesbrand" name="author" />
-	<!-- App favicon -->     
-	<link rel="shortcut icon" href="${pageContext.request.contextPath }/resources/assets/images/favicon.ico">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="${pageContext.request.contextPath }/resources/assets/images/favicon.ico">
 
     <!-- owl.carousel css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/libs/owl.carousel/assets/owl.carousel.min.css">
@@ -16,19 +16,21 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/libs/owl.carousel/assets/owl.theme.default.min.css">
 
     <!-- Bootstrap Css -->
-   
+    <link href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
     <link href="${pageContext.request.contextPath }/resources/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="${pageContext.request.contextPath }/resources/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-   
+
+  <script src="${pageContext.request.contextPath }/resources/assets/libs/jquery/jquery.min.js"></script>
 <script>
 $(function(){
 	let checkid=false;
 	let checkemail=false;
 	let checkpass=false;
+	let checkCode=false;
 	
-	$("input[name=id]").on('keyup', function(){
+	$("input[name=user_id]").on('keyup', function(){
 		$("#message").empty(); //처음에 pattern에 적합하지 않은 경우 메시지 출력 후 적합한 데이터를 입력해도
 							   //계속 같은 데이터 출력하므로 이벤트 시작할 때마다 비워둡니다.
 		//[A-Za-z0-9_]의 의미는 \w
@@ -39,10 +41,11 @@ $(function(){
 			checkid=false;
 			return;
 		}
+	
 		
 		$.ajax({
-			url : "idcheck.net",  //id값을 컨트롤러로 보내고
-			data : {"id" : id},
+			url : "../member/idcheck",  //id값을 컨트롤러로 보내고
+			data : {"user_id" : id},
 			success : function(resp){
 				if(resp == -1){ //db에 해당 id가 없는 경우
 					$("#message").css('color','green').html("사용 가능한 아이디입니다.")
@@ -56,7 +59,7 @@ $(function(){
 			})//ajax end
 		});//id keyup end
 		
-		$("input[name=receiver]").on('keyup', function(){
+		$("input[name=user_email]").on('keyup', function(){
 			//$("#email_message").empty();
 			//[A-Za-z0-9_]와 동일한 것이 \w입니다.
 			//+는 1회 이상 반복을 의미하고 {1,}와 동일합니다.
@@ -82,7 +85,7 @@ $(function(){
               return; // 아직 입력된 상태가 아니라면 아무런 문구를 출력하지 않는다
           }
 
-          if($('#pw1').val()!=$('#pw2').val()){
+          if($('#user_password').val()!=$('#pw2').val()){
               // 만약 pw1과 pw2가 알치하지 않는다면
               $("#checkPw").html('비밀번호가 일치하지 않습니다'); // 문구 출력
               $("#checkPw").attr('color', 'red');
@@ -100,22 +103,61 @@ $(function(){
         $('form').submit(function(){
         	if(!checkid){
 				alert("사용 가능한 아이디로 입력하세요.");
-				$("input[name=id]").val('').focus();
+				$("input[name=user_id]").val('').focus();
 				return false;
 			}
         	
         	if(!checkpass){
         		alert("사용 가능한 비밀번호로 입력하세요.");
-        		$("input[name=pass]").val('').focus();
+        		$("input[name=user_password]").val('').focus();
         		return false;
         	}
 			
 			if(!checkemail){
 				alert("email 형식을 확인하세요.");
-				$("input[name=email]").focus();
+				$("input[name=user_email]").focus();
+				return false;
+			}
+			if(!checkCode){
+				alert("인증번호를 확인하세요")
+				$("#code").focus();
 				return false;
 			}
 		});//submit
+		
+  	  let re="";
+	  $("#mail_submit").click(function(){
+	     let receiver=$("#user_email").val();   //이메일 주소 작성할때마다 확인
+		  if(receiver===""){
+			  alert("이메일을 입력하세요.")
+			  $("input[name=user_email]").val('').focus();
+		  }else{
+		  let receiver = $("#user_email").val();
+		  console.log(receiver);
+			$.ajax({
+				url		: "../member/sendMail", //요청 경로
+				data  : {"user_email" : receiver }, //요청 시 포함되어질 데이터
+				success : function(resp){
+					alert("인증번호 전송 되었습니다.")
+					$("#code_num_check").text(resp);
+					console.log(resp);
+				}
+			})//ajax end
+	
+		  }
+	  })
+	  
+		            $("#code_submit").click(function(){
+		            	let code_num_check = $("#code_num_check").text();
+		            	console.log(code_num_check + "cnc");
+		        	if(code_num_check === $("#code").val()){  //이건 값을 보내는 경우 . 확인을 누르면 검사할 수 있도록. 버튼 만들어야해
+		        		$("#code_message").text("인증번호 일치합니다.").css("color", "green");
+		        		checkCode = true;
+		        	}else{
+		        		$("#code_message").text("인증번호 일치하지않습니다.").css("color", "red");
+		        	}
+		        	//시점확인. 문장을 다 적었을 때 검사하도록.
+		       });
 })//ready
 </script>
 <Style>
@@ -125,7 +167,7 @@ $(function(){
 </head>
 
 <body>
-	<form name="joinform" action="joinProcess.net" method="post">
+	<form name="joinform" action="../member/joinProcess" method="post">
     <div class="account-pages my-5 pt-sm-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -148,7 +190,7 @@ $(function(){
                                 <a href="index.html">
                                     <div class="avatar-md profile-user-wid mb-4">
                                         <span class="avatar-title rounded-circle bg-light">
-                                            <img src="assets/images/logo.svg" alt="" class="rounded-circle" height="34">
+                                            <img src="${pageContext.request.contextPath }/resources/assets/images/logo.svg" alt="" class="rounded-circle" height="34">
                                         </span>
                                     </div>
                                 </a>
@@ -157,15 +199,15 @@ $(function(){
                                 <form class="needs-validation" novalidate action="index.html">
                                 
                                 	<div class="mb-3">
-                                        <label for="userId" class="form-label">아이디</label>
-                                        <input type="text" class="form-control" id="id" name="id"
+                                        <label for="user_id" class="form-label">아이디</label>
+                                        <input type="text" class="form-control" id="user_id" name="user_id"
                                             placeholder="아이디(6~15자 영문, 숫자, _로 가능합니다.)" required>
                                             <span id="message"></span>
                                     </div>
                                     	
                                     <div class="mb-3">
-                                        <label for="userpassword" class="form-label">비밀번호</label>
-                                        <input type="password" class="form-control" id="pw1" name="pass"
+                                        <label for="user_password" class="form-label">비밀번호</label>
+                                        <input type="password" class="form-control" id="user_password" name="user_password"
                                             placeholder="비밀번호(6~15자 영문, 숫자, _로 가능합니다.)" required>
                                     </div>
                                     
@@ -178,17 +220,15 @@ $(function(){
 									
                                     <div class="mb-3">
                                     <div class="float-end">
-                                    
-                                                    <input id="mail_submit" type="button" value="인증번호발송">
-                                                    <input type="hidden" readonly="readonly" name="code_check" id="code_check"
-                                                    >
-                                                    <span id="code_check_message"></span>
-                                   </div>
+                                          <input id="mail_submit" type="button" value="인증번호발송">
+                                          <input type="hidden" readonly="readonly" name="code_check" id="code_check">
+                                          <span id="code_check_message"></span>
+                                   	</div>
                                     </div>
                                                 
                                                 
-                                        <label for="useremail" class="form-label">이메일</label>
-                                        <input type="email" class="form-control" id="receiver" name="receiver"
+                                        <label for="user_email" class="form-label">이메일</label>
+                                        <input type="email" class="form-control" id="user_email" name="user_email"
                                             placeholder="e-mail@naver.com" required>
                                             <span id="email_message"></span>
                                     </div>
@@ -197,8 +237,7 @@ $(function(){
                                     <div class="float-end">
                                     
                                                     <input id="code_submit" type="button" value="인증번호확인">
-                                                    <input type="hidden" readonly="readonly" name="code_num_check" id="code_num_check"
-                                                    >
+                                                    <input type="hidden" readonly="readonly" name="code_num_check" id="code_num_check">
                                    </div>
                                     </div>
                                    
@@ -211,10 +250,9 @@ $(function(){
 
                                     <div class="mb-3">
                                         <label for="name" class="form-label">이름</label>
-                                        <input type="text" class="form-control" id="name" name="name"
+                                        <input type="text" class="form-control" id="USER_NAME" name="user_name"
                                             placeholder="이름을 입력하세요" required>
                                     </div>
-
 
                                     <div class="mt-4 d-grid">
                                         <button class="btn btn-primary waves-effect waves-light"
@@ -274,9 +312,10 @@ $(function(){
 
                 </div>
             </div>
-        </div>
-    </div>
- 	<script src="${pageContext.request.contextPath }/resources/assets/libs/jquery/jquery.min.js"></script>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
+	</form>
+	<script src="${pageContext.request.contextPath }/resources/assets/libs/jquery/jquery.min.js"></script>
    	<script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/assets/libs/metismenu/metisMenu.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/assets/libs/simplebar/simplebar.min.js"></script>
@@ -287,40 +326,8 @@ $(function(){
     <script src="${pageContext.request.contextPath }/resources/assets/js/pages/auth-2-carousel.init.js"></script>
     <!-- App js -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/app.js"></script>
-	</form>
 	<script>
-	  let re="";
-	  $("#mail_submit").click(function(){
-	     let receiver=$("#receiver").val();   //이메일 주소 작성할때마다 확인
-		  if(receiver===""){
-			  alert("이메일을 입력하세요.")
-			  $("input[name=receiver]").val('').focus();
-		  }else{
-		  $("#mail_submit").attr("disabled", true);
-		  $.ajax({
-		        url : "send.net",
-		        data : {"receiver" : $("#receiver").val()},
-		        success : function(rdata){
-		        	//$("#code_check_message").css('color','green').html("인증번호 전송 완료되었습니다.");
-		        	re = rdata;
-		        	alert("인증번호 전송 되었습니다.")
-		       
-		        }
-		  
-		  	})
-		  }
-	  })
-	  
-	  
-		            $("#code_submit").click(function(){
-		            	console.log(re)
-		        	if(re == $("#code").val()){  //이건 값을 보내는 경우 . 확인을 누르면 검사할 수 있도록. 버튼 만들어야해
-		        		$("#code_message").text("인증번호 일치합니다.").css("color", "green");
-		        	}else{
-		        		$("#code_message").text("인증번호 일치하지않습니다.").css("color", "red");
-		        	}
-		        	//시점확인. 문장을 다 적었을 때 검사하도록.
-		       });
+
 	</script>
 </body>
 
