@@ -12,6 +12,7 @@ public interface ChatMapper {
 	public List<ChatVO> list();
 	
 	public void insert(ChatVO vo);
+	
 }
 
 
