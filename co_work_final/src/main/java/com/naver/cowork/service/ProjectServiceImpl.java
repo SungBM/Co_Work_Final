@@ -3,7 +3,10 @@ package com.naver.cowork.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,14 +45,6 @@ public class ProjectServiceImpl implements ProjectService {
 		// TODO Auto-generated method stub
 		return dao.getListCount();
 	}
-
-	@Override
-	public int getDayCount(String date1, String date2) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
 
 	@Override
 	public Project getDetailProject() {
@@ -95,14 +90,62 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public List<Project_Board> getPojectBoardFeed(int p_num) {
-		return dao.getPojectBoardFeed(p_num);
+	public List<Project_Board> getPojectBoardFeed(int pNum) {
+		return dao.getPojectBoardFeed(pNum);
 	}
 
 	@Override
-	public String getProjectName(int p_num) {
+	public String getProjectName(int pNum) {
 		// TODO Auto-generated method stub
-		return dao.getProjectName(p_num);
+		return dao.getProjectName(pNum);
+	}
+	
+	@Override
+	public int getDayCount(String startDate, String endDate) {
+		int dayCount = 0;
+
+		SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.DATE_FORMAT);
+		Calendar c1 = Calendar.getInstance();
+		String strToday = sdf.format(c1.getTime());
+		try {
+			Date startFormat = sdf.parse(startDate);
+			Date endFormat = sdf.parse(endDate);
+			Date todayformat = sdf.parse(strToday);
+			long diffSec = (endFormat.getTime() - startFormat.getTime()) / 1000; //초 차이
+			long all_Days_diff = diffSec / (24*60*60); //일자수 차이
+
+			long today_diff_sec = (endFormat.getTime() - todayformat.getTime()) / 1000;
+			long today_diff = today_diff_sec / (24*60*60);
+
+			double all_days = all_Days_diff;
+			double today =  today_diff;
+			dayCount = 100-(int)((today / all_days)*100 );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dayCount;
+	}
+
+	@Override
+	public int increaseCheck(int pbNum) {
+		
+		int re = dao.increaseCheck(pbNum);
+		if(re == 1 ) {
+			return dao.getCheckCount(pbNum);
+		} else {
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public int decreaseCheck(int pbNum) {
+		int re = dao.decreaseCheck(pbNum);
+		if(re == 1 ) {
+			return dao.getCheckCount(pbNum);
+		} else {
+			return 0;
+		}
 	}
 }
 

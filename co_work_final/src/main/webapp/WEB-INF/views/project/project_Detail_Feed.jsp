@@ -28,21 +28,109 @@
 	color: blue;
 	cursor: pointer;
 }
+
+.bm{
+	vertical-align : -1.0px;
+}
+
+.isize {
+	font-size: 20px;
+}
+
+.isize>span {
+	font-size: 18px;
+	vertical-align : 1.5px;
+}
+
+
+.isize:hover  {
+    color: #556ee6;
+    -webkit-transform: scale(1.5);
+    transform: scale(1.5);
+    transition-duration : 0.2s;
+}
+.isize:not(:hover)  {
+    color: black;
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+    transition-duration : 0.2s;
+}
+.bx bxs-like {
+	color: #556ee6;
+}
 </style>
 <script type="text/javascript">
 	$(function(){
-		$("#comment").hide();
+		$(".comment").hide();
 		
-		$("#commentToggle").on("click",function(){
-			let clsName = $("#commentToggle").attr("class");
+		$(".commentToggle").on("click",function(){
+			let clsName = $(this).next().attr("class");
 			if (clsName.includes('visible')) {
-				$("#comment").hide();
-				$("#commentToggle").removeClass("visible");
+				$(this).next().hide();
+				$(this).next().removeClass("visible");
 			}else {
-				$("#comment").show();
-				$("#commentToggle").addClass("visible");
+				$(this).next().show();
+				$(this).next().addClass("visible");
 			}
+		});
+		$("#fileDown").click(function(){
+			$("#fileForm").submit();
+			$("#fileDown").css({'color':'#945050'});
+		});
+		$(".like").click(function(){
+			let clsName = $(this).attr("class");
+			let pbNum = $(this).children().next().val();
 			
+			if (clsName.includes('checked')) {
+				$(this).removeClass();
+				$(this).addClass("bx bx-check-circle isize");
+				$(this).css({'color':'black'});
+				
+				var count = 0;
+				$.ajax({
+					type : 'get',
+					url : '../project/ProjectLikeDecrease',  // 상대경로. 타입을 따로 주지 않아서 get 방식. id값을 컨트롤러로 보내고
+					async:false,
+					data : {"pbNum" : pbNum},  // "id"는 컨트롤러에 param으로 가는 id임.
+					success : function(resp){
+						count = resp;
+					}
+				});
+				$(this).children().text(count);	
+				
+			} else {
+				$(this).removeClass();
+				$(this).addClass("bx bx-check-double isize checked");
+				$(this).css({'color':'#556ee6'});
+				var count = 0;
+				$.ajax({
+					type : 'get',
+					url : '../project/ProjectLikeIncrease',  // 상대경로. 타입을 따로 주지 않아서 get 방식. id값을 컨트롤러로 보내고
+					async:false,
+					data : {"pbNum" : pbNum},  // "id"는 컨트롤러에 param으로 가는 id임.
+					success : function(resp){
+						count = resp;
+					}
+				});
+				$(this).children().text(count);	
+			}
+		
+		});
+		
+		$(".bm").click(function(){
+			let clsName = $(this).attr("class");
+			let pNum = $(".pNum").val();
+			if (clsName.includes('checked')) {
+				$(this).removeClass();
+				$(this).addClass("bx bx-bookmark-plus bm isize");
+				$(this).css({'color':'black'});
+				
+			} else {
+				$(this).removeClass();
+				$(this).addClass("bx bxs-bookmark-star bm isize checked");
+				$(this).css({'color':'#556ee6'});
+			}
+		
 		});
 	});
 </script>
@@ -111,7 +199,7 @@
                                             <div class="row">
                                                 <div class="col-sm-4">
                                                     <div>
-                                                        <p class="text-muted mb-2">Categories</p>
+                                                        <p class="text-muted mb-2">카테고리</p>
                                                         <h5 class="font-size-15">${pb.PRO_BOARD_CARTEGORY }</h5>
                                                     </div>
                                                 </div>
@@ -145,24 +233,34 @@
                                          		${pb.PRO_BOARD_CONTENT }
                                             </div>
                                             <br>
-                                            <hr>
+                                            
                                            
 											 <c:if test="${!empty pb.PRO_BOARD_FILE }">
-											 <form action="/project/projectFileDown" method="post">
-										  		 	<i class="mdi mdi-file-download-outline">${pb.PRO_BOARD_FILE }</i>
+											 <hr>
+											 <form action="../project/projectFileDown" id="fileForm" method="post">
+										  		 	<i class="mdi mdi-file-download-outline" id="fileDown">${pb.PRO_BOARD_FILE_ORIGINAL }</i>
 										  			  <input type="hidden" value="${pb.PRO_BOARD_FILE}" name="filename" >
-										  			  <input type="hidden" value="${boarddata.BOARD_ORIGINAL }" name="original" >
+										  			  <input type="hidden" value="${pb.PRO_BOARD_FILE_ORIGINAL }" name="original" >
 										  			  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 										  	 </form>
 										  	</c:if>
                                             <hr>
-
+                                          		
+												<i class="bx bx-check-circle isize like">
+													<span class="likeNum" id="lnum">${ pb.PRO_BOARD_LIKE}</span>
+													<input type="hidden" class="pbNum" value="${pb.PRO_BOARD_NUM }">
+												</i>
+											 &nbsp;&nbsp;
+										
+												<i class="bx bx-bookmark-plus bm isize"  id="bookmark"></i>
+											
+											<hr>
                                             <div class="mt-5">
-                                                <h5 class="font-size-15" id="commentToggle"><i
+                                                <h5 class="font-size-15 commentToggle" id="commentToggle"><i
                                                         class="bx bx-message-dots text-muted align-middle me-1"></i>
                                                     Comments </h5>
 
-                                                <div id="comment">
+                                                <div class="comment">
                                                     <div class="d-flex py-3">
                                                         <div class="flex-shrink-0 me-3">
                                                             <div class="avatar-xs">
@@ -281,9 +379,10 @@
                                                             class="btn btn-success w-sm">Submit</button>
                                                     </div>
                                                 </form>
+                                                 <br><br><br><br><hr><br><br><br><br>
                                             </div>
                                         </div>
-
+										
                                     </div>
                                 </div>
                             </c:forEach>
@@ -311,7 +410,7 @@
                 <div class="card">
                     <div class="card-body p-4">
                         <div class="search-box">
-                            <p class="text-muted">Search</p>
+                            <p class="text-muted">키워드 검색</p>
                             <div class="position-relative">
                                 <input type="text" class="form-control rounded bg-light border-light"
                                     placeholder="Search...">
@@ -322,21 +421,21 @@
                         <hr class="my-4">
 
                         <div>
-                            <p class="text-muted">Categories</p>
+                            <p class="text-muted">카테고리</p>
 
                             <ul class="list-unstyled fw-medium">
                                 <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> Design</a></li>
+                                            class="mdi mdi-chevron-right me-1"></i> 요청</a></li>
                                 <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> Development <span
+                                            class="mdi mdi-chevron-right me-1"></i> 진행 <span
                                             class="badge badge-soft-success rounded-pill float-end ms-1 font-size-12">04</span></a>
                                 </li>
                                 <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> Business</a></li>
+                                            class="mdi mdi-chevron-right me-1"></i> 피드백</a></li>
                                 <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> Project</a></li>
+                                            class="mdi mdi-chevron-right me-1"></i> 완료</a></li>
                                 <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> Travel<span
+                                            class="mdi mdi-chevron-right me-1"></i> 보류<span
                                             class="badge badge-soft-success rounded-pill ms-1 float-end font-size-12">12</span></a>
                                 </li>
                             </ul>
@@ -345,87 +444,24 @@
                         <hr class="my-4">
 
                         <div>
-                            <p class="text-muted">Archive</p>
+                            <p class="text-muted">북마크</p>
 
                             <ul class="list-unstyled fw-medium">
                                 <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> 2020 <span
+                                            class="mdi mdi-chevron-right me-1"></i> BOOKMARK1 <span
                                             class="badge badge-soft-success rounded-pill float-end ms-1 font-size-12">03</span></a>
                                 </li>
                                 <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> 2019 <span
+                                            class="mdi mdi-chevron-right me-1"></i> BOOKMARK2 <span
                                             class="badge badge-soft-success rounded-pill float-end ms-1 font-size-12">06</span></a>
                                 </li>
                                 <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> 2018 <span
+                                            class="mdi mdi-chevron-right me-1"></i> BOOKMARK3 <span
                                             class="badge badge-soft-success rounded-pill float-end ms-1 font-size-12">05</span></a>
                                 </li>
                             </ul>
                         </div>
 
-                        <hr class="my-4">
-
-                        <div>
-                            <p class="text-muted mb-2">Popular Posts</p>
-
-                            <div class="list-group list-group-flush">
-
-                                <a href="#" class="list-group-item text-muted py-3 px-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-3">
-                                            <img src="assets/images/small/img-7.jpg" alt=""
-                                                class="avatar-md h-auto d-block rounded">
-                                        </div>
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <h5 class="font-size-13 text-truncate">${pb.PRO_BOARD_SUBJECT }</h5>
-                                            <p class="mb-0 text-truncate">10 Apr, 2020</p>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="list-group-item text-muted py-3 px-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-3">
-                                            <img src="assets/images/small/img-4.jpg" alt=""
-                                                class="avatar-md h-auto d-block rounded">
-                                        </div>
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <h5 class="font-size-13 text-truncate">Drawing a sketch</h5>
-                                            <p class="mb-0 text-truncate">24 Mar, 2020</p>
-                                        </div>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="list-group-item text-muted py-3 px-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-3">
-                                            <img src="assets/images/small/img-6.jpg" alt=""
-                                                class="avatar-md h-auto d-block rounded">
-                                        </div>
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <h5 class="font-size-13 text-truncate">Project discussion with team</h5>
-                                            <p class="mb-0 text-truncate">11 Mar, 2020</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <hr class="my-4">
-
-                        <div>
-                            <p class="text-muted">Tags</p>
-
-                            <div class="d-flex flex-wrap gap-2 widget-tag">
-                                <div><a href="#" class="badge bg-light font-size-12">Design</a></div>
-                                <div><a href="#" class="badge bg-light font-size-12">Development</a></div>
-                                <div><a href="#" class="badge bg-light font-size-12">Business</a></div>
-                                <div><a href="#" class="badge bg-light font-size-12">Project</a></div>
-                                <div><a href="#" class="badge bg-light font-size-12">Travel</a></div>
-                                <div><a href="#" class="badge bg-light font-size-12">Lifestyle</a></div>
-                                <div><a href="#" class="badge bg-light font-size-12">Photography</a></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <!-- end card -->

@@ -25,7 +25,13 @@ public interface ProjectMapper {
 
 	public List<Project> getDeadLineProjects(String logingID);
 
-	public List<Project_Board> getPojectBoardFeed(int p_num);
+	public List<Project_Board> getPojectBoardFeed(int pNum);
 
-	public String getProjectName(int p_num);
+	public String getProjectName(int pNum);
+
+	public int increaseCheck(int pbNum);
+
+	public int getCheckCount(int pbNum);
+
+	public int decreaseCheck(int pbNum);
 }

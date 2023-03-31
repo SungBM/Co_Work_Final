@@ -44,7 +44,7 @@
 							</thead>
 							<tbody>
 								<c:forEach var="p" items="${projectList }">
-									<tr id="projectDetail" aria-value="${p.project_num }">
+									<tr>
 										<c:if test="${p.row_num <= 6 }">
 											<td><img
 												src="${pageContext.request.contextPath }/resources/image/project/img-${p.row_num }.png" alt=""
@@ -57,7 +57,8 @@
 										</c:if>
 
 										<td>
-											<h5 class="text-truncate font-size-14">
+											<h5 class="text-truncate font-size-14"
+											id="projectDetail" aria-value="${p.project_num }">
 												<a href="#" class="text-dark"> <c:out
 														value="${p.project_name }" />
 												</a>
