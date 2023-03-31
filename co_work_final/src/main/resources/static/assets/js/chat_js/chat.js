@@ -29,7 +29,7 @@ var msg = getId('msg');
 		}else{
 			css = 'class=other';
 		}
-		
+		//여기에 화면에 뿌려주는 AJAX 추가해야함
 		var item = `<div ${css} >
 		                <span><b>${data.mid}</b></span> [ ${data.date} ]<br/>
                       <span>${data.msg}</span>
@@ -48,6 +48,7 @@ msg.onkeyup = function(ev){
 
 btnSend.onclick = function(){
 	send();
+	
 }
 
 function send(){
@@ -57,7 +58,18 @@ function send(){
 		data.date = new Date().toLocaleString();
 		var temp = JSON.stringify(data);
 		ws.send(temp);
-	}
+	
+	$.ajax({
+		url : "insert",
+		//data : {"ID": $("#loginId").text(),"SENDER": mid.value, "MESSAGE": msg.value},
+		data : {"ID": "hta1234","SENDER": mid.value, "MESSAGE": msg.value},
+		async: false,   //끝나고나서 일 처리해라
+		success : function(){
+		console.log("성공");
+		
+		}
+	})
+}
 	msg.value ='';
 	
 }

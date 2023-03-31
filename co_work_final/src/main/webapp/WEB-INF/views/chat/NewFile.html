@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel='stylesheet' type='text/css' href='../assets/css/NewFile.css'>
+</head>
+<body>
+	<div class="container">
+		<div class="top">
+			<div class="top-left">
+				<img class="prifile-img" src='${pageContext.request.contextPath}/resources/assets/images/users/avatar-1.jgp' />
+				<div class="profile-name">${user_name }</div>
+				<img class="store-button" src="box.png" />&nbspㅣ
+                <img class="search-button" src="search.png" />
+            </div>
+            <div class="top-right">_ ㅁ x</div>
+        </div>
+        <div class="middle">
+        	<div class="you1">
+        		<img class="chat-img" src='${pageContext.request.contextPath}/resources/assets/images/users/avatar-1.jgp' />
+        		<div class="you">
+        		</div>
+			</div>
+		</div>
+		<div class="bottom">
+            <textarea class="textarea"></textarea>
+            <button type="submit" class="button">전송</button>
+            <div class="option">
+                <a href="https://e.kakao.com/" target="blank" alt="이모티콘">
+                    <img class="emoticon" src="smile.png" />
+                </a>
+                <input type=file name='file1' style='display: none' />
+                <input type='text' name='file2' id='file2' style='display: none' />
+                <img class="file" src="clip.png"
+                    onclick='document.all.file1.click(); document.all.file2.value=document.all.file1.value' />
+                <div class="transparent">―――</div>
+            </div>
+        </div>
+	</div>
+
+</body>
+</html>

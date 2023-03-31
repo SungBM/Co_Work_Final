@@ -11,7 +11,16 @@ public class Member {
 	private String user_img;
 	private String user_auth = "ROLE_MEMBER";
 	private int user_dept;
+	private String dept_name;
 	private int user_job;
+	public String getDept_name() {
+		return dept_name;
+	}
+
+	public void setDept_name(String dept_name) {
+		this.dept_name = dept_name;
+	}
+
 	private String user_fax;
 	private String user_intro;
 	private String user_card;

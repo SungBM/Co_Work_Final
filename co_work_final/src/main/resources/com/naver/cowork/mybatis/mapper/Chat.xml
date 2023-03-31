@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.ChatMapper">
+
+<insert id="insertChatMessage">
+	insert into chat_message(SENDER, MESSAGE, SEND_DATE)
+	values(#{SENDER}, #{MESSAGE}, #{SEND_DATE})
+</insert>
+
+<insert id="insert">
+	insert into CHAT_MESSAGE(ID, SENDER, MESSAGE, SEND_DATE)
+	values(#{ID}, #{SENDER}, #{MESSAGE}, SYSDATE)
+</insert>
+</mapper>

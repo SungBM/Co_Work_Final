@@ -5,12 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="${pageContext.request.contextPath }/resources/assets/js/jquery-3.6.3.js"></script>
 <link rel='stylesheet' type='text/css' href='../assets/css/chatt.css'>
 </head>
 <body>
 	<div id='chatt'>
-		<h3>이름${memberinfo.USER_ID }</h3>
-	  	<input type='text' id='mid' value='${memberinfo.USER_ID }'>  	
+		<h3>이름${members.user_name}</h3>
+	  	<input type='text' id='mid' value='${user_name }'>  	
 <!--  	<input type='button' value='로그인' id='btnLogin'> -->	
 		<br/>
 		<div id='talk'></div>

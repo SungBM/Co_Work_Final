@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.naver.cowork.domain.ChatVO;
 import com.naver.cowork.domain.Member;
+import com.naver.cowork.service.ChatService;
 import com.naver.cowork.service.MemberService;
 
 @Controller
@@ -22,19 +24,21 @@ import com.naver.cowork.service.MemberService;
 public class ChatController {
 	
 	private MemberService memberservice;
+	private ChatService chatservice;
 	
 	@Autowired
-	public ChatController(MemberService memberservice) {
+	public ChatController(MemberService memberservice, ChatService chatservice) {
 		this.memberservice = memberservice;
+		this.chatservice = chatservice;
 	}
 	
 	
 	@GetMapping("")
-	public ModelAndView memberList( ModelAndView mv, HttpServletRequest request) {
+	public ModelAndView memberList( ModelAndView mv, HttpServletRequest request,@RequestParam(value = "id")String id) {
 		
 		List<Member> m = memberservice.members();
-		
 		mv.setViewName("chat/chatForm");
+		mv.addObject("loginid",id);
 		mv.addObject("members", m);
 		return mv;
 	}
@@ -43,11 +47,14 @@ public class ChatController {
 	
 	//채팅창으로 이동
 	@GetMapping("/chatting")
-		public ModelAndView getChatting(ModelAndView mv, HttpServletRequest request) {
+		public ModelAndView getChatting(ModelAndView mv, String user_name) {
+			mv.addObject("user_name", user_name);
 			mv.setViewName("chat/chatting");
 			return mv;
 		}
-
 	
-	
-}
+	@RequestMapping(value="/insert", method=RequestMethod.GET)
+		public void insert(ChatVO vo) {
+			chatservice.insert(vo);		
+			}
+	}

@@ -23,8 +23,8 @@
 	</style>
 	
 	<script>
-		function showPopup(){
-			window.open("chat/chatting", "채팅방", "width=600, height=600, top=10, left=10");
+		function showPopup (user_name){
+			window.open("chat/chatting?user_name="+user_name, '_blank', "width=600, height=600, top=10, left=10");
 		//	wondow.close();
 		}
 		
@@ -62,14 +62,14 @@
 
                         <div class="d-lg-flex">
                             <div class="chat-leftsidebar me-lg-4">
-                                <div class="">
+                                <div class="w-100 user-chat">
                                     <div class="py-4 border-bottom">
                                         <div class="d-flex">
                                             <div class="flex-shrink-0 align-self-center me-3">
                                                 <img src="assets/images/users/avatar-1.jpg" class="avatar-xs rounded-circle" alt="">
                                             </div>
                                             <div class="flex-grow-1">
-                                                <h5 class="font-size-15 mb-1">${m.user_id }</h5>
+                                                <h5 class="font-size-15 mb-1">${loginid}</h5>
                                                 <p class="text-muted mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active</p>
                                             </div>
 
@@ -118,12 +118,12 @@
                                                                         <i class="mdi mdi-circle text-success font-size-10"></i>
                                                                     </div>
                                                                     <div class="flex-shrink-0 align-self-center me-3">
-                                                                        <img src="assets/images/users/avatar-3.jpg" class="rounded-circle avatar-xs" alt="">
+                                                                        <img src="assets/images/users/${m.user_img }" class="rounded-circle avatar-xs" alt="">
                                                                     </div>
 
                                                                     <div class="flex-grow-1 overflow-hidden">
-                                                                        <h5 class="text-truncate font-size-14 mb-1" onclick="showPopup()">${m.user_name }, ${m.user_dept }</h5>
-                                                                       <!--  <input type="text" value="팝업창 호출" onclick="showPopup()"> -->
+                                                                        <h5 class="text-truncate font-size-14 mb-1" onclick="showPopup('${m.user_id}')">${m.user_name}, ${m.dept_name }</h5>
+                                                                       <!-- <input type="text" value="팝업창 호출" onclick="showPopup()"> -->
                                                                         <p class="text-truncate mb-0">${m.user_email }</p>
                                                                     </div>
                                                                     <div class="font-size-11">12 min</div>
@@ -206,231 +206,226 @@
                                         </div>
                                     </div>
     
-                  <div class="row">
-                            <div class="col-lg-12">
+                  <div class="w-100 user-chat">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table align-middle table-nowrap table-hover">
-                                                <thead class="table-light">
+                                    <div class="p-4 border-bottom ">
+                                        <div class="row">
+                                            <div class="col-md-4 col-9">
+                                                <h5 class="font-size-15 mb-1">${user_name}Steven Franklin</h5>
+                                                <p class="text-muted mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active now</p>
+                                            </div>
+                                            <div class="col-md-8 col-3">
+                                                <ul class="list-inline user-chat-nav text-end mb-0">
+                                                    <li class="list-inline-item d-none d-sm-inline-block">
+                                                        <div class="dropdown">
+                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="bx bx-search-alt-2"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-md">
+                                                                <form class="p-3">
+                                                                    <div class="form-group m-0">
+                                                                        <div class="input-group">
+                                                                            <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
+                                                                            
+                                                                            <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="list-inline-item  d-none d-sm-inline-block">
+                                                        <div class="dropdown">
+                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="bx bx-cog"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <a class="dropdown-item" href="#">View Profile</a>
+                                                                <a class="dropdown-item" href="#">Clear chat</a>
+                                                                <a class="dropdown-item" href="#">Muted</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+    
+                                                    <li class="list-inline-item">
+                                                        <div class="dropdown">
+                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="bx bx-dots-horizontal-rounded"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <a class="dropdown-item" href="#">Action</a>
+                                                                <a class="dropdown-item" href="#">Another action</a>
+                                                                <a class="dropdown-item" href="#">Something else</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
                                                     
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="avatar-xs">
-                                                                <span class="avatar-title rounded-circle">
-                                                                    M
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-size-15 mb-1"><a href="javascript: void(0);" class="text-dark">문성빈</a></h5>
-                                                            <p class="text-muted mb-0">총괄팀장</p>
-                                                        </td>
-                                                        <td>파이널 최종 점검 날짜 확인해주세요~</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <ul class="list-inline font-size-20 contact-links mb-0">
-                                                            </ul>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div>
-                                                                <img class="rounded-circle avatar-xs" src="assets/images/users/avatar-2.jpg" alt="">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-size-15 mb-1"><a href="javascript: void(0);" class="text-dark">안덕균</a></h5>
-                                                            <p class="text-muted mb-0">개발팀</p>
-                                                        </td>
-                                                        <td>마이페이지 정보 업데이트 해주세요!</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <ul class="list-inline font-size-20 contact-links mb-0">
-                                                            </ul>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        </td>
-                                                       
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div>
-                                                                <img class="rounded-circle avatar-xs" src="assets/images/users/avatar-3.jpg" alt="">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-size-15 mb-1"><a href="javascript: void(0);" class="text-dark">최자영</a></h5>
-                                                            <p class="text-muted mb-0">개발팀</p>
-                                                        </td>
-                                                        <td>채팅기능관련 문의드립니다.</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <ul class="list-inline font-size-20 contact-links mb-0">
-                                                            </ul>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        </td>
-                                                      
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="avatar-xs">
-                                                                <span class="avatar-title rounded-circle">
-                                                                    M
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark">Mark Ellison</a></h5>
-                                                            <p class="text-muted mb-0">Full Stack Developer</p>
-                                                        </td>
-                                                        <td>mark@skote.com</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <ul class="list-inline font-size-20 contact-links mb-0">
-                                                            </ul>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div>
-                                                                <img class="rounded-circle avatar-xs" src="assets/images/users/avatar-4.jpg" alt="">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark">Minnie Walter</a></h5>
-                                                            <p class="text-muted mb-0">Frontend Developer</p>
-                                                        </td>
-                                                        <td>minnie@skote.com</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <ul class="list-inline font-size-20 contact-links mb-0">
-                                                            </ul>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div>
-                                                                <img class="rounded-circle avatar-xs" src="assets/images/users/avatar-5.jpg" alt="">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark">Shirley Smith</a></h5>
-                                                            <p class="text-muted mb-0">UI/UX Designer</p>
-                                                        </td>
-                                                        <td>shirley@skote.com</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <ul class="list-inline font-size-20 contact-links mb-0">
-                                                            </ul>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="avatar-xs">
-                                                                <span class="avatar-title rounded-circle">
-                                                                    J
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark">John Santiago</a></h5>
-                                                            <p class="text-muted mb-0">Full Stack Developer</p>
-                                                        </td>
-                                                        <td>john@skote.com</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <ul class="list-inline font-size-20 contact-links mb-0">
-                                                            </ul>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div>
-                                                                <img class="rounded-circle avatar-xs" src="assets/images/users/avatar-5.jpg" alt="">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <h5 class="font-size-14 mb-1"><a href="javascript: void(0);" class="text-dark">Colin Melton</a></h5>
-                                                            <p class="text-muted mb-0">Backend Developer</p>
-                                                        </td>
-                                                        <td>colin@skote.com</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>
-                                                            <ul class="list-inline font-size-20 contact-links mb-0">
-                                                            </ul>
-                                                        </td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        
+                                    </div>
+    
+    
+                                    <div>
+                                        <div class="chat-conversation p-3">
+                                            <ul class="list-unstyled mb-0" data-simplebar style="max-height: 486px;">
+                                                <li> 
+                                                    <div class="chat-day-title">
+                                                        <span class="title">Today</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="conversation-list">
+                                                        <div class="dropdown">
+    
+                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                              </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href="#">Copy</a>
+                                                                <a class="dropdown-item" href="#">Save</a>
+                                                                <a class="dropdown-item" href="#">Forward</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ctext-wrap">
+                                                            <div class="conversation-name">Steven Franklin</div>
+                                                            <p>
+                                                                Hello!
+                                                            </p>
+                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:00</p>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </li>
+    
+                                                <li class="right">
+                                                    <div class="conversation-list">
+                                                        <div class="dropdown">
+    
+                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                              </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href="#">Copy</a>
+                                                                <a class="dropdown-item" href="#">Save</a>
+                                                                <a class="dropdown-item" href="#">Forward</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ctext-wrap">
+                                                            <div class="conversation-name">Henry Wells</div>
+                                                            <p>
+                                                                Hi, How are you? What about our next meeting?
+                                                            </p>
+    
+                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:02</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+
+                                                <li>
+                                                    <div class="conversation-list">
+                                                        <div class="dropdown">
+    
+                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                              </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href="#">Copy</a>
+                                                                <a class="dropdown-item" href="#">Save</a>
+                                                                <a class="dropdown-item" href="#">Forward</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ctext-wrap">
+                                                            <div class="conversation-name">Steven Franklin</div>
+                                                            <p>
+                                                                Yeah everything is fine
+                                                            </p>
+                                                            
+                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:06</p>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </li>
+    
+                                                <li class="last-chat">
+                                                    <div class="conversation-list">
+                                                        <div class="dropdown">
+    
+                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                              </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href="#">Copy</a>
+                                                                <a class="dropdown-item" href="#">Save</a>
+                                                                <a class="dropdown-item" href="#">Forward</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ctext-wrap">
+                                                            <div class="conversation-name">Steven Franklin</div>
+                                                            <p>& Next meeting tomorrow 10.00AM</p>
+                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:06</p>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </li>
+    
+                                                <li class=" right">
+                                                    <div class="conversation-list">
+                                                        <div class="dropdown">
+    
+                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                              </a>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" href="#">Copy</a>
+                                                                <a class="dropdown-item" href="#">Save</a>
+                                                                <a class="dropdown-item" href="#">Forward</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ctext-wrap">
+                                                            <div class="conversation-name">Henry Wells</div>
+                                                            <p>
+                                                                Wow that's great
+                                                            </p>
+    
+                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:07</p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                
+                                                
+                                            </ul>
+                                        </div>
+                                        <div class="p-3 chat-input-section">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="position-relative">
+                                                        <input type="text" class="form-control chat-input" placeholder="Enter Message...">
+                                                        <div class="chat-input-links" id="tooltip-container">
+                                                            <ul class="list-inline mb-0">
+                                                                <li class="list-inline-item"><a href="javascript: void(0);" title="Emoji"><i class="mdi mdi-emoticon-happy-outline"></i></a></li>
+                                                                <li class="list-inline-item"><a href="javascript: void(0);" title="Images"><i class="mdi mdi-file-image-outline"></i></a></li>
+                                                                <li class="list-inline-item"><a href="javascript: void(0);" title="Add Files"><i class="mdi mdi-file-document-outline"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="submit" class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light"><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div> <!-- container-fluid -->
                 </div>
