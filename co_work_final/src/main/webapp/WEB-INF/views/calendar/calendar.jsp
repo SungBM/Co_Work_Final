@@ -221,7 +221,6 @@
                                     location.reload();
                                 }
                             })
-
                         })
                     },
 
@@ -266,26 +265,21 @@
                     },
 
                     // 이벤트 객체 필드 document : https://fullcalendar.io/docs/event-object
-                    events: function (d, c, f) {
-                        console.log("성공1")
-                        var events = [];
-                        $("input[type=checkbox][name=cal_type]").change(function () {
-                            var cal_type = [];
-                            $("input[type=checkbox][name=cal_type]:checked").each(function (i) {
-                                cal_type.push($(this).val());
-                            })
-                            $.ajax({
-                                url: '../member/calSelect',
-                                data: {
-                                    "cal_type": cal_type
-                                },
-                                traditional: true,
-                                success: function (resp) {
-                                    console.log(cal_type)
-                                }
-                            }) // ajax end
-                        }) // change end
-                    }
+                    events: [
+                        <c:forEach var="c" items="${callist}">
+                        {
+                            calno: '${c.cal_no}',
+                            caltype: '${c.cal_type}',
+                            title: '${c.cal_title}',
+                            start: '${c.cal_start_date}',
+                            end: '${c.cal_end_date}',
+                            content: '${c.cal_content}',
+                            allDay: '${c.cal_allday}',
+                            color: "${c.cal_color}"
+                        }
+                        <c:if test="${!empty callist}">, </c:if>
+                        </c:forEach>
+                    ]
                 });
 
             calendar.render();

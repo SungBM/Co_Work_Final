@@ -7,31 +7,30 @@
 <head>
     <title>내 프로필</title>
     <style>
-    input[type=file] {
-        display: none;
-    }
+        #showImage1 > img {
+            width: 200px;
+            height: 200px;
+        }
 
-    #showImage1 > img {
-        width: 200px;
-        height: 200px;
-    }
+        #showImage2 > img {
+            width: 200px;
+            height: 111px;
+        }
 
-    #showImage2 > img {
-        width: 200px;
-        height: 111px;
-    }
+        .form-control {
+            border: none;
+            border-bottom: 1px solid #CCC;
+            border-radius: 0;
+        }
 
-    .form-control {
-        border: none;
-        border-bottom: 1px solid #CCC;
-        border-radius: 0;
-    }
-
-    .form-control:read-write:focus {
-        border-bottom: 2px solid blue;
-    }
+        .form-control:read-write:focus {
+            border-bottom: 2px solid blue;
+        }
 
     </style>
+    <script>
+
+    </script>
 </head>
 
 <body>
@@ -47,14 +46,18 @@
             </div>
 
             <form name="update" action="../member/updateProcess" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
                 <div class="row">
                     <div class="col-12">
                         <div class="row d-flex justify-content-center mb-5">
                             <div class="col-3">
                                 <div>
-                                    <img class="card-img-top img-fluid" src="${pageContext.request.contextPath }/resources/upload${path}">
-                                    <div class="d-flex justify-content-center mt-3 filebox">
-                                        <input class="form-control" type="file" id="imgupload" name="imgupload">
+                                    <img class="card-img-top img-fluid" src="../upload${path}"
+                                         style="width: 200px; height: 200px">
+                                    <div class="d-flex justify-content-center mt-3 filebox" style="width: 200px;">
+                                        <input class="form-control" type="file" id="imgupload" name="imgupload"
+                                               accept=".jpg, .png">
                                     </div>
                                 </div>
                             </div>
@@ -73,8 +76,13 @@
                         <div class="col-10 mt-5  align-items-center container-fluid">
                             <label class="form-label" for="user_dept"><b>부서</b></label>
                             <div class="input-group" id="user_dept">
-                                <input type="text" class="form-control" name="user_dept"
-                                       value="${memberinfo.user_dept}" readonly>
+                                <c:if test="${deptName == null}">
+                                    <input type="text" class="form-control" name="user_dept" readonly style="font-weight: bold" placeholder="관리자에게 문의하세요.">
+                                </c:if>
+                                <c:if test="${deptName != null}">
+                                    <input type="text" class="form-control" name="user_dept" value="${deptName}"
+                                           readonly>
+                                </c:if>
                             </div>
                         </div>
 
@@ -108,8 +116,13 @@
                         <div class="col-10 mt-5  align-items-center container-fluid">
                             <label class="form-label" for="user_job"><b>직급</b></label>
                             <div class="input-group" id="user_job">
-                                <input type="text" class="form-control" name="user_job" value="${memberinfo.user_job}"
-                                       readonly>
+                                <c:if test="${jobName == null}">
+                                    <input type="text" class="form-control" name="user_job" readonly style="font-weight: bold" placeholder="관리자에게 문의하세요.">>
+                                </c:if>
+                                <c:if test="${jobName != null}">
+                                    <input type="text" class="form-control" name="user_job" value="${jobName}"
+                                           readonly>
+                                </c:if>
                             </div>
                         </div>
 
@@ -154,10 +167,9 @@
             const img = $("input[type=file]").val();
 
             $.ajax({
-                url: "updateCheck",
-                type: "post",
-                contentType: 'application/json',
-                data: JSON.stringify({
+                url: "../member/updateCheck",
+                // type: "post",
+                data: ({
                     "user_phone": phone,
                     "user_fax": fax,
                     "user_id": id

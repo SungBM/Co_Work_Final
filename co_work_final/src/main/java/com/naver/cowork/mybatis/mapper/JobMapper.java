@@ -13,6 +13,11 @@ public interface JobMapper {
     public int jmaxNo();
     public int delete(int job_no);
     public int insert(Job job);
+    public List<Job> jobList();
+    public String jobName(String user_id);
+    public int jobNo(String user_id);
+
+
 
 
 }

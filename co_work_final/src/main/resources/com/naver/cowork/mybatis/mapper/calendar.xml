@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.CalMapper">
 
     <select id="calAll" resultType="calendar">
-        select cal_no, cal_type, cal_title, cal_content, cal_regi_date, cal_start_date, cal_end_date, cal_allday, cal_status, cal_color, user_id
+        select cal_no,
+               cal_type,
+               cal_title,
+               cal_content,
+               cal_regi_date,
+               cal_start_date,
+               cal_end_date,
+               cal_allday,
+               cal_status,
+               cal_color,
+               user_id
         from calendar
         where user_id = #{user_id}
 
     </select>
 
     <insert id="calInsert">
-        insert into calendar(cal_no, cal_type, cal_title, cal_content, cal_regi_date, cal_start_date, cal_end_date, cal_allday,cal_color, cal_status, user_id)
-        values(cal_seq.NEXTVAL, #{cal_type}, #{cal_title}, #{cal_content}, sysdate, #{cal_start_date}, #{cal_end_date}, #{cal_allday}, #{cal_color} , #{cal_status}, #{user_id})
+        insert into calendar(cal_no, cal_type, cal_title, cal_content, cal_regi_date, cal_start_date, cal_end_date,
+                             cal_allday, cal_color, cal_status, user_id)
+        values (cal_seq.NEXTVAL, #{cal_type}, #{cal_title}, #{cal_content}, sysdate, #{cal_start_date}, #{cal_end_date},
+                #{cal_allday}, #{cal_color}, #{cal_status}, #{user_id})
     </insert>
 
     <update id="calUpdate">
         update calendar
-        set
-            cal_title = #{cal_title},
-            cal_content = #{cal_content},
+        set cal_title      = #{cal_title},
+            cal_content    = #{cal_content},
             cal_start_date = #{cal_start_date},
-            cal_end_date = #{cal_end_date}
-        where
-            cal_no = #{cal_no}
+            cal_end_date   = #{cal_end_date}
+        where cal_no = #{cal_no}
     </update>
 
     <delete id="calDelete">
-        delete calendar
-        where cal_no = #{cal_no}
+        delete
+        calendar
+        where cal_no =
+        #{cal_no}
     </delete>
+
+    <select id="calSelectList" resultType="calendar">
+        select cal_no, cal_type, cal_title, cal_content, cal_regi_date, cal_start_date, cal_end_date, cal_allday,
+        cal_status, cal_color, user_id
+        from calendar
+        where user_id = #{user_id}
+        <if test="cal_type.size != 0 or cal_type != null">
+            and cal_type in
+            <foreach collection="cal_type" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
 
 </mapper>

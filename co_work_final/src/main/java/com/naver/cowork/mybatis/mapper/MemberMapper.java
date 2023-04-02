@@ -10,17 +10,24 @@ import com.naver.cowork.domain.Member;
 @Mapper
 public interface MemberMapper {
 
-	public Member isId(String id);
+    public Member isId(String id);
 
-	public int insert(Member m);
+    public int insert(Member m);
 
-	public int update(Member m);
+    public int mypageUpdate(Member m);
 
-	public void delete(String id);
+    public void delete(String id);
 
-	public int getSearchListCount(Map<String, String> map);
+    public int getSearchListCount(Map<String, String> map);
 
-	public List<Member> getSearchList(Map<String, Object> map);
-	public List<Member> members();
+    public List<Member> getSearchList(Map<String, Object> map);
+
+    public List<Member> members();
+    public int passUpdate(String user_id, String user_password);
+    public int authUpdate(String user_id, String user_auth);
+
+    public int stateUpdate(String user_id, String user_auth, String user_state);
+    public int adminUpdate(Member member);
+
 
 }
