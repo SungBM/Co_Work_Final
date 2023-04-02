@@ -39,8 +39,6 @@ public class WebSocketChatt {
 			s.getBasicRemote().sendText(msg);  //주소지
 
 		}
-		
-		
 	}
 	
 	@OnClose

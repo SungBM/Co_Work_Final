@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +33,9 @@ public class ChatController {
 		this.chatservice = chatservice;
 	}
 	
+	@Autowired
+	ChatService service;
+	
 	
 	@GetMapping("")
 	public ModelAndView memberList( ModelAndView mv, HttpServletRequest request,@RequestParam(value = "id")String id) {
@@ -53,8 +57,12 @@ public class ChatController {
 			return mv;
 		}
 	
-	@RequestMapping(value="/insert", method=RequestMethod.GET)
-		public void insert(ChatVO vo) {
-			chatservice.insert(vo);		
-			}
-	}
+	@PostMapping("/chat/list")
+		public ModelAndView chatList() {
+		List<ChatVO> chatList = chatservice.list();
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("chatList", chatList);
+		mv.setViewName("/chatting");
+		return mv;
+	}	
+}

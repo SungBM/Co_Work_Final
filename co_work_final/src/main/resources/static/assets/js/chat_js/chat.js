@@ -73,3 +73,49 @@ function send(){
 	msg.value ='';
 	
 }
+
+
+$(document).ready(function() {
+    var sender = $("#mid").val();
+    
+    // 채팅 내역 불러오기
+    $.ajax({
+        type: "POST",
+        url: "${pageContext.request.contextPath}/getChatList",
+        data: {},
+        success: function(data) {
+            var chatList = JSON.parse(data);
+            for (var i = 0; i < chatList.length; i++) {
+                var chat = chatList[i];
+                var html = "<p>" + chat.sender + ": " + chat.message + "</p>";
+                $("#talk").append(html);
+            }
+        },
+        error: function() {
+            alert("채팅 내역을 불러오는데 실패하였습니다.");
+        }
+    });
+
+    // 메시지 전송
+    $("#btnSend").click(function() {
+        var message = $("#msg").val();
+        var chatData = {
+            "sender": sender,
+            "message": message
+        };
+        
+        $.ajax({
+            type: "POST",
+            url: "${pageContext.request.contextPath}/insertChat",
+            data: chatData,
+            success: function(data) {
+                $("#msg").val("");
+                var html = "<p>" + sender + ": " + message + "</p>";
+                $("#talk").append(html);
+            },
+            error: function() {
+                alert("메시지 전송에 실패하였습니다.");
+            }
+        });
+    });
+});

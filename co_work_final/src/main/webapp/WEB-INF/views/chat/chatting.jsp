@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="${pageContext.request.contextPath }/resources/assets/js/jquery-3.6.3.js"></script>
+<script src='${pageContext.request.contextPath}/resources/assets/js/chat_js/chat.js'></script>
 <link rel='stylesheet' type='text/css' href='../assets/css/chatt.css'>
 </head>
 <body>
@@ -20,6 +21,6 @@
 			<input type='button' value='전송' id='btnSend'>
 		</div>
 	</div>
-	<script src='${pageContext.request.contextPath}/resources/assets/js/chat_js/chat.js'></script>
+
 </body>
 </html>

@@ -8,4 +8,6 @@ public interface ChatService {
 	public List<ChatVO> list();
 	
 	public void insert(ChatVO vo);
+	
+	public List<ChatVO> getChatList();
 }	
