@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.domain.Project_User;
@@ -49,9 +50,16 @@ public interface ProjectService {
 	public int getDayCount(String startDate, String endDate);
 	//public Project inser_user(Project_user u);
 
-	public int increaseCheck(int pbNum);
+	public int increaseCheck(int pbNum, String id);
 
-	public int decreaseCheck(int pbNum);
+	public int decreaseCheck(int pbNum, String id);
 
+	public String[] getProjectBookmarkList(int pNum);
+
+	public String ProjectBookmarkCheckedClear(int pbNum);
+
+	public String ProjectBookmarkChecked(int pbNum);
+
+	public List<Proboard_check_user> getProBoardCheckUserList(String id);
 
 }

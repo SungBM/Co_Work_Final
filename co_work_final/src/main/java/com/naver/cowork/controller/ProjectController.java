@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.cowork.domain.MySaveFolder;
+import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.service.PJPriorityEnum;
@@ -120,13 +121,27 @@ public class ProjectController {
 		Logger.info("선택한 프로젝트 번호 : " + pNum);
 		List<Project_Board> pb_list = projectService.getPojectBoardFeed(pNum);
 		String project_Name = projectService.getProjectName(pNum);
+		String [] bmBoard = projectService.getProjectBookmarkList(pNum);
+		List<Proboard_check_user> pcu = projectService.getProBoardCheckUserList(id);
+		
+		System.out.println(pcu);
+		
+		for(Project_Board pb : pb_list ) {
+			pb.setPROBOARD_CHECK_USERS(pcu);
+			System.out.println(pb.getPRO_BOARD_NUM() + "pbn");
+		
+			
+		}
+		
 		mv.addObject("pblist",pb_list);
 		mv.addObject("projectName",project_Name);
 		mv.addObject("id",id);
+		mv.addObject("bmBoard",bmBoard);
 		mv.setViewName("project/project_Detail_Feed");
 		
 		return mv;
 	}
+	
 	
 	@ResponseBody
 	@PostMapping("/projectFileDown")
@@ -152,8 +167,8 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/ProjectLikeIncrease" , method = RequestMethod.GET)
-	public void ProjectLikeIncrease(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception {
-		int result = projectService.increaseCheck(pbNum);
+	public void ProjectLikeIncrease(@RequestParam("pbNum")int pbNum,@RequestParam("id")String id, HttpServletResponse response) throws Exception {
+		int result = projectService.increaseCheck(pbNum,id);
 		System.out.println(pbNum);
 		System.out.println("컨트롤러 들어옴");
 		response.setContentType("text/html;charset=utf-8");
@@ -162,12 +177,34 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/ProjectLikeDecrease", method = RequestMethod.GET)
-	public void ProjectLikeDecrease(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception {
-		int result = projectService.decreaseCheck(pbNum);
+	public void ProjectLikeDecrease(@RequestParam("pbNum")int pbNum,@RequestParam("id")String id, HttpServletResponse response) throws Exception {
+		int result = projectService.decreaseCheck(pbNum,id);
 		System.out.println(pbNum);
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print(result);
+	}
+	
+	@RequestMapping(value = "/ProjectBookmarkCheckedClear" , method = RequestMethod.GET)
+	public void ProjectBookmarkCheckedClear(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception {
+		System.out.println("ajax 북마크 해제");
+		String resultSubject = projectService.ProjectBookmarkCheckedClear(pbNum);
+		System.out.println(pbNum);
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		System.out.println(resultSubject + "rs");
+		out.print(resultSubject);
+	}
+	
+	@RequestMapping(value = "/ProjectBookmarkChecked" , method = RequestMethod.GET)
+	public void ProjectBookmarkChecked(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception{
+		System.out.println("ajax 북마크");
+		String resultSubject = projectService.ProjectBookmarkChecked(pbNum);
+		System.out.println(pbNum);
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		System.out.println(resultSubject + "rs");
+		out.print(resultSubject);
 	}
 }
 	

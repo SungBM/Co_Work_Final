@@ -58,6 +58,20 @@
 .bx bxs-like {
 	color: #556ee6;
 }
+
+.bxs-bookmark-star{
+	color:  #556ee6;
+}
+
+#sticky {
+	position : absolute;
+	top :20%;
+}
+
+a:hover {
+	cursor: pointer;	
+}
+
 </style>
 <script type="text/javascript">
 	$(function(){
@@ -80,7 +94,7 @@
 		$(".like").click(function(){
 			let clsName = $(this).attr("class");
 			let pbNum = $(this).children().next().val();
-			
+			let id = $("#loginId").text();
 			if (clsName.includes('checked')) {
 				$(this).removeClass();
 				$(this).addClass("bx bx-check-circle isize");
@@ -91,7 +105,8 @@
 					type : 'get',
 					url : '../project/ProjectLikeDecrease',  // 상대경로. 타입을 따로 주지 않아서 get 방식. id값을 컨트롤러로 보내고
 					async:false,
-					data : {"pbNum" : pbNum},  // "id"는 컨트롤러에 param으로 가는 id임.
+					data : {"pbNum" : pbNum ,
+							"id" : id},  // "id"는 컨트롤러에 param으로 가는 id임.
 					success : function(resp){
 						count = resp;
 					}
@@ -107,7 +122,8 @@
 					type : 'get',
 					url : '../project/ProjectLikeIncrease',  // 상대경로. 타입을 따로 주지 않아서 get 방식. id값을 컨트롤러로 보내고
 					async:false,
-					data : {"pbNum" : pbNum},  // "id"는 컨트롤러에 param으로 가는 id임.
+					data : {"pbNum" : pbNum ,
+							"id" : id},  // "id"는 컨트롤러에 param으로 가는 id임.
 					success : function(resp){
 						count = resp;
 					}
@@ -120,18 +136,115 @@
 		$(".bm").click(function(){
 			let clsName = $(this).attr("class");
 			let pNum = $(".pNum").val();
+			let pbNum = $(this).children().val();
+			console.log(pbNum);
 			if (clsName.includes('checked')) {
 				$(this).removeClass();
 				$(this).addClass("bx bx-bookmark-plus bm isize");
 				$(this).css({'color':'black'});
+				$.ajax({
+					type : 'get',
+					url : '../project/ProjectBookmarkCheckedClear',  // 상대경로. 타입을 따로 주지 않아서 get 방식. id값을 컨트롤러로 보내고
+					async: false,
+					data : {"pbNum" : pbNum},  // "id"는 컨트롤러에 param으로 가는 id임.
+					success : function(resp){
+						count = resp;
+						var tList = [];
+						var bookmarkList = [];
+						
+						
+						 $('.pbSfor').each(function(index,item){
+							  tList.push($(this).find('.pbSubject').text());
+							  bookmarkList.push($(this).find('.pbSubject'));
+						 });
+						console.log(tList);
+						
+						var clickTitle = $(this).text();
+						console.log("clickTitle" + clickTitle);
+						
+						for(var i = 0 ; i < tList.length ; i++ ) {
+							console.log("반복문");
+							console.log("titleList" + tList[i]);
+							if ( resp == tList[i]){
+								console.log(tList[i] + " 와 일치");
+								$('.bmUl li').eq(i).remove();
+							}
+						}
+					}
+				});
 				
 			} else {
 				$(this).removeClass();
 				$(this).addClass("bx bxs-bookmark-star bm isize checked");
 				$(this).css({'color':'#556ee6'});
+				$.ajax({
+					type : 'get',
+					url : '../project/ProjectBookmarkChecked',  // 상대경로. 타입을 따로 주지 않아서 get 방식. id값을 컨트롤러로 보내고
+					async: false,
+					data : {"pbNum" : pbNum},  // "id"는 컨트롤러에 param으로 가는 id임.
+					success : function(resp){
+						count = resp;
+						var tList = [];
+						var bookmarkList = [];
+						
+						 $('.pbSfor').each(function(index,item){
+							  tList.push($(this).find('.pbSubject').text());
+							  bookmarkList.push($(this).find('.pbSubject'));
+						 });
+						console.log(tList);
+						
+						var clickTitle = $(this).text();
+						console.log("clickTitle" + clickTitle);
+						
+						for(var i = 0 ; i < tList.length ; i++ ) {
+							console.log("반복문");
+							console.log("titleList" + tList[i]);
+							if ( resp == tList[i]){
+								console.log(tList[i] + " 와 일치");
+								$('.bmUl').append('<li><a class="text-muted py-2 d-block"><i  class="mdi mdi-chevron-right me-1"></i>  <span class="badge badge-soft-success rounded-pill ms-1 font-size-12 linkTitle">'+resp+'</span></a> </li>');
+								pag
+							}
+						}
+					}
+				});
 			}
 		
 		});
+		
+		$(".linkTitle").click(function(){
+			console.log("타이틀 클릭")
+			var titleList = $(".pbSfor").get();
+			var tList = [];
+			var moveList = [];
+			
+			
+			 $('.pbSfor').each(function(index,item){
+				  tList.push($(this).find('.pbSubject').text());
+				  moveList.push($(this).find('.pbSubject').offset());
+			 });
+			
+		
+			console.log(tList);
+			
+			var clickTitle = $(this).text();
+			console.log("clickTitle" + clickTitle);
+			
+			for(var i = 0 ; i < tList.length ; i++ ) {
+				console.log("반복문");
+				console.log("titleList" + tList[i]);
+				if ( clickTitle == tList[i]){
+					console.log(tList[i] + " 와 일치");
+					console.log(moveList[i] + "moveList");
+					$("html, body").animate({scrollTop: moveList[i].top - 200 },300);
+				}
+			}
+		});
+		var currentPosition = parseInt($("#sticky").css("top"));
+		  $(window).scroll(function() {
+		    var position = $(window).scrollTop(); 
+		    $("#sticky").stop().animate({"top":position+currentPosition+"px"},500);
+		  });
+		
 	});
 </script>
 <div class="page-content">
@@ -190,7 +303,9 @@
                                                     ${pb.PRO_BOARD_CARTEGORY }
                                                 </a>
                                             </div>
-                                            <h4>${pb.PRO_BOARD_SUBJECT }</h4>
+                                            <div class="pbSfor">
+                                            <h4 class="pbSubject">${pb.PRO_BOARD_SUBJECT }</h4>
+                                            </div>
                                             <p class="text-muted mb-4"><i class="mdi mdi-calendar me-1"></i> ${pb.PRO_BOARD_CREATE_DATE }</p>
                                         </div>
 
@@ -245,14 +360,29 @@
 										  	 </form>
 										  	</c:if>
                                             <hr>
-                                          		
-												<i class="bx bx-check-circle isize like">
+                                            <c:forEach var="users" items="${pb.PROBOARD_CHECK_USERS }">
+                                            	<c:if test="${ users.PRO_BOARD_NUM == pb.PRO_BOARD_NUM}">
+                                            		<c:if test="${users.IS_CHECKED == 0 }">
+                                            			<i class="bx bx-check-circle isize like">
+                                            		</c:if>
+                                            		<c:if test="${users.IS_CHECKED == 1 }">
+                                            			<i class="bx bx-check-double isize checked like" style="color: #556ee6">
+                                            		</c:if>
+                                            	</c:if>
+											</c:forEach>
 													<span class="likeNum" id="lnum">${ pb.PRO_BOARD_LIKE}</span>
 													<input type="hidden" class="pbNum" value="${pb.PRO_BOARD_NUM }">
 												</i>
+											
 											 &nbsp;&nbsp;
-										
-												<i class="bx bx-bookmark-plus bm isize"  id="bookmark"></i>
+											<c:if test="${pb.PRO_BOARD_BOOKMARK == 1 }">
+												<i class="bx bxs-bookmark-star bm isize checked"  id="bookmark" style="color: #556ee6">
+											</c:if>
+											<c:if test="${pb.PRO_BOARD_BOOKMARK == 0 }">
+												<i class="bx bx-bookmark-plus bm isize"  id="bookmark">
+											</c:if>
+													<input type="hidden" class="pbNum" value="${pb.PRO_BOARD_NUM }">
+												</i>
 											
 											<hr>
                                             <div class="mt-5">
@@ -408,7 +538,7 @@
 
             <div class="col-xl-3 col-lg-4">
                 <div class="card">
-                    <div class="card-body p-4">
+                    <div class="card-body p-4" id="sticky">
                         <div class="search-box">
                             <p class="text-muted">키워드 검색</p>
                             <div class="position-relative">
@@ -424,6 +554,8 @@
                             <p class="text-muted">카테고리</p>
 
                             <ul class="list-unstyled fw-medium">
+                                <li><a href="#" class="text-muted py-2 d-block"><i
+                                            class="mdi mdi-chevron-right me-1"></i> 즐겨찾기</a></li>
                                 <li><a href="#" class="text-muted py-2 d-block"><i
                                             class="mdi mdi-chevron-right me-1"></i> 요청</a></li>
                                 <li><a href="#" class="text-muted py-2 d-block"><i
@@ -444,21 +576,15 @@
                         <hr class="my-4">
 
                         <div>
-                            <p class="text-muted">북마크</p>
+                            <p class="text-muted">최근 즐겨찾기</p>
 
-                            <ul class="list-unstyled fw-medium">
-                                <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> BOOKMARK1 <span
-                                            class="badge badge-soft-success rounded-pill float-end ms-1 font-size-12">03</span></a>
+                            <ul class="list-unstyled fw-medium bmUl" >
+                            <c:forEach var="title" items="${bmBoard }" >
+                                <li><a class="text-muted py-2 d-block"><i
+                                            class="mdi mdi-chevron-right me-1"></i>
+                                            <span class="badge badge-soft-success rounded-pill ms-1 font-size-12 linkTitle">${title }</span></a>
                                 </li>
-                                <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> BOOKMARK2 <span
-                                            class="badge badge-soft-success rounded-pill float-end ms-1 font-size-12">06</span></a>
-                                </li>
-                                <li><a href="#" class="text-muted py-2 d-block"><i
-                                            class="mdi mdi-chevron-right me-1"></i> BOOKMARK3 <span
-                                            class="badge badge-soft-success rounded-pill float-end ms-1 font-size-12">05</span></a>
-                                </li>
+                            </c:forEach>
                             </ul>
                         </div>
 

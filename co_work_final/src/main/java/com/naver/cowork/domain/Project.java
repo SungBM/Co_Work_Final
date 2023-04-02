@@ -1,6 +1,7 @@
 package com.naver.cowork.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,6 @@ public class Project {
 		private ArrayList<Project_User> project_parti;
 		private int parti_count;
 		private ArrayList<Project_User> project_parti_forModal;
+		
 		
 	}
