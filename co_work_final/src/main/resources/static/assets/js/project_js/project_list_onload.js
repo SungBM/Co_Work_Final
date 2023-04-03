@@ -2,7 +2,7 @@ $(function(){
 	$(".avatar-group-item").click(function(){
 		var id = $(this).children("#icon_id").text();
 		console.log(id);
-		location.href = "myPageDetail.my?id=" + id;
+		location.href = "../member/mypage?id=" + id;
 	});
 	
 	$(".card-drop").click(function (event) {
@@ -11,8 +11,8 @@ $(function(){
 		   y = event.clientY; 
 		   var win_x = $( window ).width();
 		   var win_y = $( window ).height();
-		   var rx = ( win_x - x )+ 50;
-		   var ry = ( y  - 400);
+		   var rx = ( win_x - x ) - 400;
+		   var ry = ( y  ) - 80;
 		   console.log("윈 x : " + win_x + "윈 y" + win_y);
 		   console.log('x좌표:' +x + ', y좌표:' + y);
 		   console.log('차이 x:' + rx + ', 차이 y:' + ry);
@@ -109,8 +109,8 @@ $(function(){
 		
 		$("#projectDetail").click(function(){
 			let id = $("#loginId").text();
-			let p_num = $(this).attr("aria-value");
-			location.href="projectDetailFeed?id=" + id + "&p_num=" + p_num;
+			let pNum = $(this).attr("aria-value");
+			location.href="projectDetailFeed?id=" + id + "&pNum=" + pNum;
 		});
 		
 		

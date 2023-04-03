@@ -3,6 +3,27 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.ProjectMapper">
+	<select id="getCheckCount" resultType="int" parameterType="int">
+		select pro_board_like from project_board 
+		where pro_board_num = ${pbNum}
+	</select>
+
+	<update id="decreaseCheck" parameterType="int">
+		update project_board 
+		set pro_board_like = pro_board_like-1
+		where PRO_BOARD_NUM = ${pbNum}
+	</update>
+	
+	<update id="increaseCheck" parameterType="int">
+		update project_board 
+		set pro_board_like = pro_board_like+1
+		where PRO_BOARD_NUM = ${pbNum}
+	</update>
+
+	<select id="getProjectName" parameterType="int" resultType="String">
+		SELECT PROJECT_NAME,PROJECT_NUM FROM PROJECT WHERE PROJECT_NUM = ${p_num}
+	</select>
+
 	<select id="getPojectBoardFeed" parameterType="int" resultType="Project_Board">
 		SELECT * FROM PROJECT_BOARD WHERE PROJECT_NUM = ${p_num}
 	</select>

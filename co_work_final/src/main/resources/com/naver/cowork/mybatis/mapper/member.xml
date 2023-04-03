@@ -4,78 +4,74 @@
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.MemberMapper">
 	<select id="isId" resultType="member" parameterType="String">
-		select *
-		from user_info where user_id = #{id}
+		select user_id, user_password, user_email, user_name, user_dept, user_job, user_img, user_card, user_fax, user_phone, user_join_date
+		from user_info where user_id = #{user_id}
 	</select>
 
 	<insert id="insert">
-		insert into user_info ( user_id,user_password,user_email,user_name,user_auth,user_join_date )
+		insert into user_info ( user_id,user_password,user_email,user_name )
 		values
-		(#{user_id}, #{user_password}, #{user_email}, #{user_name}, #{user_auth}, sysdate)
+		(#{user_id}, #{user_password}, #{user_email}, #{user_name})
 	</insert>
 
 	<select id="logincheck" resultType="member" parameterType="Map">
 		select * from user_info where user_id = #{user_id} and user_password = #{user_password}
 	</select>
 
-	<update id="update">
-		update user_info
-		set
-		user_phone = #{user_phone},
-		user_fax = #{user_fax},
-		user_img = #{originalfile},
-		user_card = #{user_card}
-		where user_id = #{user_id}
-	</update>
-
-	<select id="getSearchList" resultType="member">
-		select * from (select rownum rnum, b.*
-		from (select *
-		from user_info
-		where
-		id != 'admin'
-		<include refid="search_" />
-
-		order by id
-		)b
-		where rownum &lt;= #{end}
-		)
-		where rnum between #{start} and #{end}
-	</select>
-
-	<select id="getSearchListCount" resultType="int">
-		select count(*) from user_info
-		where id != 'admin'
-		<include refid="search_" />
-	</select>
-
-	<sql id="search_">
-		<if test="search_field != null">
-			and
-			<choose>
-				<when test='search_field == "id"'>id</when>
-				<when test='search_field == "name"'>name</when>
-				<when test='search_field == "age"'>age</when>
-				<when test='search_field == "gender"'>gender</when>
-			</choose>
-			like #{search_word}
-		</if>
-	</sql>
-	
-	<delete id="delete">
-		delete from user_info
-		where id = #{id}
-	</delete>
-
-	<update id="modifypassword">
+	<update id="mypageUpdate">
         update user_info
-        set user_password = ?
-        WHERE USER_ID = ?
+        set
+        user_phone = #{user_phone},
+        user_fax = #{user_fax}
+        <if test="user_card != null">
+            , user_img = #{originalfile}
+            , user_card = #{user_card}
+        </if>
+        where user_id = #{user_id}
+    </update>
+
+	<update id="passUpdate">
+        update user_info
+        set user_password = #{user_password}
+        where user_id = #{user_id}
+    </update>
+
+    <update id="authUpdate">
+        update user_info
+        set user_auth = #{user_auth}
+        where user_id = #{user_id}
     </update>
 
 	<select id="members" resultType="member">
-		select *
+		select user_id, user_email, user_name, user_auth, user_dept, user_job, user_fax, user_state, user_join_date, user_phone, user_card
 		from user_info
+		order by DECODE(user_state, 'CP', 1, 'WT', 2, 'ST', 3), user_auth asc
 	</select>
+
+    <update id="stateUpdate">
+        update user_info
+        set user_auth  = #{user_auth},
+            user_state = #{user_state}
+        where user_id = #{user_id}
+    </update>
+
+    <select id="getCount" resultType="int">
+        select COUNT(user_id)
+        from user_info
+    </select>
+
+    <update id="adminUpdate">
+        update user_info
+        set
+            user_name = #{user_name},
+            user_dept = #{user_dept},
+            user_job = #{user_job},
+            user_phone = #{user_phone},
+            user_fax = #{user_fax},
+            user_email = #{user_email}
+
+        where user_id = #{user_id}
+    </update>
+
 
 </mapper>
