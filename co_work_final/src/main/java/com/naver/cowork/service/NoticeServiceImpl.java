@@ -39,6 +39,12 @@ public class NoticeServiceImpl implements NoticeService {
 
 
 	@Override
+	public void insertNotice(Notice notice) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	public Notice getDetail(int num) {
 		// TODO Auto-generated method stub
 		return null;
@@ -73,11 +79,7 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 
-	@Override
-	public void insertNotice(Notice notice) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	
 	
 

@@ -70,7 +70,10 @@ label {
 		                    	<div class="input-group">
 		                    		<input name="notice_subject" id="autoSizingInputGroup" type="text" maxlength="100"
 											 class="form-control" placeholder="제목 입력">
-									<input class="input-group-text" name="user_id" id="user_id" value="${id}" type="text" readOnly>
+									<sec:authorize access="isAuthenticated()">
+									<sec:authentication property="principal" var="pinfo" />
+									<input class="input-group-text" name="user_id" id="user_id" value="${pinfo.username}" type="text" readOnly>
+									</sec:authorize> 
 	                         	</div>
 								<div class="form-content">
 									<textarea name="notice_content" id="notice_content"
@@ -82,7 +85,7 @@ label {
 										<label class="form-control" >
 										<span id="filevalue"></span>
 											<input type="file" id="upfile" name="notice_file">
-											<img src="image/board/attach.png">
+											<img src="../../resources/static/assets/images/board/attach.png">
 										</label>
 									</div>
 									<div class="button">

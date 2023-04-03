@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +35,7 @@ public class NoticeContoller {
 		this.noticeService = noticeService;
 	}
 
-/*	@ResponseBody
+	@ResponseBody
 	@RequestMapping(value = "/noticeList_ajax")
 	public Map<String, Object> boardListAjax(
 			@RequestParam(value="page", defaultValue="1", required=false) int page,
@@ -64,7 +67,8 @@ public class NoticeContoller {
 				map.put("limit", limit);
 				return map;
 			}
-*/	
+	
+	
 	@RequestMapping(value = "/noticeList", method=RequestMethod.GET)
 	public ModelAndView noticeList(
 									@RequestParam(value="page", defaultValue="1", required=false) int page, ModelAndView mv) {
@@ -102,7 +106,42 @@ public class NoticeContoller {
 	//작성
 	@GetMapping(value = "/write")///board/write
 	//@RequestMapping(value="/write",method=RequestMethod.GET)
-	public String board_write() {
-		return "notice/write";
+	public String notice_write() {
+		return "board/notice/write";
+	}
+	
+	@GetMapping("/detail")
+	public ModelAndView Detail(
+			int num, ModelAndView mv,
+			HttpServletRequest request,
+			@RequestHeader(value="referer", required=false) String beforeURL) {
+			/*
+			  1. String beforeURL = request.getHeader("referer"); 의미로
+			  	어느 주소에서 detail로 이동했는지 header의 정보 중에서 "referer"를 통해 알 수 있습니다.
+			  2. 수정 후 이곳으로 이동하는 경우 조회수는 증가하지 않도록 합니다.
+			  3. myhome4/board/list에서 제목을 클릭한 경우 조회수가 증가하도록 합니다.
+			  4. detail을 새로고침하는 경우 referer는 header에 존재하지 않아 오류발 생하므로
+			  	  required=false로 설정합니다. 이 경우 beforeURL의 값은 null 입니다.
+			 */
+		
+		logger.info("referer:" + beforeURL);
+		if(beforeURL!=null && beforeURL.endsWith("noticeList")) {
+			noticeService.setReadCountUpdate(num);
+		}
+		
+		Notice notice = noticeService.getDetail(num);
+		//board=null; 	//error 페이지 이동 확인하고자 임의로 지정합니다.
+		if (notice == null) {
+			logger.info("상세보기 실패");
+			mv.setViewName("error/error");
+			mv.addObject("url", request.getRequestURI());
+			mv.addObject("message", "상세보기 실패입니다.");
+		} else {
+			logger.info("상세보기 성공");
+			mv.setViewName("board/notice/view");
+			mv.addObject("noticedata", notice);
+		}
+		
+		return mv;
 	}
 }

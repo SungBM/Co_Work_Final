@@ -8,11 +8,15 @@ import com.naver.cowork.domain.Notice;
 
 @Service
 public interface NoticeService {
+
 	// 글 갯수 카운팅
 	public int getListCount();
 	
 	// 글 목록
 	public List<Notice> getNoticeList(int page, int limit);
+	
+	// 글 등록
+	public void insertNotice(Notice notice);
 	
 	// 상세뷰
 	public Notice getDetail(int num);
@@ -28,9 +32,6 @@ public interface NoticeService {
 	
 	// 작성자 본인 확인
 	public boolean isNoticeWriter(int num, String pass);
-	
-	// 글 등록
-	public void insertNotice(Notice notice);
 	
 	
 }

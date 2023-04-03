@@ -20,5 +20,35 @@
 		where rnum &gt;= #{start} and rnum &lt;= #{end}
 			
 	</select>
-
+	<insert id="insert" parameterType="notice">
+		<selectKey resultType="int"	order="BEFORE"	keyProperty="NOTICE_NUM">
+		 select nvl(max(NOTICE_NUM),0)+1 from board
+		</selectKey>
+		insert into board
+	 	(NOTICE_NUM,
+	 	 NOTICE_NAME, NOTICE_PASS, NOTICE_SUBJECT,
+	 	 NOTICE_CONTENT, NOTICE_FILE, NOTICE_ORIGINAL,
+	 	 NOTICE_RE_REF,
+	 	 NOTICE_RE_LEV, NOTICE_RE_SEQ, NOTICE_READCOUNT,
+	 	 NOTICE_REG_DATE)
+	 	 values
+	 	 (#{NOTICE_NUM},
+	 	  #{NOTICE_NAME}, #{NOTICE_PASS}, #{NOTICE_SUBJECT},
+	 	  #{NOTICE_CONTENT}, #{NOTICE_FILE, jdbcType=VARCHAR}, #{NOTICE_ORIGINAL, jdbcType=VARCHAR},
+	 	  #{NOTICE_NUM},
+	 	  #{NOTICE_RE_LEV}, #{NOTICE_RE_SEQ}, #{NOTICE_READCOUNT},
+	 	    sysdate)
+	</insert>
+	
+	<update id="readCountUpdate" parameterType="int">
+		update notice
+		set NOTICE_READCOUNT=NOTICE+READCOUNT+1
+		where NOTICE_NUM=#{number}
+	</update>
+	
+	<select id="detail" parameterType="int" resultType="notice">
+		select *
+		from notice
+		where NOTICE_NUM=#{number}
+	</select>
 </mapper>
