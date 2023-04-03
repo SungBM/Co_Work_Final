@@ -1,6 +1,7 @@
 package com.naver.cowork.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +27,6 @@ public class Project_Board {
 	private int PRO_BOARD_BOOKMARK;
 	private int PROJECT_NUM;
 	private String PRO_BOARD_FILE_ORIGINAL;
-	
+	private List<Proboard_check_user> PROBOARD_CHECK_USERS;
 	}
 

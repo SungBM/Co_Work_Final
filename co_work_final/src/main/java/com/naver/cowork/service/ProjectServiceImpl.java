@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.domain.Project_User;
@@ -157,10 +159,14 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public int increaseCheck(int pbNum) {
+	public int increaseCheck(int pbNum,String id) {
 		
 		int re = dao.increaseCheck(pbNum);
 		if(re == 1 ) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("pbNum", pbNum);
+			map.put("id", id);
+			dao.updateUserCheckInfo(map);
 			return dao.getCheckCount(pbNum);
 		} else {
 			return 0;
@@ -169,14 +175,53 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public int decreaseCheck(int pbNum) {
+	public int decreaseCheck(int pbNum,String id) {
 		int re = dao.decreaseCheck(pbNum);
 		if(re == 1 ) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("pbNum", pbNum);
+			map.put("id", id);
+			dao.updateUserCheckInfoClear(map);
 			return dao.getCheckCount(pbNum);
 		} else {
 			return 0;
 		}
 	}
+
+	@Override
+	public String[] getProjectBookmarkList(int pNum) {
+		// TODO Auto-generated method stub
+		return dao.getProjectBookmarkList(pNum);
+	}
+
+	@Override
+	public String ProjectBookmarkCheckedClear(int pbNum) {
+		int re = dao.checkedClearBookmark(pbNum);
+		if( re == 1) {
+			return dao.ProjectBookmarkCheckedClear(pbNum);
+		} else {
+			return "북마크 해제 실패";
+		}
+	}
+
+	@Override
+	public String ProjectBookmarkChecked(int pbNum) {
+		int re = dao.checkedBookmark(pbNum);
+		if( re == 1) {
+			return dao.ProjectBookmarkChecked(pbNum);
+		} else {
+			return "북마크 체크 완료";
+		}
+	}
+
+	@Override
+	public List<Proboard_check_user> getProBoardCheckUserList(String id) {
+		return dao.getProBoardCheckUserList(id);
+	}
+	
+	
+	
+	
 }
 
 
