@@ -2,7 +2,7 @@ $(function(){
 	$(".avatar-group-item").click(function(){
 		var id = $(this).children("#icon_id").text();
 		console.log(id);
-		location.href = "myPageDetail.my?id=" + id;
+		location.href = "../member/mypage?id=" + id;
 	});
 	
 	$(".card-drop").click(function (event) {
@@ -11,8 +11,8 @@ $(function(){
 		   y = event.clientY; 
 		   var win_x = $( window ).width();
 		   var win_y = $( window ).height();
-		   var rx = ( win_x - x )+ 50;
-		   var ry = ( y  - 400);
+		   var rx = ( win_x - x ) - 400;
+		   var ry = ( y  ) - 80;
 		   console.log("윈 x : " + win_x + "윈 y" + win_y);
 		   console.log('x좌표:' +x + ', y좌표:' + y);
 		   console.log('차이 x:' + rx + ', 차이 y:' + ry);
@@ -26,6 +26,7 @@ $(function(){
 			console.log("this의 속성값" + prog_num);
 			if(prog_num >= 100 ) {
 				$(this).removeClass("progress-bar progress-bar-striped progress-bar-animated");
+				//100이 넘으면 마감속성으로 변경하는 로직 수행 db통신 필요 
 			} else {
 				if(prog_num >= 75) {
 					console.log("if 들어옴");
@@ -43,6 +44,7 @@ $(function(){
 		
 		$(".badge").each(function(){
 			var state = $(this).attr("aria-valuenow");
+			state = String(state).trim();
 			switch(state) {
 				case "마감 임박" :
 					$(this).addClass('bg-danger');
@@ -60,24 +62,42 @@ $(function(){
 			
 		});
 		
-		
-		$(".text-truncate").each(function(){
-			var state = $(this).attr("aria-valuenow");
+		$(".state").each(function(){
+			let state = $(this).text();
+			state = state.trim();
 			console.log("state의 속성값" + state);
-			switch(state) {
+				switch(state) {
 				case "마감 임박" :
-					$(this).css('color','#f46a6a');
+					$(this).css({'color':'#f46a6a'});
 					break;
 				case "진행중" :
-					$(this).css('color','#50a5f1');
+					$(this).css({'color':'#50a5f1'});
 					break;
 				case "마감" :
-					$(this).css('color','darkgray');
+					$(this).css({'color':'darkgray'});
 					break;	
 				case "요청 확인" :
-					$(this).css('color','#f1b44c');
+					$(this).css({'color':'#f1b44c'});
 					break;
 			}
+			/*
+				if(state == "마감 임박") {
+					console.log("state if 들어옴");
+					$(this).css({'color':'#f46a6a'});
+				} 
+				 if( state == "진행중"  ) {
+					 console.log("state if 들어옴");
+					$(this).css({'color':'#50a5f1'});
+				} 
+				 if ( state == "마감" ) {
+					 console.log("state if 들어옴");
+					$(this).css({'color':'darkgray'});
+				} 
+				 if (state == "요청 확인" ) {
+					 console.log("state if 들어옴");
+					$(this).css({'color':'#f1b44c'});
+				} 
+			*/
 			
 		});
 		
@@ -86,6 +106,12 @@ $(function(){
 			$(".team_btn").click();
 			console.log("a 클릭 after");
 		})
+		
+		$("#projectDetail").click(function(){
+			let id = $("#loginId").text();
+			let pNum = $(this).attr("aria-value");
+			location.href="projectDetailFeed?id=" + id + "&pNum=" + pNum;
+		});
 		
 		
 		

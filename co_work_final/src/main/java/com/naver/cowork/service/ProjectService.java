@@ -26,9 +26,7 @@ public interface ProjectService {
 
 	public int getListCount();
 
-	public int getDayCount(String date1, String date2);
-
-	public List<Project> getDeadLineProjects(int page, int limit);
+	public List<Project> getDeadLineProjects(String logingID);
 
 	public List<Project> getProjectList(String logingID);
 
@@ -47,7 +45,12 @@ public interface ProjectService {
 	public Project getDetailProject();
 	
 	public Project insert(Project p);
+
+	public List<Project_Board> getPojectBoardFeed(int pNum);
+
+	public String getProjectName(int pNum);
 	
+
 	public Project insert_user(Project_User u);
 
 	public List<Project_Board> getProjectDetailList();
@@ -57,6 +60,14 @@ public interface ProjectService {
 	//public Project insert(Project p) {
 		
 	//}
+
+	public int getDayCount(String startDate, String endDate);
+	//public Project inser_user(Project_user u);
+
+
+	public int increaseCheck(int pbNum);
+
+	public int decreaseCheck(int pbNum);
 
 
 }

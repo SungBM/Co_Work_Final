@@ -15,6 +15,50 @@
                INNER JOIN USER_INFO U 
                ON PR.PROJECT_ADMIN = U.USER_ID 
                ORDER BY PROJECT_END
+
+	<select id="getCheckCount" resultType="int" parameterType="int">
+		select pro_board_like from project_board 
+		where pro_board_num = ${pbNum}
+	</select>
+
+	<update id="decreaseCheck" parameterType="int">
+		update project_board 
+		set pro_board_like = pro_board_like-1
+		where PRO_BOARD_NUM = ${pbNum}
+	</update>
+	
+	<update id="increaseCheck" parameterType="int">
+		update project_board 
+		set pro_board_like = pro_board_like+1
+		where PRO_BOARD_NUM = ${pbNum}
+	</update>
+
+	<select id="getProjectName" parameterType="int" resultType="String">
+		SELECT PROJECT_NAME,PROJECT_NUM FROM PROJECT WHERE PROJECT_NUM = ${p_num}
+	</select>
+
+	<select id="getPojectBoardFeed" parameterType="int" resultType="Project_Board">
+		SELECT * FROM PROJECT_BOARD WHERE PROJECT_NUM = ${p_num}
+	</select>
+
+	<select id="getProjectList" resultType="Project" parameterType="String">
+	SELECT PR.*, U.USER_IMG project_admin_img FROM ( SELECT * FROM 
+					    (SELECT ROWNUM row_num,P.* FROM (SELECT * FROM PROJECT ORDER BY PROJECT_END)P 
+					     WHERE <![CDATA[  ROWNUM <= 20 ]]>) 
+					WHERE ROWNUM >= 1
+					AND ROWNUM <![CDATA[  <= 20 ]]>
+					AND PROJECT_END > SYSDATE 
+					OR PROJECT_END IS NULL )PR 
+					INNER JOIN USER_INFO U 
+					ON PR.PROJECT_ADMIN = U.USER_ID 
+					ORDER BY PROJECT_END
+	</select>
+	<select id="getDeadLineProjects" resultType="Project" parameterType="String">
+		SELECT PR.*,U.USER_IMG project_admin_img FROM ( SELECT * FROM (SELECT ROWNUM row_num,P.* FROM (SELECT * FROM PROJECT ORDER BY PROJECT_END)P 
+								                WHERE ROWNUM <![CDATA[ <= 20 ]]>) WHERE ROWNUM >= 1 AND ROWNUM  <![CDATA[ <= 20 ]]> 
+								                AND PROJECT_END <![CDATA[ < SYSDATE  ]]> )PR 
+								INNER JOIN USER_INFO U 
+								ON PR.PROJECT_ADMIN = U.USER_ID 
 	</select>
 
 	<insert id="insert" parameterType="project">
@@ -23,6 +67,7 @@
 		values ( NVL((SELECT MAX(#{project_num})FROM PROJECT)+1,0 ), #{project_name},#{proejct_state},#{project_admin},#{project_start},#{project_end},#{project_priority}))
 	</insert>
 	
+
 	<insert id="insert_user" parameterType="project">
 		insert into project_user
 		values( (select nvl(max #{PROJECT_NUM},0)+1 FROM PROJECT) 
@@ -36,6 +81,21 @@
        		  FROM Project_Board
     </select>
 
+
+	<select id="getListCount" resultType="int">
+		select count(*) from project
+	</select>
 	
+	<select id="getProjectUser" parameterType="int" resultType="com.naver.cowork.domain.Project_User">
+		SELECT P.USER_ID,P.PROJECT_NUM , U.USER_NAME, U.USER_IMG FROM PROJECT_USER P
+								INNER JOIN USER_INFO U 
+								ON P.USER_ID = U.USER_ID 
+								WHERE PROJECT_NUM = #{project_num}
+	</select>
+
+	
+	<select id="getProjectUserCount" parameterType="int" resultType="int">
+		select count(*) from project_user where project_num = #{project_num}
+	</select> 
 
 </mapper>

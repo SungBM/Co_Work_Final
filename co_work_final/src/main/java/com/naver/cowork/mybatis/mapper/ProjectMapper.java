@@ -1,5 +1,6 @@
 package com.naver.cowork.mybatis.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,6 @@ import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.domain.Project_User;
 
-
 @Mapper
 public interface ProjectMapper {
 	
@@ -16,8 +16,29 @@ public interface ProjectMapper {
 
 	public Project insert(Project p);
 
+
 	public Project insert_user(Project p);
 	
 	public List<Project_Board> getProjectDetailList();
 	
 }
+
+	public int getListCount();
+
+	public ArrayList<Project_User> getProjectUser(int project_num);
+
+	public int getProjectUserCount(int project_num);
+
+	public List<Project> getDeadLineProjects(String logingID);
+
+	public List<Project_Board> getPojectBoardFeed(int pNum);
+
+	public String getProjectName(int pNum);
+
+	public int increaseCheck(int pbNum);
+
+	public int getCheckCount(int pbNum);
+
+	public int decreaseCheck(int pbNum);
+}
+

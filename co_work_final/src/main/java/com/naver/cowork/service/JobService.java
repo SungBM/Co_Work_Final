@@ -16,4 +16,11 @@ public interface JobService {
 
     public int insert(Job job);
 
+    public List<Job> jobList();
+
+    public String jobName(String user_id);
+    public int jobNo(String user_id);
+
+
+
 }

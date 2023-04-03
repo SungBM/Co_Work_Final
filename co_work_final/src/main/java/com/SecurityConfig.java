@@ -34,24 +34,31 @@ public class SecurityConfig  {
 				.antMatchers("/member/join").permitAll()
 				.antMatchers("/member/idcheck").permitAll()
 				.antMatchers("/member/joinProcess").permitAll()
+
+				.antMatchers("/member/calendar").permitAll()
+				.antMatchers("/member/calDelete").permitAll()
+				.antMatchers("/member/calAdd").permitAll()
+				.antMatchers("/member/calUpdate").permitAll()
+				.antMatchers("/member/calSelect").permitAll()
+
 				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')");
-		
-			http.formLogin().loginPage("/member/login")
-			.loginProcessingUrl("/member/loginProcess")
-			.usernameParameter("id")
-			.passwordParameter("pass")
-			.successHandler(loginSuccessHandler())
-			.failureHandler(loginFailHandler());
-			
+
+		http.formLogin().loginPage("/member/login")
+				.loginProcessingUrl("/member/loginProcess")
+				.usernameParameter("id")
+				.passwordParameter("pass")
+				.successHandler(loginSuccessHandler())
+				.failureHandler(loginFailHandler());
+
 		/*
-		 * (1) logoutSuccessUrl : 로그아웃 후 이동할 주소 
-		 * (2) logoutUrl(여기서 처리하기 때문에 컨트롤러 logout 제거합니다. post방식을 요구합니다.) 
-		 * (3) invalidateHttpSession : 로그아웃 시 세션 속성들 제거 
+		 * (1) logoutSuccessUrl : 로그아웃 후 이동할 주소
+		 * (2) logoutUrl(여기서 처리하기 때문에 컨트롤러 logout 제거합니다. post방식을 요구합니다.)
+		 * (3) invalidateHttpSession : 로그아웃 시 세션 속성들 제거
 		 * (4) deleteCookies : 쿠키 제거
 		 */
-			
+
 		http.logout().logoutSuccessUrl("/member/login")
 				.logoutUrl("/member/logout")
 				.invalidateHttpSession(true)
@@ -61,11 +68,11 @@ public class SecurityConfig  {
 				.tokenValiditySeconds(2419200);
 
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
-		
+
 		return http.build();
 	}
 
-	
+
 	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
 			throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
@@ -79,7 +86,7 @@ public class SecurityConfig  {
 
 	/*
 	 * 1. UserDetailsService 인터페이스는 DB에서 유저 정보를 불러오는 loadUserByUsername()가 존재합니다.
-	 * 
+	 *
 	 */
 	@Bean
 	public UserDetailsService customUserService() {
