@@ -29,3 +29,4 @@ public class Project_Board {
 	private String PRO_BOARD_FILE_ORIGINAL;
 	private List<Proboard_check_user> PROBOARD_CHECK_USERS;
 	}
+

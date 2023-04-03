@@ -3,6 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.ProjectMapper">
+
 	<update id="updateUserCheckInfoClear" parameterType="java.util.HashMap">
 		update PROBOARD_CHECK_USER
 		set IS_CHECKED = 0
@@ -52,6 +53,7 @@
 		where rownum <![CDATA[ <= 5 ]]>
 	</select>
 
+
 	<select id="getCheckCount" resultType="int" parameterType="int">
 		select pro_board_like from project_board 
 		where pro_board_num = ${pbNum}
@@ -96,7 +98,28 @@
 								INNER JOIN USER_INFO U 
 								ON PR.PROJECT_ADMIN = U.USER_ID 
 	</select>
+
+	<insert id="insert" parameterType="project">
+		insert into project
+		(PROJECT_NUM, PROJECT_NAME, PROJECT_STATE, PROJECT_ADMIN, PROJECT_START, PROJECT_END, PROJECT_priority)
+		values ( NVL((SELECT MAX(#{project_num})FROM PROJECT)+1,0 ), #{project_name},#{proejct_state},#{project_admin},#{project_start},#{project_end},#{project_priority}))
+	</insert>
 	
+
+	<insert id="insert_user" parameterType="project">
+		insert into project_user
+		values( (select nvl(max #{PROJECT_NUM},0)+1 FROM PROJECT) 
+		                      , #{project_admin} ,  
+		                   (SELECT MAX(ROWNUM)+3 FROM PROJECT_USER) ) 
+	</insert>
+	
+	<select id="getProjectDetailList" resultType="project_board">
+       SELECT PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_CREATER_NAME, 
+       		  PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CREATE_DATE, PRO_BOARD_NUM
+       		  FROM Project_Board
+    </select>
+
+
 	<select id="getListCount" resultType="int">
 		select count(*) from project
 	</select>
@@ -107,6 +130,7 @@
 								ON P.USER_ID = U.USER_ID 
 								WHERE PROJECT_NUM = #{project_num}
 	</select>
+
 	
 	<select id="getProjectUserCount" parameterType="int" resultType="int">
 		select count(*) from project_user where project_num = #{project_num}
