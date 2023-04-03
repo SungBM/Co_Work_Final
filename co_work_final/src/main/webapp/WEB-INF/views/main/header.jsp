@@ -447,8 +447,9 @@
                              src="${pageContext.request.contextPath }/resources/assets/images/users/avatar-1.jpg"
                              alt="Header Avatar">
                         <sec:authorize access="isAuthenticated()">
-                            <sec:authentication property="principal" var="pinfo"/>
-                            <span class="d-none d-xl-inline-block ms-1" key="t-henry">${pinfo.username }</span>
+                             <sec:authentication property="principal" var="pinfo" />
+                        <span class="d-none d-xl-inline-block ms-1" key="t-henry" id="loginId">${pinfo.username }</span>
+
                         </sec:authorize>
                         <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                     </button>
