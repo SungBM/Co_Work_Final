@@ -1,10 +1,10 @@
 package com.naver.cowork.mybatis.mapper;
 
-import com.naver.cowork.domain.Dept;
-import com.naver.cowork.domain.Job;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
+import com.naver.cowork.domain.Job;
 
 @Mapper
 public interface JobMapper {
