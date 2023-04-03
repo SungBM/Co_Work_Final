@@ -1,12 +1,14 @@
 package com.naver.cowork.mybatis.mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.naver.cowork.domain.Member;
+import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.domain.Project_User;
@@ -34,4 +36,21 @@ public interface ProjectMapper {
 	public int getCheckCount(int pbNum);
 
 	public int decreaseCheck(int pbNum);
+
+	public String[] getProjectBookmarkList(int pNum);
+
+	public String ProjectBookmarkCheckedClear(int pbNum);
+	
+	public int checkedClearBookmark(int pbNum);
+
+	public int checkedBookmark(int pbNum);
+
+	public String ProjectBookmarkChecked(int pbNum);
+
+	public List<Proboard_check_user> getProBoardCheckUserList(String id);
+
+	public void updateUserCheckInfo(HashMap<String, Object> map);
+
+	public void updateUserCheckInfoClear(HashMap<String, Object> map);
+
 }
