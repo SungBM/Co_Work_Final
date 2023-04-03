@@ -5,7 +5,7 @@
 <mapper namespace="com.naver.cowork.mybatis.mapper.DeptMapper">
 
 	<select id="deptAll" resultType="dept">
-		select *
+		select dept_no, dept_name, dept_order
 		from dept
 		order by dept_order
 	</select>
@@ -16,21 +16,31 @@
     </select>
 
 	<delete id="delete">
-        BEGIN
-        update dept
-        set dept_order = dept_order - 1
-        where dept_order > (select dept_order
-                            from dept
-                            where dept_no = #{dept_no});
-
         delete
         from dept
-        where dept_no = #{dept_no};
-        END;
+        where dept_no = #{dept_no}
     </delete>
 
 	<insert id="insert">
-		insert into dept
-		values (#{dept_no}, #{dept_name}, (SELECT count(dept_no) + 1 FROM dept))
-	</insert>
+        insert into dept(dept_no, dept_name, dept_order)
+        values (dept_seq.NEXTVAL, #{dept_name}, (select NVL(MAX(dept_order), 0) + 1
+                                                 from dept))
+    </insert>
+
+	<select id="deptName" resultType="string">
+		select dept_name
+		from dept
+		where dept_no = (select user_dept from user_info where user_id=#{user_id})
+	</select>
+
+	<select id="deptList" resultType="dept">
+		select dept_no, dept_name
+		from dept
+	</select>
+
+	<select id="deptNo" resultType="int">
+		select dept_no
+		from dept
+		where dept_name = #{dept_name}
+	</select>
 </mapper>

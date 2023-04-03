@@ -37,25 +37,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-
-    
     @Override
     public Member member_info(String id) {
         return dao.isId(id);
     }
 
-    
-//	@Override
+    //	@Override
 //	public void delete(String id) {
 //		dao.delete(id);
 //	}
 //
-    @Override
-    public int update(Member m) {
-        return dao.update(m);
+    public int mypageUpdate(Member m) {
+        return dao.mypageUpdate(m);
     }
 
-    
+
 //	@Override
 //	public List<Member> getSearchList(int index, String search_word, int page, int limit) {
 //		Map<String, Object> map = new HashMap<String, Object>();
@@ -88,24 +84,37 @@ public class MemberServiceImpl implements MemberService {
 //	}
 
     @Override
-    public List<Member> members(){
+    public List<Member> members() {
         return dao.members();
     }
 
+    @Override
+    public int insert(Member m) {
+        // TODO Auto-generated method stub
+        return dao.insert(m);
+    }
 
-	@Override
-	public int insert(Member m) {
-		// TODO Auto-generated method stub
-		return dao.insert(m);
-	}
+    @Override
+    public int isId(String id) {
+        Member rmemer = dao.isId(id);
+        return (rmemer == null) ? -1 : 1;
+    }
 
+    public int passUpdate(String user_id, String user_password) {
+        return dao.passUpdate(user_id, user_password);
+    }
 
-	@Override
-	public int isId(String id) {
-		 Member rmemer = dao.isId(id);
-	     return (rmemer ==null)?-1:1;
-	}
+    public int authUpdate(String user_id, String user_auth) {
+        return dao.authUpdate(user_id, user_auth);
+    }
 
+    public int stateUpdate(String user_id, String user_auth, String user_state) {
+        return dao.stateUpdate(user_id, user_auth, user_state);
+    }
+
+    public int adminUpdate(Member member) {
+        return dao.adminUpdate(member);
+    }
 
 
 }

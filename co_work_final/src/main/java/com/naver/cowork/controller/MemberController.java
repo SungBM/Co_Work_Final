@@ -6,6 +6,8 @@ import com.naver.cowork.domain.MailVO;
 import com.naver.cowork.domain.Member;
 import com.naver.cowork.domain.MySaveFolder;
 import com.naver.cowork.service.CalService;
+import com.naver.cowork.service.DeptService;
+import com.naver.cowork.service.JobService;
 import com.naver.cowork.service.MemberService;
 import com.naver.cowork.task.SendMail;
 
@@ -30,10 +32,7 @@ import java.io.PrintWriter;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -46,17 +45,21 @@ public class MemberController {
     private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
     private MemberService meberService;
     private CalService calservice;
+    private DeptService deptservice;
+    private JobService jobservice;
     private PasswordEncoder passwordEncoder;
     private SendMail sendMail;
     private MySaveFolder mysavefolder;
 
     @Autowired
-    public MemberController(MemberService meberService, SendMail sendMail, PasswordEncoder passwordEncoder, MySaveFolder mysavefolder, CalService calservice) {
+    public MemberController(MemberService meberService, SendMail sendMail, PasswordEncoder passwordEncoder, MySaveFolder mysavefolder, CalService calservice, DeptService deptservice, JobService jobservice) {
         this.meberService = meberService;
         this.sendMail = sendMail;
         this.passwordEncoder = passwordEncoder;
         this.mysavefolder = mysavefolder;
         this.calservice = calservice;
+        this.deptservice = deptservice;
+        this.jobservice = jobservice;
     }
 
 
@@ -64,18 +67,21 @@ public class MemberController {
     public ModelAndView mypage(Principal principal, ModelAndView mv, HttpServletRequest request) {
         String user_id = principal.getName();
         Member m = meberService.member_info(user_id);
-        String saveFolder = mysavefolder.getSavefolder();
-        String sFilePath = saveFolder + m.getUser_card();
+        String deptName = deptservice.deptName(user_id);
+        String jobName = jobservice.jobName(user_id);
+
 
         mv.setViewName("mypage/mypage");
         mv.addObject("memberinfo", m);
+        mv.addObject("deptName", deptName);
+        mv.addObject("jobName", jobName);
         mv.addObject("path", m.getUser_card());
 
         return mv;
     }
 
     @GetMapping("/updateCheck")
-    public void updateCheck(@RequestBody Member member, Principal principal, HttpServletResponse response) throws Exception {
+    public void updateCheck(Member member, Principal principal, HttpServletResponse response) throws Exception {
         String user_id = member.getUser_id();
         Member m = meberService.member_info(user_id);
         PrintWriter out = response.getWriter();
@@ -107,7 +113,7 @@ public class MemberController {
     }
 
     @PostMapping("/updateProcess")
-    public String updateProcess(Member member, HttpServletRequest request) throws Exception {
+    public String updateProcess(Member member) throws Exception {
         MultipartFile imgupload = member.getImgupload();
 
         if (!imgupload.isEmpty()) {
@@ -124,7 +130,9 @@ public class MemberController {
             member.setUser_card(fileDBName);
         }
 
-        int result = meberService.update(member);
+        logger.info("img = " + member.getUser_img() + "// card = " + member.getUser_card() + "// upload = " + member.getImgupload());
+
+        int result = meberService.mypageUpdate(member);
         return "redirect:../member/mypage";
     }
 
@@ -169,114 +177,59 @@ public class MemberController {
         return fileDBName;
     }
 
-    // Calendar 일정 파트
-    @GetMapping("/calendar")
-    public ModelAndView calendar(Principal principal, ModelAndView mv, com.naver.cowork.domain.Calendar calendar) {
-        String user_id = principal.getName();
-        List<com.naver.cowork.domain.Calendar> c = calservice.calAll(user_id);
-
-        mv.setViewName("calendar/calendar");
-        mv.addObject("callist", c);
-        return mv;
-    }
-
-    // 일정 추가
-    @PostMapping("/calAdd")
-    public String calAdd(com.naver.cowork.domain.Calendar calendar, Principal principal) throws ParseException {
-        String user_id = principal.getName();
-
-        // 종일 체크 안할 시 시간까지 저장
-        if (calendar.getCal_allday() == null) {
-            String start_full_date = calendar.getCal_start_date() + " " + calendar.getCal_start_time();
-            String end_full_date = calendar.getCal_end_date() + " " + calendar.getCal_end_time();
-            calendar.setCal_start_date(start_full_date);
-            calendar.setCal_end_date(end_full_date);
-        } else {
-            // end 날짜가 하루 뒤어야 일정바가 날짜에 맞춰짐
-            String end_full_date = calendar.getCal_end_date() + " " + calendar.getCal_end_time();
-            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            Date date = transFormat.parse(end_full_date);
-            Calendar cal1 = Calendar.getInstance();
-            cal1.setTime(date); // 시간 설정
-            cal1.add(Calendar.DATE, 1); // 일 연산
-            String strDate = transFormat.format(cal1.getTime());
-            logger.info(strDate);
-
-            calendar.setCal_end_date(strDate);
-        }
-
-        if (calendar.getCal_type().equals("C")) {
-            calendar.setCal_color("#28a745");
-        } else {
-            calendar.setCal_color("#ffc107");
-        }
-
-        calendar.setUser_id(user_id);
-        calservice.calInsert(calendar);
-        return "redirect:../member/calendar";
-    }
-
-    @GetMapping("/calUpdate")
-    public String calChange(com.naver.cowork.domain.Calendar calendar, Principal principal) throws ParseException {
-        String user_id = principal.getName();
-        calendar.setUser_id(user_id);
-
-            // end 날짜가 하루 뒤어야 일정바가 날짜에 맞춰짐
-            String end_full_date = calendar.getCal_end_date() + " " + calendar.getCal_end_time();
-            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            Date date = transFormat.parse(end_full_date);
-            Calendar cal1 = Calendar.getInstance();
-            cal1.setTime(date); // 시간 설정
-//            cal1.add(Calendar.DATE, 1); // 일 연산
-            String strDate = transFormat.format(cal1.getTime());
-            logger.info(strDate);
-
-            calendar.setCal_end_date(strDate);
-
-
-        calservice.calUpdate(calendar);
-        return "redirect:../member/calendar";
-    }
-
-    @PostMapping("/calSelect")
-    public Model calSelect(@RequestParam List<String> cal_type, Principal principal, Model mv) {
-        String user_id = principal.getName();
-
-        return mv;
-    }
-
-    @GetMapping("/calDelete")
-    public void calDelete(int cal_no, HttpServletResponse response) throws IOException {
-        int result = calservice.calDelete(cal_no);
-        String valStr = "";
-        if (result == 1) {
-            valStr = "success";
-        } else {
-            valStr = "fail";
-        }
-
-        PrintWriter out = response.getWriter();
-        out.print(valStr);
-    }
-
-
     @GetMapping("/modifyPassword")
     public String modifyPassword() {
 
         return "config/modifypassword";
     }
 
-    @GetMapping("/mysecurity")
-    public ModelAndView mysecurity(String user_id, ModelAndView mv, HttpServletRequest request) {
-        Member m = meberService.member_info(user_id);
-        String saveFolder = mysavefolder.getSavefolder();
-        String sFilePath = saveFolder + m.getUser_card();
-        logger.info(sFilePath);
+    @PostMapping("/modiPassProcess")
+    @ResponseBody
+    public Map<String, String> modiPassProcess(String user_password, String user_password1, String user_password2, Principal principal) {
+        String user_id = principal.getName();
+        Member member = meberService.member_info(user_id);
+        Map<String, String> passResult = new HashMap<>();
 
+        if (passwordEncoder.matches(user_password, member.getUser_password())) {
+            passResult.put("check", "success");
+            if (user_password1 != "" || user_password2 != "") {
+                if (user_password1.equals(user_password2)) {
+                    passResult.put("newCheck", "success");
+                } else {
+                    passResult.put("newCheck", "fail");
+                }
+            }
+        } else {
+            passResult.put("check", "fail");
+        }
+        return passResult;
+    }
+
+    @PostMapping("/passwordchangeProcess")
+    public String passwordchangeProcess(Member member, String user_password1, Principal principal) {
+        String user_id = principal.getName();
+        String encPassword = passwordEncoder.encode(user_password1);
+        member.setUser_password(encPassword);
+        int result = meberService.passUpdate(user_id, encPassword);
+        String url = "";
+        // 비밀번호 변경 성공
+        if (result == 1) {
+
+            url = "redirect:../member/modifyPassword";
+        } else {
+            url = "redirect:../member/modifyPassword";
+        }
+
+        return url;
+
+    }
+
+    @GetMapping("/mysecurity")
+    public ModelAndView mysecurity(Principal principal, ModelAndView mv, HttpServletRequest request) {
+        String user_id = principal.getName();
+        Member m = meberService.member_info(user_id);
 
         mv.setViewName("mypage/mysecurity");
-        mv.addObject("memberinfo", m);
-        mv.addObject("path", m.getUser_card());
 
         return mv;
     }

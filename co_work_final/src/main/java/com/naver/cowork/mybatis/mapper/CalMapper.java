@@ -15,7 +15,7 @@ public interface CalMapper {
     public int calUpdate(Calendar calendar);
 
     // 미구현
-    public List<Calendar> calAll(String user_id, List<String> cal_type);
+    public List<Calendar> calSelectList(String user_id, List<String> cal_type);
 
     public int calDelete(int cal_no);
 
