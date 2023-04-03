@@ -47,17 +47,18 @@
 									<tr>
 										<c:if test="${p.row_num <= 6 }">
 											<td><img
-												src="assets/images/companies/img-${p.row_num }.png" alt=""
+												src="${pageContext.request.contextPath }/resources/image/project/img-${p.row_num }.png" alt=""
 												class="avatar-sm"></td>
 										</c:if>
 										<c:if test="${p.row_num > 6  }">
 											<td><img
-												src="assets/images/companies/img-${p.row_num -6}.png" alt=""
+												src="${pageContext.request.contextPath }/resources/image/project/img-${p.row_num -6}.png" alt=""
 												class="avatar-sm"></td>
 										</c:if>
 
 										<td>
-											<h5 class="text-truncate font-size-14">
+											<h5 class="text-truncate font-size-14"
+											id="projectDetail" aria-value="${p.project_num }">
 												<a href="#" class="text-dark"> <c:out
 														value="${p.project_name }" />
 												</a>
@@ -66,7 +67,7 @@
 										</td>
 										<td>
 											<h5 id="getState" aria-valuenow="${p.project_state }"
-												class="text-truncate font-size-14">
+												class="text-truncate state font-size-14">
 												<c:out value="${p.project_state }" />
 											</h5>
 										</td>
@@ -124,7 +125,7 @@
 																						<div class="avatar-group-item">
 																							<a href="javascript: void(0);"
 																								class="d-inline-block"> <img
-																								src="image/users/${s.USER_IMG }" alt=""
+																								src="../resources/assets/images/users/${s.USER_IMG }" alt=""
 																								class="rounded-circle"
 																								style="width: 52px; height: 52px; padding: -5px; margin: 15px;">
 																							</a>
@@ -149,7 +150,7 @@
 														<c:if test="${status.index <= 3 }">
 															<div class="avatar-group-item">
 																<a href="javascript: void(0);" class="d-inline-block">
-																	<img src="image/users/${u.USER_IMG }" alt=""
+																	<img src="../resources/assets/images/users/${u.USER_IMG }" alt=""
 																	class="rounded-circle avatar-xs" id="more_team">
 																</a>
 																<p id="icon_id" >${u.USER_ID }</p>
@@ -164,7 +165,7 @@
 												<div class="avatar-group-item">
 													<!-- 프로필 페이지로 연결 -->
 													<a href="javascript: void(0);" class="d-inline-block">
-														<img src="image/users/${p.project_admin_img }" alt=""
+														<img src="../resources/assets/images/users/${p.project_admin_img }" alt=""
 														class="rounded-circle avatar-xs">
 													</a>
 													<p id="icon_id">${p.project_admin }</p>

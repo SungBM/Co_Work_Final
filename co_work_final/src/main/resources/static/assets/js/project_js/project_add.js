@@ -5,7 +5,7 @@ $(function(){
 		var queryString = $("#project_Add").serialize();
 		console.log(queryString);
 			$.ajax({
-            url: "ProjectAddProcess.po" , //매개변수로 넘겨받은 url주소
+            url: "ProjectAddProcess" , //매개변수로 넘겨받은 url주소
             data : queryString ,
             cache: false,
             type: "GET",

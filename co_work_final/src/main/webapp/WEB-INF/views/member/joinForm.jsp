@@ -250,7 +250,12 @@ $(function(){
 
                                     <div class="mb-3">
                                         <label for="name" class="form-label">이름</label>
-                                        <input type="text" class="form-control" id="USER_NAME" name="USER_NAME"
+
+
+
+                                        <input type="text" class="form-control" id="user_name" name="user_name"
+
+
                                             placeholder="이름을 입력하세요" required>
                                     </div>
 

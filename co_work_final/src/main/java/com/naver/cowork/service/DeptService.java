@@ -16,4 +16,9 @@ public interface DeptService {
 
     public int insert(Dept dept);
 
+    public List<Dept> deptList();
+    public String deptName(String user_id);
+
+
+    public int deptNo(String user_id);
 }

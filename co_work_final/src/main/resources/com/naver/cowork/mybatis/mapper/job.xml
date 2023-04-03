@@ -5,32 +5,40 @@
 <mapper namespace="com.naver.cowork.mybatis.mapper.JobMapper">
 
 	<select id="jobAll" resultType="job">
-		select *
+		select job_no, job_name, job_order
 		from job
 		order by job_order
 	</select>
 
     <select id="jmaxNo" resultType="Integer">
-        select NVL(MAX(job_no), 0) + 1
-        from job
-    </select>
+		select NVL(MAX(job_no), 0) + 1
+		from job
+	</select>
 
 	<delete id="delete">
-        BEGIN
-        update job
-        set job_order = job_order - 1
-        where job_order > (select job_order
-                            from job
-                            where job_no = #{job_no});
-
         delete
         from job
-        where job_no = #{job_no};
-        END;
+        where job_no = #{job_no}
     </delete>
 
 	<insert id="insert">
-		insert into job
-		values (#{job_no}, #{job_name}, (SELECT count(job_no) + 1 FROM job))
-	</insert>
+        insert into job
+        values (job_seq.NEXTVAL, #{job_name}, (select NVL(MAX(job_order), 0) + 1
+                                               from job))
+    </insert>
+
+	<select id="jobName" resultType="string">
+		select job_name
+		from job
+		where job_no = (select user_job from user_info where user_id=#{user_id})
+	</select>
+	<select id="jobList" resultType="job">
+		select job_no, job_name
+		from job
+	</select>
+	<select id="jobNo" resultType="int">
+		select job_no
+		from job
+		where job_name = #{job_name}
+	</select>
 </mapper>
