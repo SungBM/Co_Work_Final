@@ -11,4 +11,5 @@ public class SpringSecurityWarApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityWarApplication.class, args);
 	}
+
 }

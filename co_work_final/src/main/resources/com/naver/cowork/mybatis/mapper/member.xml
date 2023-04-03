@@ -72,6 +72,47 @@
 
         where user_id = #{user_id}
     </update>
+<select id="members" resultType="member">
+	select d.dept_name, u.* from user_info u  
+	INNER JOIN DEPT D
+	ON u.USER_DEPT = D.DEPT_NO
+	</select>
+	<select id="getSearchList" resultType="member">
+		select * from (select rownum rnum, b.*
+		from (select *
+		from user_info
+		where
+		id != 'admin'
+		<include refid="search_" />
 
+		order by id
+		)b
+		where rownum &lt;= #{end}
+		)
+		where rnum between #{start} and #{end}
+	</select>
 
+	<select id="getSearchListCount" resultType="int">
+		select count(*) from user_info
+		where id != 'admin'
+		<include refid="search_" />
+	</select>
+
+	<sql id="search_">
+		<if test="search_field != null">
+			and
+			<choose>
+				<when test='search_field == "id"'>id</when>
+				<when test='search_field == "name"'>name</when>
+				<when test='search_field == "age"'>age</when>
+				<when test='search_field == "gender"'>gender</when>
+			</choose>
+			like #{search_word}
+		</if>
+	</sql>
+
+	<delete id="delete">
+		delete from user_info
+		where id = #{id}
+	</delete>
 </mapper>
