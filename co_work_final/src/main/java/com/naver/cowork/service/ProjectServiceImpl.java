@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
@@ -70,6 +71,11 @@ public class ProjectServiceImpl implements ProjectService {
 	
 
 	@Override
+
+	public Project insert(Project p) {
+		
+		return dao.insert(p);
+
 	public List<Project> getDeadLineProjects(String logingID) {
 		List<Project> list = dao.getDeadLineProjects(logingID);
 		list = getProject_UserInfo(list);
@@ -87,6 +93,15 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		
 		return list;
+
+	}
+	
+	@Transactional
+	public Project insert_user(Project p) {
+		insert(p);
+		
+		p.setProject_num(p.getProject_num()+1);
+		return dao.insert_user(p);
 	}
 
 	@Override
@@ -95,10 +110,25 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+
+	public Project insert_user(Project_User u) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Project_Board> getProjectDetailList() {
+		// TODO Auto-generated method stub
+		return dao.getProjectDetailList();
+	}
+
+
+
 	public String getProjectName(int pNum) {
 		// TODO Auto-generated method stub
 		return dao.getProjectName(pNum);
 	}
+
 	
 	@Override
 	public int getDayCount(String startDate, String endDate) {

@@ -252,6 +252,7 @@ $(function(){
                                         <label for="name" class="form-label">이름</label>
 
 
+
                                         <input type="text" class="form-control" id="user_name" name="user_name"
 
 
