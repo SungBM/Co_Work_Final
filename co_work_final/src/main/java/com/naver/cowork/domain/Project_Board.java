@@ -1,5 +1,10 @@
 package com.naver.cowork.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Project_Board {
 		private int PRO_BOARD_NUM;
 		private String PRO_BOARD_CREATER_ID; //작성자 ID
