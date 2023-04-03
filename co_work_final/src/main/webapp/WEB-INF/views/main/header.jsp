@@ -33,10 +33,15 @@
             <div class="d-flex">
                 <!-- LOGO -->
                 <div class="navbar-brand-box">
-                    <a href="../member/main" class="logo logo-light">
+
+                    <a href="../main/main" class="logo logo-light">
+                                <span class="logo-sm">
+                                    <img src="${pageContext.request.contextPath }/resources/assets/images/logo-light.svg"
+                                         alt="" height="22">
+                                </span>
 
                         <span class="logo-lg">
-                            <img src="../image/logo.png" style="width:200px;">
+                            <img src="${pageContext.request.contextPath }/resources/image/logo.png" style="width:200px;">
                                 </span>
                     </a>
                 </div>
@@ -448,6 +453,7 @@
                              alt="Header Avatar">
                         <sec:authorize access="isAuthenticated()">
                              <sec:authentication property="principal" var="pinfo" />
+
                         <span class="d-none d-xl-inline-block ms-1" key="t-henry" id="loginId">${pinfo.username }</span>
 
                         </sec:authorize>
@@ -519,9 +525,16 @@
                                         <li><a href="../member/calendar" class="waves-effect">
                                             <i class="bx bx-calendar"></i>
                                             <span>일정</span>
-                                        </a></li>
 
-                                        <li><a href="chat.html" class="waves-effect">
+                                        </a>
+                                            <ul class="sub-menu" aria-expanded="false">
+                                                <li><a href="../member/calendar">월간</a></li>
+                                                <li><a>주간</a></li>
+                                                <li><a>일별</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="../chat?id=" class="waves-effect">
+
                                             <i class="bx bx-chat"></i>
                                             <span>채팅</span>
                                         </a></li>

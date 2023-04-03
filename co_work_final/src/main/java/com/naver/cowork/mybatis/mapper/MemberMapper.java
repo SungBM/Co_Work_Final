@@ -30,4 +30,9 @@ public interface MemberMapper {
     public int adminUpdate(Member member);
 
 
+	public List<Member> getSearchList(Map<String, Object> map);
+	
+	public List<Member> members();
+
+
 }
