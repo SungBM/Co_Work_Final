@@ -21,6 +21,19 @@
             color: black;
         }
 
+        .fc-daygrid-event {
+            background-color: #FFFFFF;
+        }
+
+        .fc-h-event {
+            height: 20px;
+
+        }
+
+        .fc-event-time, .fc-event-title {
+            margin: -3px;
+        }
+
         .fc-day-sat a {
             color: blue;
             text-decoration: none;
@@ -31,52 +44,82 @@
             text-decoration: none;
         }
 
+        .modal-footer {
+            justify-content: space-between;
+        }
+
+
     </style>
     <script>
+        function startChange() {
+            var start = $('#start').val();
+            var start1 = $('#start1').val();
+            var end = $('#end').val();
+            var end1 = $('#end1').val();
+
+            var sDate = $('#datepicker1').val()
+            var sDate1 = $('#datepicker3').val()
+            var eDate = $('#datepicker2').val()
+            var eDate1 = $('#datepicker4').val()
+
+            if (parseInt(start.substring(0, 2)) < 23) {
+                if (start.substring(3, 5) == '00')
+                    end = start.substring(0, 2) + ':30';
+                else if (start.substring(3, 5) == '15')
+                    end = start.substring(0, 2) + ':45';
+                else if (start.substring(3, 5) == '30')
+                    end = 0 + String(parseInt(start.substring(0, 2)) + 1) + ':00';
+                else if (start.substring(3, 5) == '45')
+                    end = 0 + String(parseInt(start.substring(0, 2)) + 1) + ':15';
+            } else if (parseInt(start.substring(0, 2)) == 23) {
+                if (start.substring(3, 5) == '00')
+                    end = start.substring(0, 2) + ':30';
+                else if (start.substring(3, 5) == '15')
+                    end = start.substring(0, 2) + ':45';
+                else if (start.substring(3, 5) == '30')
+                    end = start;
+                else if (start.substring(3, 5) == '45')
+                    end = start;
+            }
+
+            if (parseInt(start1.substring(0, 2)) < 23) {
+                if (start1.substring(3, 5) == '00')
+                    end1 = start1.substring(0, 2) + ':30';
+                else if (start1.substring(3, 5) == '15')
+                    end1 = start1.substring(0, 2) + ':45';
+                else if (start1.substring(3, 5) == '30')
+                    end1 = 0 + String(parseInt(start1.substring(0, 2)) + 1) + ':00';
+                else if (start1.substring(3, 5) == '45')
+                    end1 = 0 + String(parseInt(start1.substring(0, 2)) + 1) + ':15';
+            } else if (parseInt(start1.substring(0, 2)) == 23) {
+                if (start1.substring(3, 5) == '00')
+                    end1 = start1.substring(0, 2) + ':30';
+                else if (start1.substring(3, 5) == '15')
+                    end1 = start1.substring(0, 2) + ':45';
+                else if (start1.substring(3, 5) == '30')
+                    end1 = start1;
+                else if (start1.substring(3, 5) == '45')
+                    end1 = start1;
+            }
+
+            $("#datepicker2").datepicker('setDate', sDate);
+            $('#end').val(end);
+            $("#datepicker4").datepicker('setDate', sDate1);
+            $('#end1').val(end1);
+        }
 
         document.addEventListener('DOMContentLoaded', function () {
-            $("#datepicker1").datepicker({
-                format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-                showOtherMonths: true, //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-                templates: {
-                    leftArrow: '&laquo;',
-                    rightArrow: '&raquo;'
-                }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-                showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-                weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-                language: "ko", //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-                autoclose: true,
-                onClose: function (selectedDate) {
-                    console.log("닫힘...");
-                    $("#datepicker2").datepicker("option", "minDate", selectedDate);
-                }
-            });//datepicker end
-
-            $("#datepicker2").datepicker({
-                format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-                showOtherMonths: true, //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-                templates: {
-                    leftArrow: '&laquo;',
-                    rightArrow: '&raquo;'
-                }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-                showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-                weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-                language: "ko", //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-                autoclose: true
-            });//datepicker end
-
-
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl,
                 {
                     // Tool Bar 목록 document : https://fullcalendar.io/docs/toolbar
                     headerToolbar: {
-                        left: 'prevYear,prev,next,nextYear today',
+                        left: 'prev,next today',
                         center: 'title',
                         right: 'dayGridMonth,dayGridWeek,dayGridDay'
                     },
-
                     locale: "ko",
+                    timeZone: 'UTC',
                     selectable: true,
                     selectMirror: true,
                     navLinks: true, // can click day/week names to navigate views
@@ -95,41 +138,212 @@
                             var year = arg.end.getFullYear();
                             var month = arg.end.getMonth() + 1;
                             var date = arg.end.getDate() - 1;
+                            var realdate = arg.end.getDate();
 
                             if (date != 0) {
                                 var enddate = year + "-" + month + "-" + date;
+                                var endreal = year + "-" + month + "-" + realdate;
                             } else {
                                 enddate = year + "-" + month + "-" + date;
+                                endreal = year + "-" + month + "-" + realdate;
                             }
+
                             $("#myModal").modal("show");
-                            $("#datepicker1").val(arg.startStr);
-                            $("#datepicker2").val(enddate);
+                            $("#datepicker1").datepicker('setDate', arg.startStr);
+                            $("#datepicker2").datepicker('setDate', enddate);
                         },
+
+                    eventClick: function (data) {
+                        if (data.event.end == null) {
+                            var end = new Date();
+                            end.setDate(data.event.start.getDate());
+                            data.event.setEnd(end);
+                        }
+
+                        if (data.event.extendedProps.caltype == 'P')
+                            var caltype = '개인 일정'
+                        else
+                            caltype = '회사 일정';
+
+                        var calno = data.event.extendedProps.calno;
+                        var caltitle = data.event.title;
+                        var calstart = data.event.start.toISOString().replace('T', ' ').slice(0, -8);
+                        var calend = data.event.end.toISOString().replace('T', ' ').slice(0, -8);
+                        var calcontent = data.event.extendedProps.content;
+                        var allday = data.event.allDay;
+
+                        $('#calno').text(calno);
+                        $('#caltype').val(caltype);
+                        $('#caltitle').val(caltitle);
+                        $('#calcontent').val(calcontent);
+                        $('#allday').text(allday);
+                        $("#eventModal").modal("show");
+                        $("#datepicker3").datepicker('setDate', calstart.substring(0, 10));
+                        $("#datepicker4").datepicker('setDate', calend.substring(0, 10));
+                        $("#start1").val(calstart.substring(11, 16))
+                        $("#end1").val(calend.substring(11, 16))
+
+                        $("#start1, #datepicker3").change(function () {
+                            startChange();
+                        })
+
+                        $("#delbutton").click(function () {
+                            var delResult = confirm("정말 삭제하시겠습니까?");
+                            if (delResult) {
+                                $.ajax({
+                                    url: '../member/calDelete',
+                                    data: {
+                                        "cal_no": calno
+                                    },
+                                    success: function (resp) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                        })
+
+                        $("#modibutton").click(function () {
+                            var calstart1 = $("#datepicker3").val()
+                            var calend1 = $("#datepicker4").val()
+                            var starttime = $("#start1").val();
+                            var endtime = $("#end1").val();
+                            $.ajax({
+                                url: '../member/calUpdate',
+                                data: {
+                                    "cal_no": calno,
+                                    "cal_title": caltitle,
+                                    "cal_content": calcontent + " " + starttime,
+                                    "cal_start_date": calstart1,
+                                    "cal_end_date": calend1,
+                                    "cal_end_time": endtime
+                                },
+                                success: function (resp) {
+                                    location.reload();
+                                }
+                            })
+                        })
+                    },
+
+                    eventDrop: function (data) {
+                        var calstart = data.event.start.toISOString().replace('T', ' ').slice(0, -8);
+                        var calend = data.event.end.toISOString().replace('T', ' ').slice(0, -8);
+                        var calno = data.event.extendedProps.calno;
+                        var caltitle = data.event.title;
+                        var calcontent = data.event.extendedProps.content;
+
+                        $.ajax({
+                            url: '../member/calUpdate',
+                            // type: 'post',
+                            data: {
+                                "cal_no": calno,
+                                "cal_title": caltitle,
+                                "cal_content": calcontent,
+                                "cal_start_date": calstart,
+                                "cal_end_date": calend
+                            }
+                        })
+                    },
+
+                    eventChange: function (data) {
+                        var calstart = data.event.start.toISOString().replace('T', ' ').slice(0, -8);
+                        var calend = data.event.end.toISOString().replace('T', ' ').slice(0, -8);
+                        var calno = data.event.extendedProps.calno;
+                        var caltitle = data.event.title;
+                        var calcontent = data.event.extendedProps.content;
+
+                        $.ajax({
+                            url: '../member/calUpdate',
+                            // type: 'post',
+                            data: {
+                                "cal_no": calno,
+                                "cal_title": caltitle,
+                                "cal_content": calcontent,
+                                "cal_start_date": calstart,
+                                "cal_end_date": calend
+                            }
+                        })
+                    },
 
                     // 이벤트 객체 필드 document : https://fullcalendar.io/docs/event-object
                     events: [
-                        <%--                        <c:forEach var="c" items="${calList}">--%>
-                        <%--                        {--%>
-                        <%--                            title: '${c.title}',--%>
-                        <%--                            start: '${c.cal_start}',--%>
-                        <%--                            end: '${c.cal_end}'--%>
-                        <%--                        }--%>
-                        <%--                        <c:if test="${!empty calList}">, </c:if>--%>
-                        <%--                        </c:forEach>--%>
+                        <c:forEach var="c" items="${callist}">
                         {
-                            title: 'All Day Event',
-                            start: '2023-03-14',
+                            calno: '${c.cal_no}',
+                            caltype: '${c.cal_type}',
+                            title: '${c.cal_title}',
+                            start: '${c.cal_start_date}',
+                            end: '${c.cal_end_date}',
+                            content: '${c.cal_content}',
+                            allDay: '${c.cal_allday}',
+                            color: "${c.cal_color}"
                         }
+                        <c:if test="${!empty callist}">, </c:if>
+                        </c:forEach>
                     ]
                 });
 
             calendar.render();
 
-        });
+
+            // 종일 버튼 클릭시 시간 활성화/비활성화
+            $("#allday").click(function () {
+                var allday = $(this).prop("checked");
+                if (!allday) {
+                    $("#start, #end").attr("readonly", false)
+                } else {
+                    $("#start, #end").attr("readonly", true);
+                }
+            })  // #allday end
+
+            $(document).ready(function () {
+                //시작일자 변경 시 종료일자 +30분 설정, 시작날짜 변경 시 종료날짜 변경
+                $("#start, #datepicker1").change(function () {
+                    startChange();
+                })
+
+                // datepicker 시작
+                $("#datepicker1, #datepicker2, #datepicker3, #datepicker4").datepicker({
+                    format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+                    showOtherMonths: true, //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+                    templates: {
+                        leftArrow: '&laquo;',
+                        rightArrow: '&raquo;'
+                    }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
+                    showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
+                    weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
+                    language: "ko", //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+                    autoclose: true
+                });//datepicker end
+
+                // 일정 체크박스에 따른 데이터 표현
+                // $("input[type=checkbox][name=cal_type]").change(function () {
+                //     var cal_type = [];
+                //     $("input[type=checkbox][name=cal_type]:checked").each(function (i) {
+                //         cal_type.push($(this).val());
+                //     })
+                //     console.log(cal_type)
+                //
+                //     $.ajax({
+                //         url: '../member/calSelect',
+                //         data: {
+                //             "cal_type": cal_type
+                //         },
+                //         traditional: true,
+                //         success: function (resp) {
+                //             console.log(resp);
+                //         }
+                //     }) // ajax end
+                // }) // change end
+            }) // document end
+        }) // addEventListener end
     </script>
     <style>
         .datepicker {
             z-index: 1600 !important; /* has to be larger than 1050 */
+        }
+
+        #start[readonly], #end[readonly] {
+            pointer-events: none;
         }
 
     </style>
@@ -151,13 +365,35 @@
 
                     <!-- Simple card -->
                     <div class="card">
-                        <div class="card-body" style="margin: 0 auto; width: 100%">
-                            <button type="button" class="btn btn-primary waves-effect waves-light m-1"
-                                    style="width: 100%">+ 일정추가
-                            </button>
+                        <div class="card-body">
+                            <div class="d-grid">
+                                <button class="btn font-16 btn-primary" id="btn-new-event"
+                                        onclick="$('#myModal').modal('show')"><i
+                                        class="mdi mdi-plus-circle-outline"></i> 일정생성
+                                </button>
+                            </div>
+                            <div id="external-events" class="mt-4">
+                                <div class="external-event bg-success text-white" data-class="bg-success">
+                                    <input class="form-check-input" type="checkbox" name="cal_type" value="P"
+                                           id="formCheckcolor2" checked="">
+                                    <label class="form-check-label" for="formCheckcolor2">
+                                        개인 일정
+                                    </label>
+                                </div>
+                                <div class="external-event bg-info mt-2 text-white" data-class="bg-info">
+                                    <input class="form-check-input" type="checkbox" name="cal_type" value="C"
+                                           id="formCheckcolor3" checked="">
+                                    <label class="form-check-label" for="formCheckcolor3">
+                                        부서 일정
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-center mt-5">
+                                <img src="assets/images/verification-img.png" alt="" class="img-fluid d-block">
+                            </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="card col-9">
                     <div class="card-body">
@@ -171,13 +407,33 @@
                                     <!-- Modal Header -->
                                     <div class="modal-header">
                                         <h4 class="modal-title">일정 등록</h4>
-                                        <button type="button" class="close">&times;
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
                                         </button>
                                     </div>
 
-                                    <form action="../calendar/calAdd" method="post">
+                                    <form action="../member/calAdd" method="post">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
                                         <!-- Modal body -->
                                         <div class="modal-body">
+                                            <div class="form-group mb-3">
+                                                <input class="form-check-input" type="radio" name="cal_type"
+                                                       id="formRadios1" checked value="P">
+                                                <label class="form-check-label" for="formRadios1">
+                                                    개인 일정
+                                                </label>
+
+
+                                                <input class="form-check-input" type="radio" name="cal_type"
+                                                       id="formRadios2" value="C">
+                                                <label class="form-check-label" for="formRadios2">
+                                                    회사 일정
+                                                </label>
+
+
+                                            </div>
+
                                             <div class="form-group">
                                                 <input type="textbox" class="form-control" placeholder="제목을 입력하세요."
                                                        id="cal_title" name="cal_title">
@@ -188,22 +444,22 @@
                                                 <div class="mt-4 col-md-3" id="startdate">
                                                     <input class="datepicker" name="cal_start_date" type="text"
                                                            id="datepicker1" style="width: 100%"></div>
-
                                                 <div class="col-md-2 mt-4">
-                                                    <input class="form-control" type="text" value="" unselectable="on">
                                                     <select class="form-control" id="start" name="cal_start_time"
-                                                            style="display: none">
+                                                            readonly="">
                                                         <c:set var="breakPoint" value="0"/>
                                                         <c:forEach var="i" begin="0" end="23">
-                                                            <c:forEach var="j" begin="0" end="1">
-                                                                <c:if test="${(i == 24) && (j == 1)}">
+                                                            <c:forEach var="j" begin="0" end="3">
+                                                                <c:if test="${(i == 24) && (j == 3)}">
                                                                     <c:set var="breakPoint" value="1"/>
                                                                 </c:if>
                                                                 <c:if test="${breakPoint==0}">
-                                                                    <option value="${i}:<fmt:formatNumber pattern="00" value="${j*30}" />">${i}:<fmt:formatNumber
-                                                                            pattern="00" value="${j*30}"/></option>
+                                                                    <option value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
+                                                                        <fmt:formatNumber pattern="00"
+                                                                                          value="${i}"/>:<fmt:formatNumber
+                                                                            pattern="00"
+                                                                            value="${j*15}"/></option>
                                                                 </c:if>
-
                                                             </c:forEach>
                                                         </c:forEach>
                                                     </select>
@@ -216,20 +472,21 @@
                                                            id="datepicker2" style="width: 100%"></div>
 
                                                 <div class="col-md-2 mt-4">
-                                                    <input class="form-control" type="text" value="" unselectable="on">
                                                     <select class="form-control" id="end" name="cal_end_time"
-                                                            style="display: none">
+                                                            readonly="">
                                                         <c:set var="breakPoint" value="0"/>
                                                         <c:forEach var="i" begin="0" end="23">
-                                                            <c:forEach var="j" begin="0" end="1">
-                                                                <c:if test="${(i == 24) && (j == 1)}">
+                                                            <c:forEach var="j" begin="0" end="3">
+                                                                <c:if test="${(i == 24) && (j == 3)}">
                                                                     <c:set var="breakPoint" value="1"/>
                                                                 </c:if>
                                                                 <c:if test="${breakPoint==0}">
-                                                                    <option value="${i}:<fmt:formatNumber pattern="00" value="${j*30}" />">${i}:<fmt:formatNumber
-                                                                            pattern="00" value="${j*30}"/></option>
+                                                                    <option value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
+                                                                        <fmt:formatNumber pattern="00"
+                                                                                          value="${i}"/>:<fmt:formatNumber
+                                                                            pattern="00"
+                                                                            value="${j*15}"/></option>
                                                                 </c:if>
-
                                                             </c:forEach>
                                                         </c:forEach>
                                                     </select>
@@ -240,7 +497,7 @@
                                             <div class="form-group mt-3" style="margin-left: 65px">
                                                 <div class="form-check mb-3 ">
                                                     <input class="form-check-input" type="checkbox" id="allday"
-                                                           name="cal_allday" checked>
+                                                           name="cal_allday" value="true" checked>
                                                     <label class="form-check-label" for="allday">
                                                         종일
                                                     </label>
@@ -251,7 +508,9 @@
                                                 <div class="col-md-2">
                                                     <label for="cal_content">내용</label></div>
                                                 <div class="col-md-10">
-                                                    <textarea class="form-control" rows="5" id="cal_content" name="cal_content" style="resize: none;" placeholder="일정에 필요한 설명을 남기세요."></textarea>
+                                                    <textarea class="form-control" rows="5" id="cal_content"
+                                                              name="cal_content" style="resize: none;"
+                                                              placeholder="일정에 필요한 설명을 남기세요."></textarea>
                                                 </div>
                                             </div>
 
@@ -260,22 +519,123 @@
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary  float-right">저장
                                             </button>
-                                            <button type="reset" class="btn btn-warning float-right">취소
+                                            <button type="button" class="btn btn-light waves-effect"
+                                                    data-bs-dismiss="modal" aria-label="Close">닫기
                                             </button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="modal fade insertModal" id="eventModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content" style="z-index: 10000 !important; width: 600px">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">일정 확인</h4>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </button>
+                                    </div>
+                                    <table class="table">
+                                        <tr>
+                                            <th style="width: 80px">일정 타입</th>
+                                            <td><input class="form-control" type="text" value="" id="caltype"></td>
+                                        </tr>
+                                        <tr>
+                                            <th>제목</th>
+                                            <td><input class="form-control" type="text" id="caltitle" value=""></td>
+                                        </tr>
+                                        <tr>
+                                            <th style="margin: 0 auto">날짜</th>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="mt-4 col-md-3 mb-3" id="startdate">
+                                                        <input class="datepicker" name="cal_start_date" type="text"
+                                                               id="datepicker3" style="width: 100%"></div>
+                                                    <div class="col-md-2 mt-4">
+                                                        <select class="form-control" id="start1" name="cal_start_time">
+                                                            <c:set var="breakPoint" value="0"/>
+                                                            <c:forEach var="i" begin="0" end="23">
+                                                                <c:forEach var="j" begin="0" end="3">
+                                                                    <c:if test="${(i == 24) && (j == 3)}">
+                                                                        <c:set var="breakPoint" value="1"/>
+                                                                    </c:if>
+                                                                    <c:if test="${breakPoint==0}">
+                                                                        <option value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
+                                                                            <fmt:formatNumber pattern="00"
+                                                                                              value="${i}"/>:<fmt:formatNumber
+                                                                                pattern="00"
+                                                                                value="${j*15}"/></option>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mt-4 col-md-1"><span class="bar"> _ </span></div>
+                                                    <div class="mt-4 col-md-3" id="enddate">
+                                                        <input class="datepicker" name="cal_end_date" type="text"
+                                                               id="datepicker4" style="width: 100%"></div>
+                                                    <div class="col-md-2 mt-4">
+                                                        <select class="form-control" id="end1" name="cal_end_time">
+                                                            <c:set var="breakPoint" value="0"/>
+                                                            <c:forEach var="i" begin="0" end="23">
+                                                                <c:forEach var="j" begin="0" end="3">
+                                                                    <c:if test="${(i == 24) && (j == 3)}">
+                                                                        <c:set var="breakPoint" value="1"/>
+                                                                    </c:if>
+                                                                    <c:if test="${breakPoint==0}">
+                                                                        <option value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
+                                                                            <fmt:formatNumber pattern="00"
+                                                                                              value="${i}"/>:<fmt:formatNumber
+                                                                                pattern="00"
+                                                                                value="${j*15}"/></option>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>내용</th>
+                                            <td><input class="form-control" type="text" id="calcontent" value=""></td>
+                                        </tr>
+
+                                    </table>
+
+
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <div>
+                                            <button type="button" class="btn btn-danger" id="delbutton"
+                                                    style="float: left;">삭제
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-warning" id="modibutton">수정
+                                            </button>
+                                            <button type="button" class="btn btn-light waves-effect"
+                                                    data-bs-dismiss="modal" aria-label="Close">닫기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
+                <!-- end row -->
+                <!-- container-fluid -->
             </div>
-            <!-- end row -->
-            <!-- container-fluid -->
+            <!-- End Page-content -->
         </div>
-        <!-- End Page-content -->
+        <!-- end main content-->
     </div>
-    <!-- end main content-->
-</div>
 </body>
 </html>

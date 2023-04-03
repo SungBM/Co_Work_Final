@@ -34,4 +34,17 @@ public class JobServiceImpl implements JobService {
         return dao.insert(job);
     }
 
+    public List<Job> jobList() {
+        return dao.jobList();
+    }
+
+    public String jobName(String user_id) {
+        return dao.jobName(user_id);
+    }
+
+    public int jobNo(String user_id) {
+        return dao.jobNo(user_id);
+    }
+
+
 }

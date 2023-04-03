@@ -22,35 +22,21 @@
 </style>
 <script>
     function deptAllCheck() {
-        var dac = document.dept.deptallcheck;
-        var drc = document.dept.dept_no;
-
-        if (dac.checked == true) {
-            console.log(drc.length)
-            for (i = 0; i < drc.length; i++) {
-                drc[i].checked = true;
-            }
-        } else if (dac.checked == false) {
-            for (i = 0; i < drc.length; i++) {
-                drc[i].checked = false;
-            }
+        if ($("input[name=deptallcheck]").is(':checked')) {
+            $("input[name=dept_no]").prop("checked", true);
+        } else {
+            $("input[name=dept_no]").prop("checked", false);
         }
     } // deptAllCheck() end
 
     function jobAllCheck() {
-        var jac = document.job.joballcheck;
-        var jrc = document.job.job_no;
-
-        if (jac.checked == true) {
-            for (i = 0; i < jrc.length; i++) {
-                jrc[i].checked = true;
-            }
-        } else if (jac.checked == false) {
-            for (i = 0; i < jrc.length; i++) {
-                jrc[i].checked = false;
-            }
+        if ($("input[name=joballcheck]").is(':checked')) {
+            $("input[name=job_no]").prop("checked", true);
+        } else {
+            $("input[name=job_no]").prop("checked", false);
         }
-    } // deptAllCheck() end
+    } // jobAllCheck() end
+
 
     $(document).ready(function () {
         // $(function () {
@@ -82,7 +68,38 @@
             }
         })  // checkbox에 따른 삭제버튼 활성화
 
+        $(document).on("click", "input[name=dept_no]", function(e){
+            var chks = document.dept.dept_no;
+            var chksChecked = 0;
+            for(var i=0; i<chks.length; i++) {
+                var cbox = chks[i];
 
+                if(cbox.checked) {
+                    chksChecked++;
+                }
+            }
+            if(chks.length == chksChecked){
+                $("input[name=deptallcheck]").prop("checked", true);
+            }else{
+                $("input[name=deptallcheck]").prop("checked",false);
+            }
+        })
+
+        $(document).on("click", "input[name=job_no]", function (e) {
+            var chks = document.job.job_no;
+            var chksChecked = 0;
+            for (var i = 0; i < chks.length; i++) {
+                var cbox = chks[i];
+                if (cbox.checked) {
+                    chksChecked++;
+                }
+            }
+            if (chks.length == chksChecked) {
+                $("input[name=joballcheck]").prop("checked", true);
+            } else {
+                $("input[name=joballcheck]").prop("checked", false);
+            }
+        })
     })
 
 </script>
@@ -104,6 +121,7 @@
                     <div class="card">
                         <div class="card-body">
                             <form action="companyimgupdateprocess.com" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                 <div class="mb-2 row">
                                     <label for="example-text-input" class="col-md-2 col-form-label">로고 설정</label>
                                     <div class="col-md-8">
@@ -149,6 +167,8 @@
                         <div class="card-body">
                             <form name="dept" action="../admin/deleteDept" method="post"
                                   onsubmit="return confirm('정말 삭제하시겠습니까?')">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
                                 <div class="row text-center justify-content-end">
                                     <h4 class="col-md-4 font-size-18">부서</h4>
                                     <button type="button"
@@ -163,14 +183,14 @@
                                 <table class="table table-bordered mt-4" id="depttable">
                                     <th><input type="checkbox" name="deptallcheck" onclick="deptAllCheck()"></th>
                                     <th>부서명</th>
-                                    <th>부서코드</th>
+<%--                                    <th>부서코드</th>--%>
                                     <tr>
                                         <c:forEach var="d" items="${dept}">
                                         <td><input type="checkbox" name="dept_no" value="${d.dept_no}"></td>
                                         <td>${d.dept_name}</td>
-                                        <td>
-                                                ${d.dept_no}
-                                        </td>
+<%--                                        <td>--%>
+<%--                                                ${d.dept_no}--%>
+<%--                                        </td>--%>
                                     </tr>
                                     </c:forEach>
                                 </table>
@@ -186,6 +206,7 @@
                         <div class="card-body">
                             <form name="job" action="../admin/deleteJob" method="post"
                                   onsubmit="return confirm('정말 삭제하시겠습니까?')">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                 <div class="row text-center justify-content-end">
                                     <h4 class="col-md-4 font-size-18">직급</h4>
                                     <button type="button"
@@ -200,14 +221,14 @@
                                 <table class="table table-bordered mt-4" id="jobtable">
                                     <th><input type="checkbox" name="joballcheck" onclick="jobAllCheck()"></th>
                                     <th>직급명</th>
-                                    <th>직급코드</th>
+<%--                                    <th>직급코드</th>--%>
                                     <tr>
                                         <c:forEach var="d" items="${job}">
                                         <td><input type="checkbox" name="job_no" value="${d.job_no}"></td>
                                         <td>${d.job_name}</td>
-                                        <td>
-                                                ${d.job_no}
-                                        </td>
+<%--                                        <td>--%>
+<%--                                                ${d.job_no}--%>
+<%--                                        </td>--%>
                                     </tr>
                                     </c:forEach>
                                 </table>
@@ -230,15 +251,17 @@
                             </div>
                             <div class="modal-body">
                                 <form action="../admin/deptadd" method="post">
-                                    <div class="row mb-4">
-                                        <label for="horizontal-code-input"
-                                               class="col-sm-3 col-form-label">코드(숫자)</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="dept_no"
-                                                   id="horizontal-code-input"
-                                                   placeholder="부서코드" value="${dmaxno}" readonly>
-                                        </div>
-                                    </div>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+<%--                                    <div class="row mb-4">--%>
+<%--                                        <label for="horizontal-code-input"--%>
+<%--                                               class="col-sm-3 col-form-label">코드<br>(4자리 숫자)</label>--%>
+<%--                                        <div class="col-sm-9">--%>
+<%--                                            <input type="text" class="form-control" name="dept_no"--%>
+<%--                                                   id="horizontal-code-input"--%>
+<%--                                                   placeholder="부서코드">--%>
+<%--                                            <span>저저</span>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
                                     <div class="row mb-4">
                                         <label for="horizontal-job-input"
                                                class="col-sm-3 col-form-label">명칭(한글)</label>
@@ -277,15 +300,17 @@
                             </div>
                             <div class="modal-body">
                                 <form action="../admin/jobadd" method="post">
-                                    <div class="row mb-4">
-                                        <label for="horizontal-code-input"
-                                               class="col-sm-3 col-form-label">코드(숫자)</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" name="job_no"
-                                                   id="horizontal-code-input"
-                                                   placeholder="직급코드" value="${jmaxno}" readonly>
-                                        </div>
-                                    </div>
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+<%--                                    <div class="row mb-4">--%>
+<%--                                        <label for="horizontal-code-input"--%>
+<%--                                               class="col-sm-3 col-form-label">코드<br>(4자리 숫자)</label>--%>
+<%--                                        <div class="col-sm-9">--%>
+<%--                                            <input type="text" class="form-control" name="job_no"--%>
+<%--                                                   id="horizontal-code-input"--%>
+<%--                                                   placeholder="직급코드">--%>
+<%--                                            <span>저저</span>--%>
+<%--                                        </div>--%>
+<%--                                    </div>--%>
                                     <div class="row mb-4">
                                         <label for="horizontal-job-input"
                                                class="col-sm-3 col-form-label">명칭(한글)</label>
