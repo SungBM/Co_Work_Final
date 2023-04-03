@@ -67,8 +67,6 @@ public class NoticeContoller {
 				map.put("limit", limit);
 				return map;
 			}
-	
-	
 	@RequestMapping(value = "/noticeList", method=RequestMethod.GET)
 	public ModelAndView noticeList(
 									@RequestParam(value="page", defaultValue="1", required=false) int page, ModelAndView mv) {

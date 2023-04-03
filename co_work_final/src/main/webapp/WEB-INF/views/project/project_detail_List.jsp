@@ -13,7 +13,8 @@
 
 <style>
 .page-content{
-	margin-left: 400px;
+	margin-left: 15%;
+	width: 75%;
 }
 #icon_id{
 	display: none;

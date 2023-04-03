@@ -244,6 +244,9 @@ a:hover {
 		    var position = $(window).scrollTop(); 
 		    $("#sticky").stop().animate({"top":position+currentPosition+"px"},500);
 		  });
+		$("#ProjectDetailList").click(function(){
+			location.href = "../project/ProjectDetailList"
+		});
 		
 	});
 </script>
@@ -278,7 +281,7 @@ a:hover {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#archive" role="tab">
+                            <a class="nav-link" data-bs-toggle="tab" href="" id="ProjectDetailList" role="tab">
                                 Archive
                             </a>
                         </li>

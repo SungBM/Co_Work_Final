@@ -27,7 +27,7 @@ public interface ProjectMapper {
 	
 	public List<Project_Board> getProjectDetailList();
 	
-}
+
 
 	public int getListCount();
 
