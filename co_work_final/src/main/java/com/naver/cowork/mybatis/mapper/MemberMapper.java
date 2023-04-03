@@ -29,10 +29,7 @@ public interface MemberMapper {
     public int stateUpdate(String user_id, String user_auth, String user_state);
     public int adminUpdate(Member member);
 
-
-	public List<Member> getSearchList(Map<String, Object> map);
 	
-	public List<Member> members();
 
 
 }

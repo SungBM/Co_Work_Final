@@ -71,13 +71,6 @@ public class ProjectServiceImpl implements ProjectService {
 		return list;
 	}
 	
-
-	@Override
-
-	public Project insert(Project p) {
-		
-		return dao.insert(p);
-
 	public List<Project> getDeadLineProjects(String logingID) {
 		List<Project> list = dao.getDeadLineProjects(logingID);
 		list = getProject_UserInfo(list);
