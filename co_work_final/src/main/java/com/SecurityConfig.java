@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.util.AntPathMatcher;
 
 import com.naver.security.CustomAccessDeniedHandler;
 import com.naver.security.CustomUserDetailsService;
@@ -44,7 +45,6 @@ public class SecurityConfig  {
 				.antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
 				.antMatchers("/**").access("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')");
-
 		http.formLogin().loginPage("/member/login")
 				.loginProcessingUrl("/member/loginProcess")
 				.usernameParameter("id")

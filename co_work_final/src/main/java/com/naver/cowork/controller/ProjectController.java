@@ -1,8 +1,10 @@
  package com.naver.cowork.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,29 +16,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
-import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.util.FileCopyUtils;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.cowork.domain.MySaveFolder;
+import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
-
+import com.naver.cowork.domain.Project_Board_Comment;
+import com.naver.cowork.service.FileUtil;
 import com.naver.cowork.service.PJPriorityEnum;
 import com.naver.cowork.service.PJStateEnum;
-
 import com.naver.cowork.service.ProjectService;
 
 @Controller
@@ -115,8 +112,6 @@ public class ProjectController {
 	
 	@RequestMapping(value = "/ProjectAddProcess" , method =  RequestMethod.GET)
 	public ModelAndView insert(ModelAndView mv , Project project){
-		System.out.println(project.getProject_name());
-		System.out.println("프로젝트 모달 컨트롤러 들어옴");
 		
 		
 		mv.setViewName("project/project_add_modal");
@@ -129,8 +124,6 @@ public class ProjectController {
 		
 		List<Project_Board> detaillist = projectService.getProjectDetailList();
 		mv.addObject("ProjectDetailList", detaillist);
-		System.out.println(detaillist);
-		System.out.println("프로젝트 디테일 리스트 들어옴");
 		
 			
 		mv.setViewName("project/project_detail_List");
@@ -159,13 +152,27 @@ public class ProjectController {
 		Logger.info("선택한 프로젝트 번호 : " + pNum);
 		List<Project_Board> pb_list = projectService.getPojectBoardFeed(pNum);
 		String project_Name = projectService.getProjectName(pNum);
+		String [] bmBoard = projectService.getProjectBookmarkList(pNum);
+		List<Proboard_check_user> pcu = projectService.getProBoardCheckUserList(id);
+		List<List<Project_Board_Comment>> commentLists = null;
+		commentLists = new ArrayList<List<Project_Board_Comment>>();
+		
+		for(Project_Board pb : pb_list ) {
+			pb.setPROBOARD_CHECK_USERS(pcu);
+			
+		}
+		
 		mv.addObject("pblist",pb_list);
 		mv.addObject("projectName",project_Name);
 		mv.addObject("id",id);
+		mv.addObject("bmBoard",bmBoard);
 		mv.setViewName("project/project_Detail_Feed");
 		
 		return mv;
 	}
+	
+	
+	
 	
 	@ResponseBody
 	@PostMapping("/projectFileDown")
@@ -173,7 +180,6 @@ public class ProjectController {
 								HttpServletRequest request,
 								String original,
 								HttpServletResponse response) throws Exception {
-
 		
 		String saveFolder = mysavefolder.getSavefolder();
 		String sFilePath = saveFolder + filename;
@@ -191,22 +197,106 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/ProjectLikeIncrease" , method = RequestMethod.GET)
-	public void ProjectLikeIncrease(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception {
-		int result = projectService.increaseCheck(pbNum);
-		System.out.println(pbNum);
-		System.out.println("컨트롤러 들어옴");
+	public void ProjectLikeIncrease(@RequestParam("pbNum")int pbNum,@RequestParam("id")String id, HttpServletResponse response) throws Exception {
+		int result = projectService.increaseCheck(pbNum,id);
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print(result);
 	}
 	
 	@RequestMapping(value = "/ProjectLikeDecrease", method = RequestMethod.GET)
-	public void ProjectLikeDecrease(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception {
-		int result = projectService.decreaseCheck(pbNum);
-		System.out.println(pbNum);
+	public void ProjectLikeDecrease(@RequestParam("pbNum")int pbNum,@RequestParam("id")String id, HttpServletResponse response) throws Exception {
+		int result = projectService.decreaseCheck(pbNum,id);
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print(result);
 
+	}
+	
+	@RequestMapping(value = "/ProjectBookmarkCheckedClear" , method = RequestMethod.GET)
+	public void ProjectBookmarkCheckedClear(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception {
+		String resultSubject = projectService.ProjectBookmarkCheckedClear(pbNum);
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(resultSubject);
+	}
+	
+	@RequestMapping(value = "/ProjectBookmarkChecked" , method = RequestMethod.GET)
+	public void ProjectBookmarkChecked(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception{
+		String resultSubject = projectService.ProjectBookmarkChecked(pbNum);
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(resultSubject);
+	}
+	
+	@RequestMapping(value = "/ProjectCommentAdd" , method = RequestMethod.POST)
+	@ResponseBody
+	public List<Project_Board_Comment>  ProjectCommentAdd(Project_Board_Comment pbc,HttpServletResponse response) throws Exception {
+		MultipartFile commentFile = pbc.getFileNames();
+	       if (!commentFile.isEmpty()) {
+	    	   FileUtil.fileUpload(commentFile, pbc, mysavefolder);
+	            
+	        }
+	       
+	    int result = projectService.ProjectCommentAdd(pbc);
+	    int pbNum = pbc.getPRO_BOARD_NUM();
+	    List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+	    
+		return commentList;
+	}
+	
+	@RequestMapping(value = "/getPjectCommentList" , method = RequestMethod.POST)
+	@ResponseBody
+	public List<Project_Board_Comment>getPjectCommentList(int pbNum,HttpServletResponse response) throws Exception {
+		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+		return commentList;
+	}
+	
+	@GetMapping(value = "/commentDelete")
+	@ResponseBody
+	public List<Project_Board_Comment>commentDelete(int pbcNum, int pbNum, HttpServletResponse response) throws Exception{
+		int result = projectService.commentDelete(pbcNum);
+		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+		return commentList;
+	}
+	
+	@PostMapping(value = "/ProjectCommentUpdate")
+	@ResponseBody
+	public List<Project_Board_Comment>ProjectCommentUpdate(Project_Board_Comment pbc,HttpServletResponse response) throws Exception {
+		
+		MultipartFile commentFile = pbc.getFileNames();
+	       if (!commentFile.isEmpty()) {
+	    	   FileUtil.fileUpload(commentFile, pbc, mysavefolder);
+	            
+	        }
+	       
+	    int result = projectService.ProjectCommentUpdate(pbc);
+	    int pbNum = pbc.getPRO_BOARD_NUM();
+	    List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+	    
+	    
+		return commentList;
+	}
+	
+	@PostMapping(value = "/ProjectCommentReply")
+	@ResponseBody
+	public List<Project_Board_Comment>ProjectCommentReply(Project_Board_Comment pbc,HttpServletResponse response) throws Exception {
+		
+		MultipartFile commentFile = pbc.getFileNames();
+		if (!commentFile.isEmpty()) {
+			FileUtil.fileUpload(commentFile, pbc, mysavefolder);
+			
+		}
+		pbc.setPRO_BO_COMMENT_RE_REF(pbc.getPRO_BO_COMMENT_NUM());
+		
+		int result = projectService.ProjectCommentReply(pbc);
+		int pbNum = pbc.getPRO_BOARD_NUM();
+		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+		
+		for( Project_Board_Comment pbc2 : commentList) {
+			String content = pbc2.getPRO_BO_COMMENT_CONTENT();
+		}
+		
+		return commentList;
 	}
 }

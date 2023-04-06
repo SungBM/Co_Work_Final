@@ -513,7 +513,7 @@
                                             <span key="t-ecommerce">프로젝트</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a target="_self" href="../project/ProjectList?id=HTA1"
+                                                <li><a target="_self" href="${pageContext.request.contextPath }/project/ProjectList?id=HTA1"
                                                        id="project_list">전체</a>
                                                 </li>
                                                 <li><a>진행</a></li>
@@ -549,7 +549,7 @@
                                             <span>커뮤니티</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <li><a id="notice_List" href="../notice/NoticeList">공지사항 게시판</a></li>
+                                                <li><a id="notice_List" href="${pageContext.request.contextPath }/notice/noticeList">공지사항 게시판</a></li>
                                                 <li><a>자유 게시판</a></li>
                                             </ul>
                                         </li>

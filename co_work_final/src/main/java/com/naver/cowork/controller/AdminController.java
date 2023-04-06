@@ -1,26 +1,24 @@
 package com.naver.cowork.controller;
 
-import com.naver.cowork.domain.Dept;
-import com.naver.cowork.domain.Job;
-import com.naver.cowork.domain.Member;
-import com.naver.cowork.domain.MySaveFolder;
-import com.naver.cowork.other.All;
-import com.naver.cowork.service.DeptService;
-import com.naver.cowork.service.JobService;
-import com.naver.cowork.service.MemberService;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.security.Principal;
-import java.util.List;
+import com.naver.cowork.domain.Dept;
+import com.naver.cowork.domain.Job;
+import com.naver.cowork.domain.Member;
+import com.naver.cowork.domain.MySaveFolder;
+import com.naver.cowork.service.DeptService;
+import com.naver.cowork.service.JobService;
+import com.naver.cowork.service.MemberService;
 
 @Controller
 @RequestMapping("/admin")

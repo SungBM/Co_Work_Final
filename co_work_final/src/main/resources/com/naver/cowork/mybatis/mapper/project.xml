@@ -3,18 +3,136 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.ProjectMapper">
+	<delete id="commentDelete" parameterType="int">
+		delete PROJECT_BOARD_COMMENT where PRO_BO_COMMENT_NUM = ${pbNum}
+	</delete>
 
-	<select id="getProjectList" resultType="project" parameterType="string" >
-		SELECT PR.*, U.USER_IMG project_admin_img FROM ( SELECT * FROM 
-                   (SELECT ROWNUM row_num,P.* FROM (SELECT * FROM PROJECT ORDER BY PROJECT_END)P 
-                    WHERE <![CDATA[  ROWNUM <= 20 ]]>) 
-               WHERE ROWNUM >= 1
-               AND ROWNUM <![CDATA[  <= 20 ]]>
-               AND PROJECT_END > SYSDATE 
-               OR PROJECT_END IS NULL )PR 
-               INNER JOIN USER_INFO U 
-               ON PR.PROJECT_ADMIN = U.USER_ID 
-               ORDER BY PROJECT_END
+	<select id="getProjectCommentList" resultType="Project_Board_Comment" parameterType="int">
+		  <![CDATA[
+		SELECT PRO_BO_COMMENT_NUM, PRO_BO_COMMENT_ID, 
+		PRO_BO_COMMENT_NAME, PRO_BO_COMMENT_CONTENT, PRO_BO_COMMENT_FILE, PRO_BO_COMMENT_RE_LEV, 
+		TO_CHAR(PRO_BO_COMMENT_DATE,'YYYY/MM/DD HH24:MI:SS') 
+		AS PRO_BO_COMMENT_DATE, PRO_BOARD_NUM, PRO_BO_COMMENT_ORIGINFILE, PRO_BO_COMMENT_RE_REF, PRO_BO_COMMENT_RE_SEQ
+		FROM PROJECT_BOARD_COMMENT
+		WHERE PRO_BOARD_NUM = ${pbNum}
+		START WITH PRO_BO_COMMENT_RE_REF IS NULL
+		CONNECT BY PRIOR PRO_BO_COMMENT_NUM = PRO_BO_COMMENT_RE_REF
+		ORDER SIBLINGS BY TO_DATE(PRO_BO_COMMENT_DATE,'YYYY/MM/DD HH24:MI:SS') ASC
+			  ]]>
+	</select>
+	
+	<update id="ProjectCommentUpdate" parameterType="Project_Board_Comment">
+		update PROJECT_BOARD_COMMENT 
+		SET
+			PRO_BO_COMMENT_ID = '${PRO_BO_COMMENT_ID}' ,
+			PRO_BO_COMMENT_NAME = (SELECT USER_NAME FROM USER_INFO WHERE USER_ID = '${PRO_BO_COMMENT_ID}'),
+			PRO_BO_COMMENT_CONTENT = '${PRO_BO_COMMENT_CONTENT}',
+			PRO_BO_COMMENT_FILE = '${PRO_BO_COMMENT_FILE}',
+			PRO_BO_COMMENT_ORIGINFILE = '${PRO_BO_COMMENT_ORIGINFILE}' 
+		WHERE
+			PRO_BO_COMMENT_NUM = ${PRO_BO_COMMENT_NUM}
+	</update>
+	
+	<insert id="ProjectCommentReply" parameterType="Project_Board_Comment">
+		insert into PROJECT_BOARD_COMMENT(
+			PRO_BO_COMMENT_NUM,	
+			PRO_BO_COMMENT_ID,
+			PRO_BO_COMMENT_NAME,
+			PRO_BO_COMMENT_CONTENT,
+			PRO_BO_COMMENT_FILE, 
+			PRO_BO_COMMENT_RE_LEV,
+			PRO_BO_COMMENT_DATE,
+		    PRO_BOARD_NUM,
+			PRO_BO_COMMENT_ORIGINFILE,
+			PRO_BO_COMMENT_RE_REF
+		) values ( 
+			pro_board_comm_seq.NEXTVAL,
+			'${PRO_BO_COMMENT_ID}',
+			(SELECT USER_NAME FROM USER_INFO WHERE USER_ID = '${PRO_BO_COMMENT_ID}'),
+			'${PRO_BO_COMMENT_CONTENT}',
+			'${PRO_BO_COMMENT_FILE}',
+			1,
+			SYSDATE,
+		    ${PRO_BOARD_NUM},
+			'${PRO_BO_COMMENT_ORIGINFILE}',
+			${PRO_BO_COMMENT_RE_REF}
+			
+		 )
+	</insert>
+	
+	<insert id="ProjectCommentAdd" parameterType="Project_Board_Comment">
+		insert into PROJECT_BOARD_COMMENT(
+			PRO_BO_COMMENT_NUM,	
+			PRO_BO_COMMENT_ID,
+			PRO_BO_COMMENT_NAME,
+			PRO_BO_COMMENT_CONTENT,
+			PRO_BO_COMMENT_FILE, 
+			PRO_BO_COMMENT_RE_LEV,
+			PRO_BO_COMMENT_DATE,
+		    PRO_BOARD_NUM,
+			PRO_BO_COMMENT_ORIGINFILE 
+		) values ( 
+			pro_board_comm_seq.NEXTVAL,
+			'${PRO_BO_COMMENT_ID}',
+			(SELECT USER_NAME FROM USER_INFO WHERE USER_ID = '${PRO_BO_COMMENT_ID}'),
+			'${PRO_BO_COMMENT_CONTENT}',
+			'${PRO_BO_COMMENT_FILE}',
+			0,
+			SYSDATE,
+		    ${PRO_BOARD_NUM},
+			'${PRO_BO_COMMENT_ORIGINFILE}'
+		 )
+	</insert>
+
+	<update id="updateUserCheckInfoClear" parameterType="java.util.HashMap">
+		update PROBOARD_CHECK_USER
+		set IS_CHECKED = 0
+		where PRO_BOARD_NUM = ${pbNum}
+		and USER_ID = '${id}'
+	</update>
+	
+	<update id="updateUserCheckInfo" parameterType="java.util.HashMap">
+		update PROBOARD_CHECK_USER
+		set IS_CHECKED = 1
+		where PRO_BOARD_NUM = ${pbNum}
+		and USER_ID = '${id}'
+	</update>
+
+	<select id="getProBoardCheckUserList" resultType="Proboard_check_user" parameterType="String">
+		select pro_board_num,pro_board_num,is_checked from proboard_check_user 
+		where user_id = #{id}
+	</select>
+
+	<update id="checkedBookmark" parameterType="int">
+		update project_board 
+		set pro_board_bookmark = 1
+		where pro_board_num = #{pbNum}
+	</update>
+
+	<select id="ProjectBookmarkChecked" resultType="String" parameterType="int">
+		select pro_board_subject from project_board
+		where pro_board_num = ${pbNum}
+	</select>
+	
+	<update id="checkedClearBookmark" parameterType="int">
+		update project_board 
+		set pro_board_bookmark = 0
+		where pro_board_num = #{pbNum}
+	</update>
+
+	<select id="ProjectBookmarkCheckedClear" resultType="String" parameterType="int">
+		select pro_board_subject from project_board
+		where pro_board_num = ${pbNum}
+	</select>
+
+	<select id="getProjectBookmarkList" resultType="String" parameterType="int">
+		select pro_board_subject from (
+			select rownum,pro_board_subject from project_board 
+			where project_num = ${pNum} 
+			and pro_board_bookmark = 1 )
+		where rownum <![CDATA[ <= 5 ]]>
+	</select>
+
 
 	<select id="getCheckCount" resultType="int" parameterType="int">
 		select pro_board_like from project_board 
