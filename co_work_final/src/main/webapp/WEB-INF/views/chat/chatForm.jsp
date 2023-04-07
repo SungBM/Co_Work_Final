@@ -20,6 +20,14 @@
     <script src="${pageContext.request.contextPath }/resources/assets/js/member/jquery-3.6.3.js"></script>
 	<style>
 	h5{font-weight:bold}
+	
+	.w-100 user-chat{
+	margin-right: auto;
+	}
+	
+	.form-control{
+	background-color: #f3f3f9;
+	}
 	</style>
 	
 	<script>
@@ -29,7 +37,7 @@
 		}
 		
 	</script>
-	
+
     </head>
 
   <!-- <body data-sidebar="dark" data-layout-mode="light"> -->   
@@ -90,17 +98,17 @@
 
                                     <div class="search-box chat-search-box py-4">
                                         <div class="position-relative">
-                                            <input type="text" class="form-control" placeholder="Search...">
-                                            <i class="bx bx-search-alt search-icon"></i>
-                                        </div>
+                                            <input type="text" class="form-control" placeholder="이름 혹은 팀명을 입력하세요" name="search_word" value="${search_word}" }>
+<!--                                             <button class="bx bx-search-alt search-icon" type="submit"></button>
+ -->                                        </div>
                                     </div>
 
                                     <div class="chat-leftsidebar-nav">
                                         <ul class="nav nav-pills nav-justified">
                                             <li class="nav-item">
-                                                <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
-                                                    <i class="bx bx-chat font-size-20 d-sm-none"></i>
-                                                    <span class="d-none d-sm-block">멤버</span>
+                                                <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active" type="submit">
+                                                    <i class="bx bx-chat font-size-20 d-sm-none" ></i>
+                                                    <span class="d-none d-sm-block" >검색</span>
                                                 </a>
                                             </li>
                                            
@@ -146,7 +154,7 @@
 
                                 </div>
                             </div>
-                            <div class="w-150 user-chat">
+                            <div class="w-100 user-chat">
                                 <div class="card">
                                     <div class="p-4 border-bottom ">
                                         <div class="row">

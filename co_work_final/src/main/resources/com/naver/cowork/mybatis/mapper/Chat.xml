@@ -13,4 +13,6 @@
 	insert into CHAT_MESSAGE(ID, SENDER, MESSAGE, SEND_DATE)
 	values(#{ID}, #{SENDER}, #{MESSAGE}, SYSDATE)
 </insert>
+
+
 </mapper>
