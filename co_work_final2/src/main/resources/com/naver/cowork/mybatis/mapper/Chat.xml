@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.ChatMapper">
+
+<insert id="insertChatMessage">
+	insert into chat_message(SENDER, MESSAGE, SEND_DATE)
+	values(#{SENDER}, #{MESSAGE}, #{SEND_DATE})
+</insert>
+
+<insert id="insert">
+	insert into CHAT_MESSAGE(ID, SENDER, MESSAGE, SEND_DATE)
+	values(#{ID}, #{SENDER}, #{MESSAGE}, SYSDATE)
+</insert>
+
+<select id="getRoom" resultType="Map">
+         select roomnumber
+         from chat_member
+         where roomnumber in (select roomnumber
+                            from chat_member
+                            where id = #{user1})
+         and id =#{user2}
+         <if test="user1 == user2">
+         	group by roomnumber
+  			having count(*)=2
+         </if>
+</select>
+
+
+<insert id="createRoom">
+	INSERT ALL
+	INTO chat_member (roomnumber, id) VALUES ((select nvl(max(roomnumber),0)+1 from chat_member), #{user1})
+	INTO chat_member (roomnumber, id) VALUES ((select nvl(max(roomnumber),0)+1 from chat_member), #{user2})
+	SELECT 1 FROM DUAL
+</insert>
+
+</mapper>
