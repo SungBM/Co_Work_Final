@@ -65,11 +65,11 @@ textarea{
 			<!-- 공지 작성 -->
 			<sec:authorize access="isAuthenticated()">
 			<sec:authentication property="principal" var="pinfo" />  <!-- principal은 시큐리티가 가지고 있는 기술. principal로 아이디값을 불러올 수 있음-->
- 			<c:if test="${pinfo.username == 'admin1'}">
+				<c:if test="${noticedata.USER_ID == pinfo.username || pinfo.username == 'admin1'}">
 				<div class="write-button">
 					<button type="button" class="btn btn-info" id="write-button">작성</button>
 				</div>
-			</c:if>
+				</c:if>
 			</sec:authorize> 
 			<%-- 게시글이 있는 경우 --%>
 			<c:if test="${listcount > 0}">
@@ -138,25 +138,25 @@ textarea{
 				<ul class="pagination justify-content-center">  
 					<c:if test="${page <= 1 }">
 						<li class="page-item">
-							<a class="page-link gray">이전&nbsp;</a>  <!-- a태그 없음. 맨 앞페이지면 앞으로 이동할 수 없음 -->
+							<a class="page-link gray">처음&nbsp;</a>  <!-- a태그 없음. 맨 앞페이지면 앞으로 이동할 수 없음 -->
 						</li>
 					</c:if>
 					<c:if test="${page > 1 }">
 						<li class="page-item">
-							<a href="BoardList.bo?page=${page-1 }"
-								class="page-link">이전&nbsp;</a>
+							<a href="noticeList?page=${startpage }"
+								class="page-link">처음&nbsp;</a>
 						</li>
 					</c:if>
 					
 					<c:forEach var="a" begin="${startpage }" end="${endpage }">  <!-- 숫자 -->
-						<c:if test="${a==page }">
+						<c:if test="${a == page }">
 							<li class="page-item active">
 								<a class="page-link">${a }</a>
 							</li>
 						</c:if>
-						<c:if test="${a!=page }"> <!-- 다음 -->
+						<c:if test="${a !=page }"> <!-- 다음 -->
 							<li class="page-item">
-								<a href="BoardList.bo?page=${a }"
+								<a href="noticeList?page=${a }"
 									class="page-link">${a }</a>
 							</li>
 						</c:if>
@@ -164,13 +164,13 @@ textarea{
 					
 					<c:if test="${page >= maxpage }"> <!-- 다음도 마지막 페이지에선 갈 수 없음 -->
 						<li class="page-item">
-							<a class="page-link gray">&nbsp;다음</a>
+							<a class="page-link gray">&nbsp;마지막</a>
 						</li>
 					</c:if>
 					<c:if test="${page < maxpage }">
 						<li class="page-item">
-							<a href="BoardList.bo?page=${page+1 }"
-								class="page-link">&nbsp;다음</a>
+							<a href="noticeList?page=${endpage }"
+								class="page-link">&nbsp;마지막</a>
 						</li>
 					</c:if>
 				</ul>

@@ -17,10 +17,13 @@ public interface NoticeMapper {
 	public List<Notice> getNoticeList(HashMap<String, Integer> map);
 	
 	//글 내용
-	public Notice getDetail(int num);
+	public Notice getNoticeDetail(int num);
+	
+	//글 등록
+	public void insertNotice(Notice notice);
 	
 	// 글 수정
-	public int noticeModify(Notice modifynotice);
+	public int noticeModify(Notice modifyNotice);
 	
 	//글 삭제
 	public int noticeDelete(Notice notice);
@@ -29,10 +32,7 @@ public interface NoticeMapper {
 	public int setReadCountUpdate(int num);
 	
 	// 작성자 본인 확인
-	public Notice isNoticeWriter(HashMap<String, Object> map);
-	
-	//글 등록
-	public void insertNotice(Notice notice);
+	public Notice isNoticeWriter(int num);
 	
 	
 	

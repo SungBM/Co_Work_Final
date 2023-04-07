@@ -19,21 +19,14 @@ public interface NoticeService {
 	public void insertNotice(Notice notice);
 	
 	// 상세뷰
-	public Notice getDetail(int num);
+	public Notice getNoticeDetail(int num);
 	
 	// 수정
-	public int noticemodify(Notice modifynotice);
+	public int noticeModify(Notice modifyNotice);
 	
 	// 삭제
 	public int noticeDelete(int num);
 	
 	// 조회수
 	public int setReadCountUpdate(int num);
-	
-	// 작성자 본인 확인
-	public boolean isNoticeWriter(int num, String pass);
-	
-	
 }
-
-

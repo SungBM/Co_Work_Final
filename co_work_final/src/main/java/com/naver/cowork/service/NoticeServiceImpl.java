@@ -40,43 +40,38 @@ public class NoticeServiceImpl implements NoticeService {
 
 	@Override
 	public void insertNotice(Notice notice) {
-		// TODO Auto-generated method stub
-		
+		dao.insertNotice(notice);
 	}
 	
 	@Override
-	public Notice getDetail(int num) {
-		// TODO Auto-generated method stub
-		return null;
+	public Notice getNoticeDetail(int num) {
+		return dao.getNoticeDetail(num);
 	}
 
 
 	@Override
-	public int noticemodify(Notice modifynotice) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int noticeModify(Notice modifyNotice) {
+		return dao.noticeModify(modifyNotice);
 	}
 
 
 	@Override
 	public int noticeDelete(int num) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result=0;
+		Notice notice = dao.getNoticeDetail(num);
+		if(notice != null) {
+			result=dao.noticeDelete(notice);
+		}
+		return result;
 	}
 
 
 	@Override
 	public int setReadCountUpdate(int num) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.setReadCountUpdate(num);
 	}
 
 
-	@Override
-	public boolean isNoticeWriter(int num, String pass) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 
 
