@@ -285,7 +285,8 @@
     
                                     <div>
                                         <div class="chat-conversation p-3">
-                                           <ul class="list-unstyled mb-0" data-simplebar style="height: 450px;" id="fix">
+                                        
+                                           <ul class="list-unstyled mb-0" data-simplebar style="height: 450px; overflow: scroll;" id="fix">
                                            <div class="simplebar-wrapper" style="margin: 0px;">
                                            <div class="simplebar-height-auto-observer-wrapper">
                                            <div class="simplebar-height-auto-observer"></div>
@@ -445,7 +446,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <button type="button" class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light" id='btnSend' ><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
+                                                    <button type="button" class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light" id='btnSend'><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
                                                 </div>
                                             </div>
                                         </div>

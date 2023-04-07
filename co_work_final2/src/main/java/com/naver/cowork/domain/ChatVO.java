@@ -6,9 +6,10 @@ import lombok.Data;
 
 @Data
 public class ChatVO {
-	private String ID;
-	private String SENDER;
-	private String MESSAGE;
-	private Date SEND_DATE;
+	private int roomNumber;
+	private String CHAT_DATE;
+	private String CHAT_SENDER;
+	private String CHAT_FILE;
+	private String CHAT_ORIGINAL;
 	
 }

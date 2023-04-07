@@ -4,14 +4,12 @@ create table room(
 );
  
 create table chat_log(
- LOG_SEQ      NUMBER PRIMARY KEY,
- roomNumber      NUMBER   REFERENCES room(roomNumber),
- CHAT_DATE      VARCHAR2(20),
- CHAT_TIME      VARCHAR2(20),
+ roomNumber      NUMBER,  --나중에 primary key
+ CHAT_DATE      VARCHAR2(50),
  CHAT_SEND      VARCHAR2(50),
  CHAT_CONTENT   VARCHAR2(2000),
- CHAT_FILE      VARCHAR2(100),
- CHAT_ORIGINAL   VARCHAR2(100)
+ CHAT_FILE      VARCHAR2(100),    --업로드된 파일 이름
+ CHAT_ORIGINAL   VARCHAR2(100)   --실제파일이름
 );
 
 create table chat_member(

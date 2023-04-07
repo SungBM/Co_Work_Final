@@ -1,0 +1,19 @@
+.progress {
+	background-color: gray;
+	text-align: center;
+}
+#team_m{
+	overflow: auto;
+}
+
+#myModalLabel{
+	font-weight: bold;
+}
+
+#team_name{
+	font-weight: bold;
+}
+
+#icon_id{
+	display: none;
+}

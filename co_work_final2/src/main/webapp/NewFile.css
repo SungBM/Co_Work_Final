@@ -1,0 +1,223 @@
+/* *로 시작하면 전체에 미리 설정값을 주고 시작하는 것
+*{
+    box-sizing: border-box;
+} */
+
+.container{
+    border: 1px solid black;
+    width: 470px;
+    min-height: 700px;
+    box-shadow: 1px 3px 10px 0 rgba(0,0,0,0.2);
+    box-sizing: border-box;
+}
+.top, .middle, .bottom{
+    border: none;
+}
+
+.top{
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #A8BFD1;
+}
+
+.middle{
+    overflow-y: scroll;
+    height: 500px;
+    background-color: #B2C8D8;
+    padding: 15px;
+}
+
+.middle::-webkit-scrollbar{
+    width: 10px;
+}
+.middle::-webkit-scrollbar-thumb{
+    background-color: #A0A5B2;
+}
+
+.middle::-webkit-scrollbar-track{
+    display: none;
+}
+
+.middle::-webkit-scrollbar-button{
+    display: none;
+}
+
+.top-left{
+    color: #424242;
+    font-weight: bold;
+    font-size: 14px;
+    width: 50%;
+}
+
+.top-right{
+    font-weight: bolder;
+    font-size: 15px;
+}
+
+.profile-img{
+    width: 50px;
+    height: 50px;
+    border-radius: 40%;
+    float: left;
+    margin-right: 10px;
+}
+
+.store-button{
+    width: 15px;
+    height: 15px;
+    padding-top: 15px;
+}
+
+.search-button{
+    width: 13px;
+    height: 13px;
+    padding-top: 5px;
+    padding-left: 3px;
+}
+
+.chat-img{
+    width: 40px;
+    height: 40px;
+    border-radius: 40%;
+    margin-right: 10px;
+}
+
+.chat-name{
+    color: #424242;
+    font-size: 13px;
+    position: absolute;
+    top: -20px;
+    left: 5px;
+}
+
+.you{
+    background-color: white;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+    color: #424242;
+    margin-top: 3px;
+    top: 5px;
+}
+
+.you-time{
+    position: absolute;
+    right: -80px;
+    bottom: 1px;
+    font-size: 15px;
+}
+
+.me1{
+    text-align: right;
+}
+
+.me{
+    background-color: #FAE549;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+    color: #424242;
+    margin-top: 10px;
+}
+
+.me-time{
+    position: absolute;
+    left: -80px;
+    bottom: 1px;
+    font-size: 15px;
+}
+
+.bottom{
+    position: relative;
+}
+
+.textarea{
+    border: none;
+    width: 80%;
+    resize: none;
+    height: 50px;
+    margin-top: 15px;
+    margin-left: 15px;
+    background: none;
+    outline: none;
+    /* display: flex;
+    justify-content: space-between;
+    align-items: flex-start; */
+}
+
+.button{
+    background-color: #FAE549;
+    border: 1px solid #E8D18C;
+    font-size: 12px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 6px 12px;
+}
+
+.button:hover{
+    background-color: #E8DE76;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    /* 변화효과는 transition: all 2s ease-out; */
+}
+
+.option{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 한 클래스 아래에 있는 요소들 전체에 스타일 적용할 때 사용가능
+ .option>div{
+    display: none;
+} */
+
+.emoticon{
+    padding-left: 15px;
+    padding-top: 5px;
+    width: 17px;
+    height: 17px;
+    -webkit-filter: opacity(.4) drop-shadow(0 0 0 grey);
+    filter: opacity(.4) drop-shadow(0 0 0 grey);
+    position: absolute;
+}
+
+.emoticon:hover{
+    padding-left: 15px;
+    padding-top: 5px;
+    position: absolute;
+    filter: none;
+}
+
+.file{
+    padding-left: 15px;
+    padding-top: 5px;
+    left: 30px;
+    width: 17px;
+    height: 17px;
+    -webkit-filter: opacity(.4) drop-shadow(0 0 0 grey);
+    filter: opacity(.4) drop-shadow(0 0 0 grey);
+    position: absolute;
+    cursor: pointer;
+}
+
+.file:hover{
+    padding-left: 15px;
+    padding-top: 5px;
+    left: 30px;
+    position: absolute;
+    filter: none;
+    cursor: pointer;
+}
+
+.transparent{
+    padding-right: 15px;
+    padding-bottom: 15px;
+}

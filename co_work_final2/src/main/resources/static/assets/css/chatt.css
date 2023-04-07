@@ -1,0 +1,64 @@
+@charset "UTF-8";
+
+*{
+	box-sizing: border-box;
+	
+	
+}
+
+#chatt{
+	width: 800px;
+	margin: 20px auto;
+	
+}
+
+#chatt #talk{
+	width: 500px;
+	height: 400px;
+	overflow: auto;
+	border : 1px solid #556EE6;
+	border-radius:10px;
+}
+
+#chatt #msg{
+	width: 440px;
+	height:50px;
+	display: inline-block;
+	background-color: #eff2f7;
+	border-radius:10px;
+	border: none;
+}
+
+#chatt #sendZone > *{
+	vertical-align: top;
+	
+}
+#chatt #btnSend{
+	width: 54px;
+	height: 50px;
+	background-color: #556EE6;
+	border-radius:10px;
+	border: none;
+	color: white;
+	
+	
+}
+
+#chatt #talk div{
+	width: 70%;
+	display: inline-block;
+	padding: 6px;
+	border-radius:10px;
+	color: #556EE6
+	
+}
+
+#chatt .me{
+	background-color : #ffc;
+	margin : 1px 0px 2px 30%;	
+}
+
+#chatt .other{
+	background-color : #eff2f7;
+	margin : 2px;
+}

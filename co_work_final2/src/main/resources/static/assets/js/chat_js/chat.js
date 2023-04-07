@@ -1,17 +1,37 @@
 $(function(){
       
       myname = $("li .myinfo").find("#user_name").val() 
-      let roomNumber = 0;
       let yourid = "";
+      let roomNumber = 0;
       const token= $("meta[name='_csrf']").attr("content");
       const header= $("meta[name='_csrf_header']").attr("content");
       $('#total > div.chat-leftsidebar.me-lg-4 > div > div.py-4.border-bottom > div > div.flex-grow-1 > h5').text(myname);
+      let sessionId = '';
       
+      
+    $('.chat-list li').on('dblclick', function(){
+      console.log("dblclick");
+      yourid = $(this).find("#user_id").val()
+      yourname = $(this).find("#user_name").val()
+      $("#total > div.w-100.user-chat > div > div.w-100.user-chat > div > div.p-4.border-bottom > div > div.col-md-4.col-9 > h5").text(yourname);
+      
+      
+      getRoom(yourid);
+      //ws = new WebSocket("ws://" + location.host + "/cowork/chating/" + roomNumber);
+      //====================================위에 지우면 안됨
+      //myname
+      
+      
+      
+      
+      	
+      
+   }) //('.chat-list li').on('dblclick', function(){
       
 //채팅방 있는지 확인하기 
 
    function getRoom(yourid){
-      console.log($("#yourid").val());
+      console.log(yourid);
       $.ajax({
          url: '../chat/getRoom',
          type: 'get',
@@ -50,68 +70,34 @@ $(function(){
             console.log("error");
             }
       });//$.ajax
-      
    } //createRoom()
    
    
    
    var ws;
-	console.log("ws="+ws);
 	
    function wsOpen(){
       //웹소켓 전송시 현재 방의 번호를 넘겨서 보낸다.
       ws = new WebSocket("ws://" + location.host + "/cowork/chating/"+roomNumber);
-      wsEvt();
-      console.log("wsOpen");
-   }
-      
-   function wsEvt() {
-      ws.onopen = function(data){
-         //소켓이 열리면 동작
-      console.log("onopen");
-      }
-   }
-   
-   
-   
-   $('.chat-list li').on('dblclick', function(){
-      console.log("dblclick");
-      yourid = $(this).find("#user_id").val()
-      yourname = $(this).find("#user_name").val()
       
       
-      console.log("yourid="+yourid);
-      getRoom(yourid);
-      ws = new WebSocket("ws://" + location.host + "/cowork/chating/" + roomNumber);
-      //====================================위에 지우면 안됨
-      //myname
-      
-      console.log(myname+yourid+yourname);
-      
-      
-   }) //$("#total").on('click', '#userList', function() {    
-      
-      
-/*    document.addEventListener("keydown", function(e){
-         if(e.keyCode == 13){ //enter press
-            send();
-         }
-      });
- */  
-   
-   $("#btnSend").on("click", function(){
-       console.log("click");
+     ws.onmessage = function(data) {
+			//메시지를 받으면 동작
+			var msg = data.data;
+			if(msg != null && msg.trim() != ''){
+				var d = JSON.parse(msg);
+				if(d.type == "getId"){
+					var si = d.sessionId != null ? d.sessionId : "";
+					if(si != ''){
+						sessionId = si;
+					}
+				}else if(d.type == "message"){
+					
+					
+      if(d.sessionId == sessionId){
       const content = $(".chat-input").val().trim();
-      if(!content){
-         alert('내용을 입력하세요')
-         return false;
-      }
-      
-      //현재 시간
-      const currentTime = new Date().toLocaleTimeString();
-      
-      //내 메시지 전송
-      let myOutput = '';
+       let currentTime = new Date().toLocaleTimeString();
+      		let myOutput = '';
       myOutput += '<li class="right">'
       myOutput += ' <div class="conversation-list">'
       myOutput +=       '<div class="ctext-wrap">'
@@ -124,28 +110,65 @@ $(function(){
       myOutput += ' </div>'
       myOutput += '</li>'
       console.log(myOutput);
-      $(".simplebar-content").append(myOutput);
+      $("#fix > div.simplebar-wrapper > div.simplebar-mask > div > div > div").append(myOutput);
       $(".chat-input").val('');
-
+						//$("#chating").append("<p class='me'>나 :" + d.msg + "</p>");	
+					}else{
+						let yourOutput = '';
+				let currentTime = new Date().toLocaleTimeString();
+	 yourOutput += '<li>'
+      yourOutput += ' <div class="conversation-list">'
+      yourOutput +=       '<div class="ctext-wrap">'
+      yourOutput += '<div class="conversation-name">' + yourname +'</div>'
+      yourOutput += '<p>'
+      yourOutput += d.msg
+      yourOutput += '</p>'
+      yourOutput += '<p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i>' + currentTime + '</p>'
+      yourOutput += ' </div>'
+      yourOutput += ' </div>'
+      yourOutput += '</li>'
+						console.log("onmessage = " + yourOutput);
+     					 $("#fix > div.simplebar-wrapper > div.simplebar-mask > div > div > div").append(yourOutput);
+      					$(".chat-input").val('');
+					}
       
-      let yourOutput = '';
-      youroutput += ' <div class="conversation-list">'
-      youroutput +=       '<div class="ctext-wrap">'
-      youroutput += '<div class="conversation-name">' + yourname +'</div>'
-      youroutput += '<p>'
-      youroutput += content 
-      youroutput += '</p>'
-      youroutput += '<p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i>' + currentTime + '</p>'
-      youroutput += ' </div>'
-      youroutput += ' </div>'
-      youroutput += '</li>'
-      console.log(yourOutput);
-      $(".simplebar-content").append(yourOutput);
-      $(".chat-input").val('');
+				}//else if
+			}//if msg != null
+			
+			console.log($(".chat-conversation.p-3 ul").height());
+			$(".chat-conversation.p-3").animate({ scrollTop: $(".chat-conversation.p-3 ul").height() }, "fast");
+			
+		}//onmessage = function(data)
       
       
+      
+      wsEvt();
+      console.log("wsOpen");
+   }
+      
+   function wsEvt() {
+      ws.onopen = function(data){
+         //소켓이 열리면 동작
+      console.log("onopen");
+      }
+   }
+   
+   
+   document.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") { // enter key
+       send();
+      const content = $(".chat-input").val().trim();
+      if(!content){
+         alert('내용을 입력하세요')
+         return false;
+      }
+      
+      
+      
+	}     
       
    })  //$("#btnSend").on("click", function(){
+      
       
       
       
@@ -153,12 +176,17 @@ $(function(){
       function send() {
       var option ={
          type: "message",
-         roomNumber: $("#roomNumber").val(),
-         sessionId : $("#sessionId").val(),
-         myname : $("#myname").val(),
+         roomNumber: roomNumber.toString(),
+         sessionId :sessionId,
+         myname : myname,
          msg : $(".chat-input").val()
       }
       ws.send(JSON.stringify(option))
+      console.log("roomNumber =" + roomNumber);
+      console.log("sessionId =" + $("#sessionId").val());
+      console.log("myname =" + myname);
+      console.log(".chat-input =" + $(".chat-input").val());
+      
    }
       
    

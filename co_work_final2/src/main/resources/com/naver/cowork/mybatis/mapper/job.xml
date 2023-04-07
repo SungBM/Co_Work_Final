@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.JobMapper">
+
+	<select id="jobAll" resultType="job">
+		select job_no, job_name, job_order
+		from job
+		order by job_order
+	</select>
+
+    <select id="jmaxNo" resultType="Integer">
+		select NVL(MAX(job_no), 0) + 1
+		from job
+	</select>
+
+	<delete id="delete">
+        delete
+        from job
+        where job_no = #{job_no}
+    </delete>
+
+	<insert id="insert">
+        insert into job
+        values (job_seq.NEXTVAL, #{job_name}, (select NVL(MAX(job_order), 0) + 1
+                                               from job))
+    </insert>
+
+	<select id="jobName" resultType="string">
+		select job_name
+		from job
+		where job_no = (select user_job from user_info where user_id=#{user_id})
+	</select>
+	<select id="jobList" resultType="job">
+		select job_no, job_name
+		from job
+	</select>
+	<select id="jobNo" resultType="int">
+		select job_no
+		from job
+		where job_name = #{job_name}
+	</select>
+</mapper>

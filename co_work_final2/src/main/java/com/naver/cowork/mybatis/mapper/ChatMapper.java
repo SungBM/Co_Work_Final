@@ -18,6 +18,7 @@ public interface ChatMapper {
 	
 	public int createRoom(Map<String, Object> map);
 	
+	
 }
 
 
