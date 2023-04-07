@@ -29,6 +29,7 @@
   display: block; 
 }
 </style>
+<body>
 <div class="page-content">
 	<div class="container-fluid">
 		
@@ -43,8 +44,7 @@
 					    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dropdownButton">▼</button>
 					    <div class="dropdown-menu" aria-labelledby="dropdownButton">
 					      <a class="dropdown-item" href="#" data-filter="항목 1">내 업무</a>
-					      <a class="dropdown-item" href="#" data-filter="항목 2">요청한 업무</a>
-					      <a class="dropdown-item" href="#" data-filter="항목 3">전체</a>
+					      <a class="dropdown-item" href="#" data-filter="항목 2">전체</a>
 					    </div>
 					  </div>
 					  <input type="text" class="form-control" id="keyword" name="keyword" onkeyup="filterResults()" placeholder="업무명 또는 업무번호를 입력하세요">
@@ -148,7 +148,6 @@
 	</div>
 	<!-- container-fluid -->
 <!-- End Page-content -->
-<body>
 </body>
 <script>
 
@@ -184,28 +183,83 @@ $(document).ready(function(){
 
 
 function filterResults() {
-	  var input, filter, table, tr, td, i, txtValue;
-	  input = document.getElementById("keyword");
-	  filter = input.value.toUpperCase();
-	  table = document.getElementById("myTable");
-	  tr = table.getElementsByTagName("tr");
-	  
-	  var dropdownMenu = document.querySelector('.dropdown-menu');
-	  dropdownMenu.addEventListener('click', function (e) {
-	    var filterValue = e.target.dataset.filter.toUpperCase();
-	    for (i = 0; i < tr.length; i++) {
-	      td = tr[i].getElementsByTagName("td")[0];
-	      if (td) {
-	        txtValue = td.textContent || td.innerText;
-	        if (txtValue.toUpperCase().indexOf(filterValue) > -1 && txtValue.toUpperCase().indexOf(filter) > -1) {
-	          tr[i].style.display = "";
-	        } else {
-	          tr[i].style.display = "none";
-	        }
-	      }
-	    }
-	  });
-	}
+    var input = document.getElementById("keyword");
+    var filter = input.value.toUpperCase();
+    var table = document.getElementsByTagName("table")[0];
+    var tr = table.getElementsByTagName("tr");
+    
+    for (var i = 0; i < tr.length; i++) {
+        var td1 = tr[i].getElementsByTagName("td")[0];
+        var td2 = tr[i].getElementsByTagName("td")[7];
+        if (td1 || td2) {
+            var txtValue1 = td1.textContent || td1.innerText;
+            var txtValue2 = td2.textContent || td2.innerText;
+            if (txtValue1.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }       
+    }
+}
+
+const dropdownButton = document.querySelector('#dropdownButton');
+dropdownButton.addEventListener('click', (event) => {
+  const filter = event.target.dataset.filter;
+  if (filter === '항목 1') {
+    const projects = getProjectsByCreatorId('HTA123');
+    renderProjects(projects);
+  } else if (filter === '항목 2') {
+    const projects = getAllProjects();
+    renderProjects(projects);
+  }
+});
+
+function getProjectsByCreatorId(creatorId) {
+  const projects = getAllProjects();
+  return projects.filter((project) => project.PRO_BOARD_CREATER_ID === creatorId);
+}
+
+function getAllProjects() {
+  $.ajax({
+    url: "/projects/all",
+    type: "GET",
+    dataType: "json",
+    success: function (data) {
+      renderProjects(data);
+    },
+    error: function (xhr, status, error) {
+      console.error(error);
+    },
+  });
+}
+
+function renderProjects(projects) {
+  var tbody = $(".project-list tbody");
+  tbody.empty();
+  for (var i = 0; i < projects.length; i++) {
+    var project = projects[i];
+    var row = $("<tr>");
+    row.append($("<td>").text(project.title));
+    row.append($("<td>").text(project.status));
+    row.append($("<td>").text(project.priority));
+    row.append($("<td>").text(project.assignee));
+    row.append($("<td>").text(project.start));
+    row.append($("<td>").text(project.deadline));
+    row.append($("<td>").text(project.create_date));
+    row.append($("<td>").text(project.number));
+    tbody.append(row);
+  }
+}
+
+const myTasksButton = document.querySelector('#myTasksButton');
+myTasksButton.addEventListener('click', (event) => {
+  const creatorId = event.target.dataset.creatorId;
+  const projects = getProjectsByCreatorId(creatorId);
+  renderProjects(projects);
+});
+
+
 
 
 </script>

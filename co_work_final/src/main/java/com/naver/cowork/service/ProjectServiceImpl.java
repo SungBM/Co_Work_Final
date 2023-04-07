@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -211,10 +212,47 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Proboard_check_user> getProBoardCheckUserList(String id) {
 		return dao.getProBoardCheckUserList(id);
 	}
+
+	@Override
+	public List<Project_Board> getProjectBoardList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int insertProjectBoard(Project_Board board) {
+		return dao.insertProjectBoard(board);
+		
+	}
+
+	@Override
+	 public List<Project> searchByKeyword(String keyword) {
+        return dao.searchByKeyword(keyword);
+	}
 	
+	@Override
+    public List<Project> getAllProjects() {
+        return dao.findAll();
+    }
 	
+	 @Override
+	    public List<Project> getProjectsByCreatorId(String creatorId) {
+	        return dao.findByProBoardCreaterId(creatorId);
+	    }
+
+	    @Override
+	    public List<Project> getFilteredProjects(String filter) {
+	        List<Project> projects;
+	        if (filter.equals("항목 1")) {
+	            projects = getProjectsByCreatorId("HTA123");
+	        } else {
+	            projects = getAllProjects();
+	        }
+	        return projects;
+	    }
+
 	
-	
+
 }
 
 

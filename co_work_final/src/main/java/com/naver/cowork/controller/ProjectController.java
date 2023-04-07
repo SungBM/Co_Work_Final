@@ -10,13 +10,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jasper.compiler.BeanRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.util.FileCopyUtils;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +35,7 @@ import com.naver.cowork.domain.MySaveFolder;
 import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
-
+import com.naver.cowork.mybatis.mapper.ProjectMapper;
 import com.naver.cowork.service.PJPriorityEnum;
 import com.naver.cowork.service.PJStateEnum;
 
@@ -116,13 +117,16 @@ public class ProjectController {
 	
 	@RequestMapping(value = "/ProjectAddProcess" , method =  RequestMethod.GET)
 	public ModelAndView insert(ModelAndView mv , Project project){
-		System.out.println(project.getProject_name());
-		System.out.println("프로젝트 모달 컨트롤러 들어옴");
-		
-		
-		mv.setViewName("project/project_add_modal");
-		return mv;
+	    System.out.println(project.getProject_name());
+	    System.out.println("프로젝트 모달 컨트롤러 들어옴");
+
+	    // 데이터베이스에 프로젝트 추가하는 코드 작성
+	    projectService.insert(project);
+	    
+	    mv.setViewName("project/project_add_modal");
+	    return mv;
 	}
+
 	
 
 	@RequestMapping(value = "/ProjectDetailList" , method =  RequestMethod.GET)
@@ -145,13 +149,71 @@ public class ProjectController {
 	}
 	
 	@PostMapping("/submit")
-	public String submitPost(@RequestParam("title") String title,
-	                         @RequestParam("content") String content,
-	                         @RequestParam("filename") MultipartFile file) {
+	public String submit(Model model, Project_Board board, 
+						 @RequestParam("PRO_BOARD_SUBJECT") String PRO_BOARD_SUBJECT, 
+	                     @RequestParam("PRO_BOARD_CONTENT") String PRO_BOARD_CONTENT,
+	                     @RequestParam("uploadfile") MultipartFile uploadfile) {
+	    model.addAttribute("PRO_BOARD_SUBJECT", PRO_BOARD_SUBJECT);
+	    model.addAttribute("PRO_BOARD_CONTENT", PRO_BOARD_CONTENT);
+	    model.addAttribute("uploadfile", uploadfile);
+	    //board.setPRO_BOARD_CONTENT(PRO_BOARD_CONTENT);
+	    //board.setPRO_BOARD_FILE(null);
+	    projectService.insertProjectBoard(board);
+	    System.out.println(PRO_BOARD_SUBJECT);
+	    return "redirect:/project/ProjectDetailList";
+	}
+	
+	@PostMapping("/add")
+	//@RequestMapping(value="/add",method=RequestMethod.POST)
+	public String add(Project_Board board, HttpServletRequest request)
+		throws Exception {
+		
+		MultipartFile uploadfile = board.getUploadfile();
+		
+		if(!uploadfile.isEmpty()) {
+			String fileName = uploadfile.getOriginalFilename();//원래 파일명
+			board.setBOARD_ORIGINAL(fileName);//원래 파일명 저장
+			
+			String saveFolder = mysavefolder.getSavefolder();
+			String fileDBName = fileDBName(fileName, saveFolder);
+			Logger.info("fileDBName = " + fileDBName);
+			
+			// transferTo(File path) : 업로드한 파일을 매개변수의 경로에 저장합니다.
+			uploadfile.transferTo(new File(saveFolder + fileDBName));
+			Logger.info("transfeTo path = " + saveFolder + fileDBName);
+			// 바뀐 파일명으로 저장
+			board.setPRO_BOARD_FILE(fileDBName);
+		}
+		
+		projectService.insertProjectBoard(board); // 저장메서드 호출
+		//Logger.info(board.toString());//selectKey로 정의한 BOARD_NUM 값 확인해 봅니다.
+		return "redirect:/project/ProjectDetailList";
+	}
 
-	    // 프로젝트 상세 페이지로 리다이렉트
-	    return "redirect:/project/project_detail_List/";
-  }
+
+	private String fileDBName(String fileName, String saveFolder) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@GetMapping("/search")
+	public String searchProject(@RequestParam("keyword") String keyword, Model model) {
+	    List<Project> projectDetails = projectService.searchByKeyword(keyword);
+	    model.addAttribute("ProjectDetailList", projectDetails);
+	    return "/ProjectDetailList";
+	}
+	
+	@GetMapping("/all")
+    public List<Project> getAllProjects() {
+        return projectService.getAllProjects();
+    }
+
+    @GetMapping("/{PRO_BOARD_CREATER_ID}")
+    public List<Project> getProjectsByCreatorId(@PathVariable String creatorId) {
+        return projectService.getProjectsByCreatorId(creatorId);
+    }
+	
+
 
 	@RequestMapping(value = "projectDetailFeed", method = RequestMethod.GET)
 	public ModelAndView projectDetailFeed(ModelAndView mv, @RequestParam(value = "id")String id,

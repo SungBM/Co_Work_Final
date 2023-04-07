@@ -17,9 +17,12 @@ import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.domain.Project_User;
+import com.naver.cowork.mybatis.mapper.ProjectMapper;
 
 @Service
 public interface ProjectService {
+	
+	public int insertProjectBoard(Project_Board board);
 	
 	public void close(PreparedStatement pstmt, Connection conn);
 
@@ -57,10 +60,12 @@ public interface ProjectService {
 	public List<Project_Board> getProjectDetailList();
 	
 
+    public List<Project_Board> getProjectBoardList();
+	
+
 	//@Transactional
 	//public Project insert(Project p) {
-		
-	//}
+	
 
 	public int getDayCount(String startDate, String endDate);
 	//public Project inser_user(Project_user u);
@@ -78,4 +83,18 @@ public interface ProjectService {
 
 	public List<Proboard_check_user> getProBoardCheckUserList(String id);
 
+	public List<Project> searchByKeyword(String keyword);
+	
+	public List<Project> getAllProjects();
+	
+	public List<Project> getProjectsByCreatorId(String creatorId);
+	
+	public List<Project> getFilteredProjects(String filter);
 }
+
+
+
+		
+
+
+

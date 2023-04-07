@@ -18,6 +18,8 @@ import com.naver.cowork.domain.Project_User;
 @Mapper
 public interface ProjectMapper {
 	
+	public int insertProjectBoard(Project_Board board);
+	
 	public List<Project> getProjectList(String id);
 
 	public Project insert(Project p);
@@ -26,8 +28,9 @@ public interface ProjectMapper {
 	public Project insert_user(Project p);
 	
 	public List<Project_Board> getProjectDetailList();
-	
 
+    public List<Project_Board> getProjectBoardList();
+	
 
 	public int getListCount();
 
@@ -62,6 +65,16 @@ public interface ProjectMapper {
 	public void updateUserCheckInfo(HashMap<String, Object> map);
 
 	public void updateUserCheckInfoClear(HashMap<String, Object> map);
+
+	public List<Project> searchByKeyword(String keyword);
+
+	public List<Project> findAll();
+
+	public List<Project> findByProBoardCreaterId(String creatorId);
+
+
+
+
 
 }
 
