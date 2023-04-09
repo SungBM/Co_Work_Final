@@ -32,5 +32,12 @@ public class Member {
     private String originalfile;
     private String dept_name;
     private String job_name;
+    
+    
+	public String getUser_join_date() {
+		return user_join_date.substring(0, 10);
+	}
 
+    
+    
 }

@@ -89,8 +89,10 @@
                         <div class="col-10 mt-5  align-items-center container-fluid">
                             <label class="form-label" for="user_phone"><b>연락처</b></label>
                             <div class="input-group" id="user_phone">
-                                <input type="text" class="form-control" name="user_phone"
-                                       value="${memberinfo.user_phone}">
+<%--                                <input type="text" class="form-control" name="user_phone"
+                                       value="${memberinfo.user_phone}"> --%>
+                                       <input id="input-mask" class="form-control input-mask" name="user_phone" data-inputmask="'mask': '999-9999-9999'" im-insert="true" value="${memberinfo.user_phone}">
+                                       
                             </div>
                         </div>
 
@@ -129,7 +131,8 @@
                         <div class="col-10 mt-5  align-items-center container-fluid">
                             <label class="form-label" for="user_fax"><b>팩스번호</b></label>
                             <div class="input-group" id="user_fax">
-                                <input type="text" class="form-control" name="user_fax" value="${memberinfo.user_fax}">
+<%--                                 <input type="text" class="form-control" name="user_fax" value="${memberinfo.user_fax}"> --%>
+                                <input id="input-mask" class="form-control input-mask" name="user_fax" data-inputmask="'mask': '999-999-9999'" im-insert="true" value="${memberinfo.user_fax}">
                             </div>
                         </div>
 
@@ -156,6 +159,8 @@
     <!-- End Page-content -->
 </div>
 </body>
+<script src="../assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<script src="../assets/js/pages/form-mask.init.js"></script>
 <script>
     $(function () {
 

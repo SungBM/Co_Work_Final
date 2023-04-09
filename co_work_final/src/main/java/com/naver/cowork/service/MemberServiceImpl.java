@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.Member;
 import com.naver.cowork.mybatis.mapper.MemberMapper;
 
@@ -83,18 +84,19 @@ public class MemberServiceImpl implements MemberService {
 //		return dao.getSearchListCount(map);
 //	}
 
-    @Override
-    public List<Member> members() {
-        return dao.members();
+    public List<Member> members(Criteria cri){
+        return dao.members(cri);
+    }
+    
+    public int getCount() {
+    	return dao.getCount();
     }
 
-    @Override
     public int insert(Member m) {
         // TODO Auto-generated method stub
         return dao.insert(m);
     }
 
-    @Override
     public int isId(String id) {
         Member rmemer = dao.isId(id);
         return (rmemer == null) ? -1 : 1;

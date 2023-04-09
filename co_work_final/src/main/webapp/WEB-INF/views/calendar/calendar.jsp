@@ -5,52 +5,51 @@
   Time: 오후 4:51
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <jsp:include page="../main/header.jsp"/>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-    <title>일정</title>
-    <style>
-        .fc-day a {
-            color: black;
-        }
+<jsp:include page="../main/header.jsp" />
+<script
+	src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+<title>일정</title>
+<style>
+.fc-day a {
+	color: black;
+}
 
-        .fc-daygrid-event {
-            background-color: #FFFFFF;
-        }
+.fc-daygrid-event {
+	background-color: #FFFFFF;
+}
 
-        .fc-h-event {
-            height: 20px;
+.fc-h-event {
+	height: 20px;
+}
 
-        }
+.fc-event-time, .fc-event-title {
+	margin: -3px;
+}
 
-        .fc-event-time, .fc-event-title {
-            margin: -3px;
-        }
+.fc-day-sat a {
+	color: blue;
+	text-decoration: none;
+}
 
-        .fc-day-sat a {
-            color: blue;
-            text-decoration: none;
-        }
+.fc-day-sun a {
+	color: red;
+	text-decoration: none;
+}
 
-        .fc-day-sun a {
-            color: red;
-            text-decoration: none;
-        }
-
-        .modal-footer {
-            justify-content: space-between;
-        }
-
-
-    </style>
-    <script>
+.modal-footer {
+	justify-content: space-between;
+}
+</style>
+<script>
         function startChange() {
             var start = $('#start').val();
             var start1 = $('#start1').val();
@@ -108,7 +107,26 @@
             $('#end1').val(end1);
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function () {        		
+        	
+        	var datalist = [];
+            // 콜백함수 event에 직접적으로 ajax넣게되면 데이터가 넘어오기전에 
+            // 실행이 되므로 값이 안나타날수있다
+            $.ajax({
+                url: '../member/calSelect',
+                type:"Get",
+                dataType: "json",
+                success: function(result) {
+                     $.each(result, function(index, value){     
+                           datalist.push(value);
+                           openCalander(datalist); // 이 부분
+                           console.log(value);
+                     });
+                }
+            }); 
+
+        	
+        	
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl,
                 {
@@ -294,6 +312,8 @@
                     $("#start, #end").attr("readonly", true);
                 }
             })  // #allday end
+            
+
 
             $(document).ready(function () {
                 //시작일자 변경 시 종료일자 +30분 설정, 시작날짜 변경 시 종료날짜 변경
@@ -316,326 +336,331 @@
                 });//datepicker end
 
                 // 일정 체크박스에 따른 데이터 표현
-                // $("input[type=checkbox][name=cal_type]").change(function () {
-                //     var cal_type = [];
-                //     $("input[type=checkbox][name=cal_type]:checked").each(function (i) {
-                //         cal_type.push($(this).val());
-                //     })
-                //     console.log(cal_type)
-                //
-                //     $.ajax({
-                //         url: '../member/calSelect',
-                //         data: {
-                //             "cal_type": cal_type
-                //         },
-                //         traditional: true,
-                //         success: function (resp) {
-                //             console.log(resp);
-                //         }
-                //     }) // ajax end
-                // }) // change end
+                 $("input[type=checkbox][name=cal_type]").change(function () {
+                     var cal_type = [];
+                     $("input[type=checkbox][name=cal_type]:checked").each(function (i) {
+                         cal_type.push($(this).val());
+                     })
+                     console.log(cal_type)
+                
+                     $.ajax({
+                         url: '../member/calSelect',
+                         data: {
+                             "cal_type": cal_type
+                         },
+                         traditional: true,
+                         success: function (resp) {
+                             calendar.render(resp);
+                         }
+                     }) // ajax end
+                 }) // change end
             }) // document end
         }) // addEventListener end
     </script>
-    <style>
-        .datepicker {
-            z-index: 1600 !important; /* has to be larger than 1050 */
-        }
+<style>
+.datepicker {
+	z-index: 1600 !important; /* has to be larger than 1050 */
+}
 
-        #start[readonly], #end[readonly] {
-            pointer-events: none;
-        }
-
-    </style>
+#start[readonly], #end[readonly] {
+	pointer-events: none;
+}
+</style>
 </head>
 <body>
-<div class="main-content">
-    <div class="page-content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0 font-size-18">일정</h4>
+	<div class="main-content">
+		<div class="page-content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<div
+							class="page-title-box d-sm-flex align-items-center justify-content-between">
+							<h4 class="mb-sm-0 font-size-18">일정</h4>
 
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 col-xl-3">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-xl-3">
 
-                    <!-- Simple card -->
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-grid">
-                                <button class="btn font-16 btn-primary" id="btn-new-event"
-                                        onclick="$('#myModal').modal('show')"><i
-                                        class="mdi mdi-plus-circle-outline"></i> 일정생성
-                                </button>
-                            </div>
-                            <div id="external-events" class="mt-4">
-                                <div class="external-event bg-success text-white" data-class="bg-success">
-                                    <input class="form-check-input" type="checkbox" name="cal_type" value="P"
-                                           id="formCheckcolor2" checked="">
-                                    <label class="form-check-label" for="formCheckcolor2">
-                                        개인 일정
-                                    </label>
-                                </div>
-                                <div class="external-event bg-info mt-2 text-white" data-class="bg-info">
-                                    <input class="form-check-input" type="checkbox" name="cal_type" value="C"
-                                           id="formCheckcolor3" checked="">
-                                    <label class="form-check-label" for="formCheckcolor3">
-                                        부서 일정
-                                    </label>
-                                </div>
-                            </div>
+						<!-- Simple card -->
+						<div class="card">
+							<div class="card-body">
+								<div class="d-grid">
+									<button class="btn font-16 btn-primary" id="btn-new-event"
+										onclick="$('#myModal').modal('show')">
+										<i class="mdi mdi-plus-circle-outline"></i> 일정생성
+									</button>
+								</div>
+								<div id="external-events" class="mt-4">
+									<div class="external-event bg-success text-white"
+										data-class="bg-success">
+										<input class="form-check-input" type="checkbox"
+											name="cal_type" value="P" id="formCheckcolor2" checked="">
+										<label class="form-check-label" for="formCheckcolor2">
+											개인 일정 </label>
+									</div>
+									<div class="external-event bg-info mt-2 text-white"
+										data-class="bg-info">
+										<input class="form-check-input" type="checkbox"
+											name="cal_type" value="C" id="formCheckcolor3" checked="">
+										<label class="form-check-label" for="formCheckcolor3">
+											부서 일정 </label>
+									</div>
+								</div>
 
-                            <div class="row justify-content-center mt-5">
-                                <img src="assets/images/verification-img.png" alt="" class="img-fluid d-block">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card col-9">
-                    <div class="card-body">
-                        <div id='calendar'></div>
+								<div class="row justify-content-center mt-5">
+									<img src="assets/images/verification-img.png" alt=""
+										class="img-fluid d-block">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card col-9">
+						<div class="card-body">
+							<div id='calendar'></div>
 
-                        <!-- insertModal -->
-                        <div class="modal fade insertModal" id="myModal">
-                            <div class="modal-dialog">
-                                <div class="modal-content" style="z-index: 10000 !important; width: 600px">
+							<!-- insertModal -->
+							<div class="modal fade insertModal" id="myModal">
+								<div class="modal-dialog">
+									<div class="modal-content"
+										style="z-index: 10000 !important; width: 600px">
 
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">일정 등록</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </button>
-                                    </div>
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title">일정 등록</h4>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
 
-                                    <form action="../member/calAdd" method="post">
-                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+										<form action="../member/calAdd" method="post">
+											<input type="hidden" name="${_csrf.parameterName}"
+												value="${_csrf.token}">
 
-                                        <!-- Modal body -->
-                                        <div class="modal-body">
-                                            <div class="form-group mb-3">
-                                                <input class="form-check-input" type="radio" name="cal_type"
-                                                       id="formRadios1" checked value="P">
-                                                <label class="form-check-label" for="formRadios1">
-                                                    개인 일정
-                                                </label>
-
-
-                                                <input class="form-check-input" type="radio" name="cal_type"
-                                                       id="formRadios2" value="C">
-                                                <label class="form-check-label" for="formRadios2">
-                                                    회사 일정
-                                                </label>
+											<!-- Modal body -->
+											<div class="modal-body">
+												<div class="form-group mb-3">
+													<input class="form-check-input" type="radio"
+														name="cal_type" id="formRadios1" checked value="P">
+													<label class="form-check-label" for="formRadios1">
+														개인 일정 </label> <input class="form-check-input" type="radio"
+														name="cal_type" id="formRadios2" value="C"> <label
+														class="form-check-label" for="formRadios2"> 회사 일정
+													</label>
 
 
-                                            </div>
+												</div>
 
-                                            <div class="form-group">
-                                                <input type="textbox" class="form-control" placeholder="제목을 입력하세요."
-                                                       id="cal_title" name="cal_title">
-                                            </div>
+												<div class="form-group">
+													<input type="textbox" class="form-control"
+														placeholder="제목을 입력하세요." id="cal_title" name="cal_title">
+												</div>
 
-                                            <div class="row" style="margin: 0 auto; text-align: center">
-                                                <div class="mt-3 col-1"><i class="bx bx-time-five fa-2x"></i></div>
-                                                <div class="mt-4 col-md-3" id="startdate">
-                                                    <input class="datepicker" name="cal_start_date" type="text"
-                                                           id="datepicker1" style="width: 100%"></div>
-                                                <div class="col-md-2 mt-4">
-                                                    <select class="form-control" id="start" name="cal_start_time"
-                                                            readonly="">
-                                                        <c:set var="breakPoint" value="0"/>
-                                                        <c:forEach var="i" begin="0" end="23">
-                                                            <c:forEach var="j" begin="0" end="3">
-                                                                <c:if test="${(i == 24) && (j == 3)}">
-                                                                    <c:set var="breakPoint" value="1"/>
-                                                                </c:if>
-                                                                <c:if test="${breakPoint==0}">
-                                                                    <option value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
-                                                                        <fmt:formatNumber pattern="00"
-                                                                                          value="${i}"/>:<fmt:formatNumber
-                                                                            pattern="00"
-                                                                            value="${j*15}"/></option>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
+												<div class="row" style="margin: 0 auto; text-align: center">
+													<div class="mt-3 col-1">
+														<i class="bx bx-time-five fa-2x"></i>
+													</div>
+													<div class="mt-4 col-md-3" id="startdate">
+														<input class="datepicker" name="cal_start_date"
+															type="text" id="datepicker1" style="width: 100%">
+													</div>
+													<div class="col-md-2 mt-4">
+														<select class="form-control" id="start"
+															name="cal_start_time" readonly="">
+															<c:set var="breakPoint" value="0" />
+															<c:forEach var="i" begin="0" end="23">
+																<c:forEach var="j" begin="0" end="3">
+																	<c:if test="${(i == 24) && (j == 3)}">
+																		<c:set var="breakPoint" value="1" />
+																	</c:if>
+																	<c:if test="${breakPoint==0}">
+																		<option
+																			value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
+																			<fmt:formatNumber pattern="00" value="${i}" />:
+																			<fmt:formatNumber pattern="00" value="${j*15}" /></option>
+																	</c:if>
+																</c:forEach>
+															</c:forEach>
+														</select>
+													</div>
 
-                                                <div class="mt-4 col-md-1"><span class="bar"> _ </span></div>
+													<div class="mt-4 col-md-1">
+														<span class="bar"> _ </span>
+													</div>
 
-                                                <div class="mt-4 col-md-3" id="enddate">
-                                                    <input class="datepicker" name="cal_end_date" type="text"
-                                                           id="datepicker2" style="width: 100%"></div>
+													<div class="mt-4 col-md-3" id="enddate">
+														<input class="datepicker" name="cal_end_date" type="text"
+															id="datepicker2" style="width: 100%">
+													</div>
 
-                                                <div class="col-md-2 mt-4">
-                                                    <select class="form-control" id="end" name="cal_end_time"
-                                                            readonly="">
-                                                        <c:set var="breakPoint" value="0"/>
-                                                        <c:forEach var="i" begin="0" end="23">
-                                                            <c:forEach var="j" begin="0" end="3">
-                                                                <c:if test="${(i == 24) && (j == 3)}">
-                                                                    <c:set var="breakPoint" value="1"/>
-                                                                </c:if>
-                                                                <c:if test="${breakPoint==0}">
-                                                                    <option value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
-                                                                        <fmt:formatNumber pattern="00"
-                                                                                          value="${i}"/>:<fmt:formatNumber
-                                                                            pattern="00"
-                                                                            value="${j*15}"/></option>
-                                                                </c:if>
-                                                            </c:forEach>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
+													<div class="col-md-2 mt-4">
+														<select class="form-control" id="end" name="cal_end_time"
+															readonly="">
+															<c:set var="breakPoint" value="0" />
+															<c:forEach var="i" begin="0" end="23">
+																<c:forEach var="j" begin="0" end="3">
+																	<c:if test="${(i == 24) && (j == 3)}">
+																		<c:set var="breakPoint" value="1" />
+																	</c:if>
+																	<c:if test="${breakPoint==0}">
+																		<option
+																			value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
+																			<fmt:formatNumber pattern="00" value="${i}" />:
+																			<fmt:formatNumber pattern="00" value="${j*15}" /></option>
+																	</c:if>
+																</c:forEach>
+															</c:forEach>
+														</select>
+													</div>
 
-                                            </div>
+												</div>
 
-                                            <div class="form-group mt-3" style="margin-left: 65px">
-                                                <div class="form-check mb-3 ">
-                                                    <input class="form-check-input" type="checkbox" id="allday"
-                                                           name="cal_allday" value="true" checked>
-                                                    <label class="form-check-label" for="allday">
-                                                        종일
-                                                    </label>
-                                                </div>
-                                            </div>
+												<div class="form-group mt-3" style="margin-left: 65px">
+													<div class="form-check mb-3 ">
+														<input class="form-check-input" type="checkbox"
+															id="allday" name="cal_allday" value="true" checked>
+														<label class="form-check-label" for="allday"> 종일 </label>
+													</div>
+												</div>
 
-                                            <div class="form-group row">
-                                                <div class="col-md-2">
-                                                    <label for="cal_content">내용</label></div>
-                                                <div class="col-md-10">
-                                                    <textarea class="form-control" rows="5" id="cal_content"
-                                                              name="cal_content" style="resize: none;"
-                                                              placeholder="일정에 필요한 설명을 남기세요."></textarea>
-                                                </div>
-                                            </div>
+												<div class="form-group row">
+													<div class="col-md-2">
+														<label for="cal_content">내용</label>
+													</div>
+													<div class="col-md-10">
+														<textarea class="form-control" rows="5" id="cal_content"
+															name="cal_content" style="resize: none;"
+															placeholder="일정에 필요한 설명을 남기세요."></textarea>
+													</div>
+												</div>
 
-                                        </div>
-                                        <!-- Modal footer -->
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary  float-right">저장
-                                            </button>
-                                            <button type="button" class="btn btn-light waves-effect"
-                                                    data-bs-dismiss="modal" aria-label="Close">닫기
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="modal fade insertModal" id="eventModal">
-                            <div class="modal-dialog">
-                                <div class="modal-content" style="z-index: 10000 !important; width: 600px">
-
-                                    <!-- Modal Header -->
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">일정 확인</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </button>
-                                    </div>
-                                    <table class="table">
-                                        <tr>
-                                            <th style="width: 80px">일정 타입</th>
-                                            <td><input class="form-control" type="text" value="" id="caltype"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>제목</th>
-                                            <td><input class="form-control" type="text" id="caltitle" value=""></td>
-                                        </tr>
-                                        <tr>
-                                            <th style="margin: 0 auto">날짜</th>
-                                            <td>
-                                                <div class="row">
-                                                    <div class="mt-4 col-md-3 mb-3" id="startdate">
-                                                        <input class="datepicker" name="cal_start_date" type="text"
-                                                               id="datepicker3" style="width: 100%"></div>
-                                                    <div class="col-md-2 mt-4">
-                                                        <select class="form-control" id="start1" name="cal_start_time">
-                                                            <c:set var="breakPoint" value="0"/>
-                                                            <c:forEach var="i" begin="0" end="23">
-                                                                <c:forEach var="j" begin="0" end="3">
-                                                                    <c:if test="${(i == 24) && (j == 3)}">
-                                                                        <c:set var="breakPoint" value="1"/>
-                                                                    </c:if>
-                                                                    <c:if test="${breakPoint==0}">
-                                                                        <option value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
-                                                                            <fmt:formatNumber pattern="00"
-                                                                                              value="${i}"/>:<fmt:formatNumber
-                                                                                pattern="00"
-                                                                                value="${j*15}"/></option>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mt-4 col-md-1"><span class="bar"> _ </span></div>
-                                                    <div class="mt-4 col-md-3" id="enddate">
-                                                        <input class="datepicker" name="cal_end_date" type="text"
-                                                               id="datepicker4" style="width: 100%"></div>
-                                                    <div class="col-md-2 mt-4">
-                                                        <select class="form-control" id="end1" name="cal_end_time">
-                                                            <c:set var="breakPoint" value="0"/>
-                                                            <c:forEach var="i" begin="0" end="23">
-                                                                <c:forEach var="j" begin="0" end="3">
-                                                                    <c:if test="${(i == 24) && (j == 3)}">
-                                                                        <c:set var="breakPoint" value="1"/>
-                                                                    </c:if>
-                                                                    <c:if test="${breakPoint==0}">
-                                                                        <option value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
-                                                                            <fmt:formatNumber pattern="00"
-                                                                                              value="${i}"/>:<fmt:formatNumber
-                                                                                pattern="00"
-                                                                                value="${j*15}"/></option>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:forEach>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>내용</th>
-                                            <td><input class="form-control" type="text" id="calcontent" value=""></td>
-                                        </tr>
-
-                                    </table>
+											</div>
+											<!-- Modal footer -->
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-primary  float-right">저장
+												</button>
+												<button type="button" class="btn btn-light waves-effect"
+													data-bs-dismiss="modal" aria-label="Close">닫기</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
 
 
-                                    <!-- Modal footer -->
-                                    <div class="modal-footer">
-                                        <div>
-                                            <button type="button" class="btn btn-danger" id="delbutton"
-                                                    style="float: left;">삭제
-                                            </button>
-                                        </div>
-                                        <div>
-                                            <button type="button" class="btn btn-warning" id="modibutton">수정
-                                            </button>
-                                            <button type="button" class="btn btn-light waves-effect"
-                                                    data-bs-dismiss="modal" aria-label="Close">닫기
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+							<div class="modal fade insertModal" id="eventModal">
+								<div class="modal-dialog">
+									<div class="modal-content"
+										style="z-index: 10000 !important; width: 600px">
 
-                        </div>
-                    </div>
-                </div>
-                <!-- end row -->
-                <!-- container-fluid -->
-            </div>
-            <!-- End Page-content -->
-        </div>
-        <!-- end main content-->
-    </div>
+										<!-- Modal Header -->
+										<div class="modal-header">
+											<h4 class="modal-title">일정 확인</h4>
+											<button type="button" class="btn-close"
+												data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<table class="table">
+											<tr>
+												<th style="width: 80px">일정 타입</th>
+												<td><input class="form-control" type="text" value=""
+													id="caltype"></td>
+											</tr>
+											<tr>
+												<th>제목</th>
+												<td><input class="form-control" type="text"
+													id="caltitle" value=""></td>
+											</tr>
+											<tr>
+												<th style="margin: 0 auto">날짜</th>
+												<td>
+													<div class="row">
+														<div class="mt-4 col-md-3 mb-3" id="startdate">
+															<input class="datepicker" name="cal_start_date"
+																type="text" id="datepicker3" style="width: 100%">
+														</div>
+														<div class="col-md-2 mt-4">
+															<select class="form-control" id="start1"
+																name="cal_start_time">
+																<c:set var="breakPoint" value="0" />
+																<c:forEach var="i" begin="0" end="23">
+																	<c:forEach var="j" begin="0" end="3">
+																		<c:if test="${(i == 24) && (j == 3)}">
+																			<c:set var="breakPoint" value="1" />
+																		</c:if>
+																		<c:if test="${breakPoint==0}">
+																			<option
+																				value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
+																				<fmt:formatNumber pattern="00" value="${i}" />:
+																				<fmt:formatNumber pattern="00" value="${j*15}" /></option>
+																		</c:if>
+																	</c:forEach>
+																</c:forEach>
+															</select>
+														</div>
+														<div class="mt-4 col-md-1">
+															<span class="bar"> _ </span>
+														</div>
+														<div class="mt-4 col-md-3" id="enddate">
+															<input class="datepicker" name="cal_end_date" type="text"
+																id="datepicker4" style="width: 100%">
+														</div>
+														<div class="col-md-2 mt-4">
+															<select class="form-control" id="end1"
+																name="cal_end_time">
+																<c:set var="breakPoint" value="0" />
+																<c:forEach var="i" begin="0" end="23">
+																	<c:forEach var="j" begin="0" end="3">
+																		<c:if test="${(i == 24) && (j == 3)}">
+																			<c:set var="breakPoint" value="1" />
+																		</c:if>
+																		<c:if test="${breakPoint==0}">
+																			<option
+																				value="<fmt:formatNumber pattern="00" value="${i}" />:<fmt:formatNumber pattern="00" value="${j*15}" />">
+																				<fmt:formatNumber pattern="00" value="${i}" />:
+																				<fmt:formatNumber pattern="00" value="${j*15}" /></option>
+																		</c:if>
+																	</c:forEach>
+																</c:forEach>
+															</select>
+														</div>
+													</div>
+												</td>
+											</tr>
+											<tr>
+												<th>내용</th>
+												<td><input class="form-control" type="text"
+													id="calcontent" value=""></td>
+											</tr>
+
+										</table>
+
+
+										<!-- Modal footer -->
+										<div class="modal-footer">
+											<div>
+												<button type="button" class="btn btn-danger" id="delbutton"
+													style="float: left;">삭제</button>
+											</div>
+											<div>
+												<button type="button" class="btn btn-warning"
+													id="modibutton">수정</button>
+												<button type="button" class="btn btn-light waves-effect"
+													data-bs-dismiss="modal" aria-label="Close">닫기</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- end row -->
+					<!-- container-fluid -->
+				</div>
+				<!-- End Page-content -->
+			</div>
+			<!-- end main content-->
+		</div>
+	</div>
 </body>
 </html>
