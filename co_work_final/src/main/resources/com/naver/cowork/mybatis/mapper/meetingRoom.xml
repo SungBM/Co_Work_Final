@@ -43,7 +43,11 @@
 	<!-- 선택한 미팅룸 조회 -->
 	<select id="meetRoomSelect" resultType="MeetingRoom">
 		select meet_no,
-		meet_name, meet_max_people, meet_info, meet_img
+				meet_name, 
+				meet_max_people, 
+				meet_info, 
+				meet_img,
+				meet_status
 		from meeting_room
 		where
 		meet_no = #{meet_no}
@@ -135,5 +139,24 @@
 		meet_reservation
 		where user_id = #{user_id}
 	</select>
+	
+	<insert id="addMeetRoom">
+		insert into meeting_room(meet_no, meet_name, meet_max_people, meet_info, meet_status, meet_img, meet_imgoriginal)
+		values(meet_seq.NEXTVAL, #{meet_name}, #{meet_max_people}, #{meet_info}, #{meet_status}, #{meet_img}, #{meet_imgoriginal})
+	</insert>
+	
+	<update id="meetingRoomUpdate">
+		update meeting_room
+		set
+			meet_name = #{meet_name},
+			meet_max_people = #{meet_max_people},
+			meet_info = #{meet_info},
+			meet_status = #{meet_status}
+			<if test="meet_img != null">
+			, meet_img = #{meet_img},
+			meet_imgoriginal = #{meet_imgoriginal}
+			</if>
+		where meet_no = #{meet_no}
+	</update>
 
 </mapper>

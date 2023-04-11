@@ -13,6 +13,8 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 <script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
 <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/js/meeting_js/meetRevStat.js"></script>
+
 <title>예약내역</title>
 <style>
 .page-content {
@@ -20,19 +22,7 @@
 }
 </style>
 <script>
-	$(function() {
-		$(".bx-trash").click(function(e) {
-			if (!confirm("정말 삭제하시겠습니까?")) {
-				e.preventDefault();
-			}
-		})
-	})
 
-	function movePage(uri, queryString) {
-		console.log(uri);
-		console.log(queryString);
-		location.href = uri + queryString;
-	}
 </script>
 
 </head>
@@ -82,8 +72,8 @@
 													<td>
 														<ul class="list-inline font-size-20 contact-links mb-0">
 															<li class="list-inline-item px-2"><a
-																href="../meet/meetDelete/${mr.rev_no }" title="Message"><i
-																	class="bx bx-trash"></i></a></li>
+																href="../meet/meetDelete/${mr.rev_no }"><i
+																	class="bx bx-trash" style="color:red"></i></a></li>
 														</ul>
 													</td>
 												</tr>

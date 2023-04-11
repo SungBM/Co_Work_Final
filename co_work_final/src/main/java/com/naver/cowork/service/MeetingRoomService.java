@@ -31,4 +31,9 @@ public interface MeetingRoomService {
 	public List<MeetReservation> getMeetList(Criteria cri);  // 예약목록
 	
 	public int getMeetCount(Criteria cri);  // 예약목록 카운트
+	
+	public int addMeetRoom(MeetingRoom mr);
+	
+	public int meetingRoomUpdate(MeetingRoom mr);
+
 }

@@ -40,7 +40,7 @@ public class MeetingController {
 	@GetMapping("/rev")
 	public ModelAndView main(ModelAndView mv) {
 		List<MeetingRoom> mr = meetservice.meetingRoomAll();
-		mv.setViewName("meeting/meetingroom");
+		mv.setViewName("meeting/meetingRoom");
 		mv.addObject("list", mr);
 		return mv;
 	}
@@ -85,10 +85,6 @@ public class MeetingController {
 		mr.setUser_id(user_id);
 		mr.setRev_start_time(mr.getRev_start_date() + " " + mr.getRev_start_time());
 		mr.setRev_end_time(mr.getRev_start_date() + " " + mr.getRev_end_time());
-
-		logger.info("start" + mr.getRev_start_time());
-		logger.info("end" + mr.getRev_end_time());
-
 		int result = meetservice.insertReserv(mr);
 		if (result == 1) {
 			logger.info("예약완료");
@@ -115,7 +111,8 @@ public class MeetingController {
 	public String meetdelete(HttpServletResponse response, HttpServletRequest request,@PathVariable("rev_no") int rev_no) throws IOException {
 		int result = meetservice.meetDelete(rev_no);
 		String referer = request.getHeader("Referer");
-				
 		return "redirect:" + referer;
 	}
+		
+	
 }

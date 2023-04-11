@@ -1,5 +1,7 @@
 package com.naver.cowork.domain;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +15,7 @@ public class MeetingRoom {
 	private String meet_status; // 회의실 상태(WT:예약불가 CP:예약가능)
 	private String meet_img; // 회의실 사진
 	private String meet_imgoriginal; // 회의실 사진 원본 파일명?? 필요없나...?
+    private MultipartFile imgupload;
+
 
 }

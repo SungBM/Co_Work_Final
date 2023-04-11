@@ -595,10 +595,11 @@ html, .main-content {
 											<li style="text-align: center"><a>👇 관리자 메뉴 👇</a></li>
 											<li><a href="javascript: void(0);"
 												class="has-arrow waves-effect"> <i class="bx bx-cog"></i>
-													<span>회사</span>
+													<span>회사 & 회의실</span>
 											</a>
 												<ul class="sub-menu" aria-expanded="false">
 													<li><a id="companyinfo" href="../admin/company">회사정보</a></li>
+													<li><a id="meetinfo" href="../admin/meetManage">회의실</a></li>
 													<li><a>조직도 관리(미구현)</a></li>
 													<li><a>회의실 예약 현황(미구현)</a></li>
 												</ul></li>

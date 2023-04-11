@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <jsp:include page="../main/header.jsp"/>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/js/mypage_js/mypage.js"></script>
+
 <head>
     <title>내 프로필</title>
     <style>
@@ -39,8 +41,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="page-title-box d-sm-flex">
-                        <h4 class="mb-sm-0 font-size-18">내 프로필> 수정</h4>
+                    <div class="page-title-box d-sm-flex justify-content-center">
+                        <h3 class="mb-sm-0 font-size-24">내 프로필> 수정</h3>
                     </div>
                 </div>
             </div>
@@ -162,35 +164,6 @@
 <script src="../assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
 <script src="../assets/js/pages/form-mask.init.js"></script>
 <script>
-    $(function () {
 
-        // 정보 변경 시 버튼 활성화
-        $("input[name=user_phone], input[name=user_fax], input[type=file]").on('keyup change', function () {
-            const phone = $("input[name=user_phone]").val();
-            const fax = $("input[name=user_fax]").val();
-            const id = $("input[name=user_id]").val();
-            const img = $("input[type=file]").val();
-
-            $.ajax({
-                url: "../member/updateCheck",
-                // type: "post",
-                data: ({
-                    "user_phone": phone,
-                    "user_fax": fax,
-                    "user_id": id
-                }),
-                success: function (resp) {
-                    console.log("ajax = " + phone, fax, img);
-                    if (resp == 'success' || img) {
-                        $("button[type=submit]").attr("disabled", false);
-                    } else if (resp == 'fail' || !img) {
-                        $("button[type=submit]").attr("disabled", true);
-                    }
-                }
-            })
-        }) // 연락처, 팩스번호 바뀌면 정보변경 버튼 활성화 end
-
-
-    })
 </script>
 </html>

@@ -13,6 +13,8 @@
 <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
 <script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"></script>
 <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/js/meeting_js/meetRev.js"></script>
+
 <title>회의실 예약</title>
 <style>
 #meetImg {
@@ -40,24 +42,6 @@ ul {
 </style>
 <script>
 
-// 시작시간 변경시 종료 시간 변경
-function startChange() {
-    var start = $('#rev_start_time').val();
-    var end = $('#rev_end_time').val();
-
-        if (start.substring(3, 5) == '00'){
-        	if(start.substring(0,2) < 10){
-        		end = 0+String(parseInt(start.substring(0, 2))) + ':30';
-        	}else
-        		end = String(parseInt(start.substring(0, 2))) + ':30';
-        } else if (start.substring(3, 5) == '30'){
-        	if(start.substring(0,2) < 9){
-        		end = 0+String(parseInt(start.substring(0, 2)) + 1) + ':00';
-        	} else
-        		end = String(parseInt(start.substring(0, 2)) + 1) + ':00';
-        }    
-    $('#rev_end_time').val(end);
-}
     // fullcalendar
 	document.addEventListener('DOMContentLoaded', function() {
 		var calendarEl = document.getElementById('calendar');
@@ -239,7 +223,7 @@ function startChange() {
 						<div class="card">
 							<div class="card-body">
 								<div class="mb-4">
-									<img src="../../image${roomInfo.meet_img}" id="meetImg">
+									<img src="../../upload${roomInfo.meet_img}" id="meetImg">
 								</div>
 								<div class="meetTitle mb-3">
 									<strong class="font-size-15">${roomInfo.meet_name }</strong>

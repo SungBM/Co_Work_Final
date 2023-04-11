@@ -54,12 +54,12 @@ strong {
 						<c:if test="${mr.meet_status == 'ST' }">
 							<div class="col-xl-3 col-sm-6" style="opacity: 0.3;">
 						</c:if>
-						<div class="card">
+						 <div class="card">
 							<div class="card-body">
 								<div class="mb-4">
 
 									<img
-										src="../image${mr.meet_img}"
+										src="../upload${mr.meet_img}"
 										id="meetImg">
 								</div>
 								<div class="meetTitle mb-3">

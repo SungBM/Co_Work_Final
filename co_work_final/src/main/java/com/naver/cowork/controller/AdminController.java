@@ -22,12 +22,14 @@ import com.naver.cowork.domain.Company;
 import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.Dept;
 import com.naver.cowork.domain.Job;
+import com.naver.cowork.domain.MeetingRoom;
 import com.naver.cowork.domain.Member;
 import com.naver.cowork.domain.MySaveFolder;
 import com.naver.cowork.domain.PageDto;
 import com.naver.cowork.service.CompanyService;
 import com.naver.cowork.service.DeptService;
 import com.naver.cowork.service.JobService;
+import com.naver.cowork.service.MeetingRoomService;
 import com.naver.cowork.service.MemberService;
 
 @Controller
@@ -40,15 +42,17 @@ public class AdminController {
 	private JobService jobservice;
 	private CompanyService companyservice;
 	private MySaveFolder mysavefolder;
+	private MeetingRoomService meetservice;
 
 	@Autowired
 	public AdminController(MemberService memberService, DeptService deptservice, JobService jobservice,
-			MySaveFolder mysavefolder, CompanyService companyservice) {
+			MySaveFolder mysavefolder, CompanyService companyservice, MeetingRoomService meetservice) {
 		this.memberservice = memberService;
 		this.deptservice = deptservice;
 		this.jobservice = jobservice;
 		this.mysavefolder = mysavefolder;
 		this.companyservice = companyservice;
+		this.meetservice = meetservice;
 	}
 
 	@GetMapping("/members")
@@ -80,18 +84,21 @@ public class AdminController {
 		List<Job> j = jobservice.jobAll();
 		int dmaxNo = deptservice.dmaxNo();
 		int jmaxNo = jobservice.jmaxNo();
+		String comLogo = companyservice.companySelect();
 
 		mv.setViewName("admin/company/companyinfo");
 		mv.addObject("dept", d);
 		mv.addObject("job", j);
 		mv.addObject("dmaxno", dmaxNo);
 		mv.addObject("jmaxno", jmaxNo);
+		mv.addObject("comLogo", comLogo);
 		return mv;
 	}
 
 	@PostMapping("/deptadd")
 	public ModelAndView deptadd(ModelAndView mv, Dept dept) {
 		deptservice.insert(dept);
+		mv.setViewName("redirect:company");
 		return mv;
 	}
 
@@ -142,7 +149,6 @@ public class AdminController {
 	@PostMapping("/companyUpdate")
 	public String companyUpdate(Company company) throws IOException {
 		MultipartFile imgupload = company.getImgupload();
-
 		if (!imgupload.isEmpty()) {
 			String fileName = imgupload.getOriginalFilename();
 			company.setOriginalfile(fileName);
@@ -151,12 +157,7 @@ public class AdminController {
 			imgupload.transferTo(new File(saveFolder + fileDBName));
 			company.setCompany_logo(fileDBName);
 		}
-
-		if (companyservice.companySelect() == null) {
-			companyservice.companyInsert(company);
-		} else {
-			companyservice.companyUpdate(company);
-		}
+		companyservice.companyUpdate(company);
 		return "redirect:../admin/company";
 	}
 
@@ -166,4 +167,61 @@ public class AdminController {
 		out.print("omg");
 
 	}
+
+	// 회의실 관리
+	@GetMapping("/meetManage")
+	public ModelAndView meetmanage(ModelAndView mv) {
+		List<MeetingRoom> mr = meetservice.meetingRoomAll();
+		mv.setViewName("meeting/meetManage");
+		mv.addObject("list", mr);
+		return mv;
+	}
+
+	@GetMapping("/meetAdd")
+	public String meetAdd() {
+		return "meeting/meetManageAdd";
+	}
+
+	@PostMapping("/meetAddProcess")
+	public ModelAndView meetAddProcess(ModelAndView mv, MeetingRoom mr) throws IllegalStateException, IOException {
+
+		MultipartFile imgupload = mr.getImgupload();
+		if (!imgupload.isEmpty()) {
+			String fileName = imgupload.getOriginalFilename();
+			mr.setMeet_imgoriginal(fileName);
+			String saveFolder = mysavefolder.getSavefolder();
+			String fileDBName = MemberController.fileDBName(fileName, saveFolder);
+			imgupload.transferTo(new File(saveFolder + fileDBName));
+			mr.setMeet_img(fileDBName);
+		}
+		meetservice.addMeetRoom(mr);
+		mv.setViewName("redirect:../admin/meetManage");
+		return mv;
+	}
+
+	@GetMapping("/meetModify")
+	public ModelAndView meetModify(ModelAndView mv, int meet_no, MeetingRoom mRoom) {
+		mRoom = meetservice.meetRoomSelect(meet_no);
+		mv.setViewName("meeting/meetModi");
+		mv.addObject("mr", mRoom);
+		return mv;
+	}
+
+	@PostMapping("/meetModiProcess")
+	public String meetModiProcess(MeetingRoom mr) throws IllegalStateException, IOException {
+		MultipartFile imgupload = mr.getImgupload();
+		if (!imgupload.isEmpty()) {
+			String fileName = imgupload.getOriginalFilename();
+			mr.setMeet_imgoriginal(fileName);
+			String saveFolder = mysavefolder.getSavefolder();
+			String fileDBName = MemberController.fileDBName(fileName, saveFolder);
+			imgupload.transferTo(new File(saveFolder + fileDBName));
+			mr.setMeet_img(fileDBName);
+		}
+
+		meetservice.meetingRoomUpdate(mr);
+		return "redirect:../admin/meetModify?meet_no=" + mr.getMeet_no();
+
+	}
+
 }
