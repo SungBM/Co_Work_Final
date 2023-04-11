@@ -13,6 +13,7 @@ import com.naver.cowork.domain.Proboard_check_user;
 
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
+import com.naver.cowork.domain.Project_Board_Comment;
 import com.naver.cowork.domain.Project_User;
 
 @Mapper
@@ -62,6 +63,16 @@ public interface ProjectMapper {
 	public void updateUserCheckInfo(HashMap<String, Object> map);
 
 	public void updateUserCheckInfoClear(HashMap<String, Object> map);
+
+	public int ProjectCommentAdd(Project_Board_Comment pbc);
+
+	public List<Project_Board_Comment> getProjectCommentList(int pbNum);
+
+	public int commentDelete(int pbNum);
+
+	public int ProjectCommentUpdate(Project_Board_Comment pbc);
+
+	public int ProjectCommentReply(Project_Board_Comment pbc);
 
 }
 
