@@ -1,8 +1,14 @@
 function go(page){
 	const limit = $('#viewcount').val();  //noticeList.jsp에 viewcount임.
-	const data = `limit=${limit}&state=ajax&page=${page}`;  //object형식. limit, page는 변수라서 ""쓰지않음.
+	const search_field = $('#search_field').val();
+	const search_word = $('#search_word').val();
+	const data = `limit=${limit}&state=ajax&page=${page}&search_field=${search_field}&search_word=${search_word}`;  //object형식. limit, page는 변수라서 ""쓰지않음.
 	ajax(data);  //ajax호출
 }
+
+
+
+
 
 //noticeList.jsp 쿼리를 ajax로 변경함
 
@@ -47,6 +53,8 @@ function ajax(data){
 	let token = $("meta[name='_csrf']").attr("content");
 	let header = $("meta[name='_csrf_header']").attr("content");
 	output="";
+
+
 	
 	$.ajax({
 		type : "POST",
@@ -79,15 +87,14 @@ function ajax(data){
 						
 						let img="";
 						if(item.notice_RE_LEV > 0){
-							img="<img src='image/line.gif'>";
 						}
 						
 						let subject=item.notice_SUBJECT.replace(/</g, '&lt;')
 						subject=subject.replace(/>/g, '&gt;')
 						
 						output += "<td><div>" + blank + img
-						output += ' <a href="noticeDetail?num='+ item.notice_NUM + '">'
-						output += subject + '</a></div></td>'  //브라우저에서 cnt넘어가는 값 꼭 확인! 대문자 말고 소문자로 넘어감.
+						output += ' <a href="detail?num='+ item.notice_NUM + '">'
+						output += subject + '</a></div></td>'
 						output += '<td><div>' + item.user_ID+'</div></td>'
 						output += '<td><div>' + item.notice_REG_DATE+'</div></td>'
 						output += '<td><div>' + item.notice_READCOUNT+'</div></td></tr>'
@@ -98,12 +105,20 @@ function ajax(data){
 					$(".pagination").empty(); //페이징 처리 영역 내용 제거. 만들어놓은 class이름 복붙
 					output = "";
 					
-					let digit = '처음&nbsp;'
+					let digit = '&lt;&lt;&nbsp;'
 					let href="";
 					if(data.page > 1){
-						href = 'href=javascript:go(' + (data.startpage) + ')';
+						href = 'href=javascript:go(' + (data.firstPage) + ')';
 					}	
 					output += setPaging(href, digit);
+					
+					digit = '&lt;&nbsp;'
+					href="";
+					if(data.page > 1){
+						href = 'href=javascript:go(' + (data.page-1) + ')';
+					}	
+					output += setPaging(href, digit);
+					
 					
 					for(let i = data.startpage; i<=data.endpage; i++){  //forEach문
 						digit = i;
@@ -114,10 +129,17 @@ function ajax(data){
 						output += setPaging(href, digit);
 					}
 					
-					digit = '&nbsp;마지막&nbsp;';
+					digit = '&nbsp;&gt;';
 					href="";
 					if(data.page < data.maxpage){
-						href='href=javascript:go(' + (data.endpage) + ')';
+						href='href=javascript:go(' + (data.page+1) + ')';
+					}	
+					output += setPaging(href, digit);
+					
+					digit = '&nbsp;&gt;&gt;';
+					href="";
+					if(data.page < data.maxpage){
+						href='href=javascript:go(' + (data.lastPage) + ')';
 					}	
 					output += setPaging(href, digit);
 					
@@ -139,4 +161,9 @@ $(function(){
 	$("#viewcount").change(function(){
 		go(1); //보여줄 페이지를 1페이지로 설정합니다.
 	}) //change end
+	
+	$("#search_button").click(function(){
+		go(1); //보여줄 페이지를 1페이지로 설정합니다.
+	}) //change end
+	
 });

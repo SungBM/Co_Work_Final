@@ -4,8 +4,9 @@
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.NoticeMapper">
 
-	<select id="getListCount" resultType="int">
-		select count(*) from notice
+	<select id="getListCount" parameterType="map" resultType="int">
+		select count(*) from notice		
+		  <include refid="search_"/>
 	</select>
 	
 	<select id="getNoticeList" parameterType="map" resultType="notice">
@@ -13,18 +14,32 @@
 			(select rownum rnum, b.*
 			 from
 				(select * from notice
+		  			<include refid="search_"/>
 				 order by notice_re_ref desc,
 				 notice_re_seq asc) b
-			 where rownum &lt; #{end}
+			 where rownum &lt;=  #{end}
 			)
 		where rnum &gt;= #{start} and rnum &lt;= #{end}
 	</select>
+	
+	
+	<sql id="search_">
+		<if test="search_field != null">
+			where
+				<choose>
+					<when test="search_field=='notice_subject'">notice_subject</when>
+					<when test="search_field=='user_id'">user_id</when>
+				</choose>
+			like #{search_word}   <!-- 검색해라 위에 있는 값으로 -->
+		</if>
+	</sql>
+	
 	
 	<select id="getNoticeDetail" parameterType="int" resultType="notice">
 		select *
 		from	notice
 		where	NOTICE_NUM=#{number}
-	</select>	
+	</select>
 	
 	<insert id="insertNotice" parameterType="notice">
 		<selectKey resultType="int"	order="BEFORE"	keyProperty="NOTICE_NUM">

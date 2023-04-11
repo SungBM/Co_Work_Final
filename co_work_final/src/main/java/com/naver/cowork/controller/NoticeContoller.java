@@ -53,9 +53,11 @@ public class NoticeContoller {
 	@RequestMapping(value = "/noticeList_ajax")
 	public Map<String, Object> noticeListAjax(
 			@RequestParam(value="page", defaultValue="1", required=false) int page,
-			@RequestParam(value="limit", defaultValue="10", required=false) int limit
+			@RequestParam(value="limit", defaultValue="10", required=false) int limit,
+			@RequestParam(value="search_field", defaultValue="0", required=false) int index, //search_field를 가져와서 index이름으로 사용할것
+			@RequestParam(value="search_word", defaultValue="", required=false) String search_word
 			) {
-		int listcount = noticeService.getListCount(); // 총 리스트 수를 받아옴
+		int listcount = noticeService.getListCount(index, search_word); // 총 리스트 수를 받아옴
 		
 		// 총 페이지 수
 				int maxpage = (listcount + limit - 1) / limit;
@@ -69,9 +71,11 @@ public class NoticeContoller {
 				if (endpage > maxpage)
 					endpage = maxpage;
 				
-				List<Notice> noticelist = noticeService.getNoticeList(page, limit); // 리스트를 받아옴
+				List<Notice> noticelist = noticeService.getNoticeList(index, search_word, page, limit); // 리스트를 받아옴
 				
 				Map<String, Object> map = new HashMap<String,Object>();
+				map.put("search_field", index);
+				map.put("search_word", search_word);
 				map.put("page", page);
 				map.put("maxpage", maxpage);
 				map.put("startpage", startpage);
@@ -79,16 +83,28 @@ public class NoticeContoller {
 				map.put("listcount", listcount);
 				map.put("noticelist", noticelist);
 				map.put("limit", limit);
+				
+				if (page > 1) {
+					map.put("firstPage", 1);
+			    }
+				
+				if (page < maxpage) {
+					map.put("lastPage", maxpage);
+			    }
 				return map;
 			}
 	
 	@RequestMapping(value = "/noticeList", method=RequestMethod.GET)
 	public ModelAndView noticeList(
-									@RequestParam(value="page", defaultValue="1", required=false) int page, ModelAndView mv) {
+									@RequestParam(value="page", defaultValue="1", required=false) int page,
+									ModelAndView mv,
+									@RequestParam(value="search_field", defaultValue="0", required=false) int index, //search_field를 가져와서 index이름으로 사용할것
+									@RequestParam(value="search_word", defaultValue="", required=false) String search_word
+									) {
 		
 	int limit = 10; // 한 화면에 출력할 로우 갯수
 	
-	int listcount = noticeService.getListCount(); // 총 리스트 수 받아옴
+	int listcount = noticeService.getListCount(index, search_word); // 총 리스트 수 받아옴
 	
 	// 총 페이지 수
 	int maxpage = (listcount + limit -1) / limit;
@@ -102,7 +118,7 @@ public class NoticeContoller {
 	if (endpage > maxpage)
 		endpage = maxpage;
 	
-	List<Notice> noticelist = noticeService.getNoticeList(page, limit); //리스트 받아옴
+	List<Notice> noticelist = noticeService.getNoticeList(index, search_word, page, limit); //리스트 받아옴
 	
 	mv.setViewName("board/notice/list");
 	mv.addObject("page", page);
@@ -112,6 +128,17 @@ public class NoticeContoller {
 	mv.addObject("listcount", listcount);
 	mv.addObject("noticelist", noticelist);
 	mv.addObject("limit", limit);
+	mv.addObject("search_field", index);
+	mv.addObject("search_word", search_word);
+	
+	if (startpage > 1) {
+        mv.addObject("firstPage", 1);
+    }
+	
+	if (endpage < maxpage) {
+        mv.addObject("lastPage", maxpage);
+    }
+	
 	return mv;
 	
 	}

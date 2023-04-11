@@ -54,7 +54,7 @@ label {
 	        <div class="row">
 	            <div class="col-12">
 	                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-						<h4 class="mb-sm-0 font-size-18">커뮤니티 > 공지사항</h4>
+						<h4 class="mb-sm-0 font-size-18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;상세페이지</h4>
 	                </div>
 	            </div>
 	        </div>
@@ -78,13 +78,16 @@ label {
 					
 					<div class="bottom-active" >
 						<div class="file-value">
-							<label class="form-control" style="height:40px">
+							<label class="form-control" style="height:40px" >
 								<!-- 파일 첨부한 경우 -->
 								<c:if test="${!empty noticedata.NOTICE_FILE}">
-									<form method="post" action="down" >
+									<a href="#" onclick="document.getElementById('downForm').submit(); return false;">
+								        ${noticedata.NOTICE_ORIGINAL }
+								        <img src="${pageContext.request.contextPath }/resources/assets/images/board/down.png" width="10px">
+									</a>
+									<form id="downForm" method="post" action="down" style="display:none;">
 						  				<input type="hidden" value="${noticedata.NOTICE_FILE }" name="filename" >
 						  				<input type="hidden" value="${noticedata.NOTICE_ORIGINAL }" name="original" >
-						  				<input type="submit" value="${noticedata.NOTICE_ORIGINAL }" >  
 						  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 										<img src="${pageContext.request.contextPath }/resources/assets/images/board/down.png" width="10px">
 									</form>

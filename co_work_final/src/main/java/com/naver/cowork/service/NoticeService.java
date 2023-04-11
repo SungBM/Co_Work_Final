@@ -10,10 +10,10 @@ import com.naver.cowork.domain.Notice;
 public interface NoticeService {
 
 	// 글 갯수 카운팅
-	public int getListCount();
+	public int getListCount(int index, String search_word);
 	
 	// 글 목록
-	public List<Notice> getNoticeList(int page, int limit);
+	public List<Notice> getNoticeList(int index, String search_word, int page, int limit);
 	
 	// 글 등록
 	public void insertNotice(Notice notice);
