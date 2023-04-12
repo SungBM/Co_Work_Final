@@ -99,22 +99,24 @@
 								ON PR.PROJECT_ADMIN = U.USER_ID 
 	</select>
 
-		<insert id="insert" parameterType="project">
-	  insert into project
-	  (PROJECT_NUM, PROJECT_NAME, PROJECT_STATE, PROJECT_ADMIN, PROJECT_START, PROJECT_END, PROJECT_PRIORITY)
-	  values ( NVL((SELECT MAX(#{project_num})FROM PROJECT)+1,0 ), #{project_name},#{project_state},#{project_admin},#{project_start},#{project_end},#{project_priority} )
-	</insert>
-	
-	<insert id="insert_user" parameterType="project">
-	  insert into project_user
-	  values( (select nvl(max(#{PROJECT_NUM}),0)+1 FROM PROJECT),
-	          #{project_admin},  
-	          (SELECT MAX(ROWNUM)+3 FROM PROJECT_USER) ) 
-	</insert>
-	
+		<insert id="insert" parameterType="Project">
+		    insert into PROJECT (project_num, project_name, project_state, project_admin, project_start, project_end,project_priority)
+		    values (nvl((select max(project_num) from PROJECT)+1, 0),
+		            #{project_name}, #{project_state}, #{project_admin},
+		            #{project_start}, #{project_end}, #{project_priority})
+		</insert>
+		
+		<insert id="insert_user" parameterType="Project_User">
+		  <selectKey keyProperty="PROJECT_USER_NO" resultType="long" order="BEFORE">
+		    SELECT PROJECT_USER_NO_SEQ.NEXTVAL FROM DUAL
+		  </selectKey>
+		  insert into PROJECT_USER(PROJECT_USER_NO, PROJECT_NUM, USER_ID)
+		  values ('${PROJECT_USER_NO}', #{PROJECT_NUM}, #{USER_ID})
+		</insert>
+
 	 <insert id="insertProjectBoard">
-	  INSERT INTO PROJECT_BOARD (PRO_BOARD_CARTEGORY, PRO_BOARD_SUBJECT, PRO_BOARD_CONTENT, PRO_BOARD_CREATER_NAME, PRO_BOARD_CREATER_ID, PRO_BOARD_FILE, PRO_BOARD_NUM)
-		VALUES ('글', #{PRO_BOARD_SUBJECT}, #{PRO_BOARD_CONTENT}, 'HTA123', 'HTA123', #{PRO_BOARD_FILE, jdbcType=VARCHAR}, seq_project_board.nextval)
+	  INSERT INTO PROJECT_BOARD (PRO_BOARD_CARTEGORY, PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CONTENT, PRO_BOARD_CREATER_NAME, PRO_BOARD_CREATER_ID, PRO_BOARD_FILE, PRO_BOARD_NUM)
+		VALUES ('글', #{PRO_BOARD_SUBJECT}, '진행', '높음', #{PRO_BOARD_START}, #{PRO_BOARD_END}, #{PRO_BOARD_CONTENT}, 'HTA123', 'HTA123', #{PRO_BOARD_FILE, jdbcType=VARCHAR}, seq_project_board.nextval)
  	 </insert>
 
 	

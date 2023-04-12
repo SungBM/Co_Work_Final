@@ -115,17 +115,18 @@ public class ProjectController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/ProjectAddProcess" , method =  RequestMethod.GET)
+	@RequestMapping(value = "/ProjectAddProcess" , method =  RequestMethod.POST)
 	public ModelAndView insert(ModelAndView mv , Project project){
 	    System.out.println(project.getProject_name());
 	    System.out.println("프로젝트 모달 컨트롤러 들어옴");
 
 	    // 데이터베이스에 프로젝트 추가하는 코드 작성
 	    projectService.insert(project);
-	    
+
 	    mv.setViewName("project/project_add_modal");
 	    return mv;
 	}
+
 
 	
 
@@ -211,6 +212,11 @@ public class ProjectController {
     @GetMapping("/{PRO_BOARD_CREATER_ID}")
     public List<Project> getProjectsByCreatorId(@PathVariable String creatorId) {
         return projectService.getProjectsByCreatorId(creatorId);
+    }
+    
+    @GetMapping("/project_vote")
+    public String projectVote() {
+      return "/prjeojct/project_vote";
     }
 	
 

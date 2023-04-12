@@ -64,6 +64,7 @@
                                                     <button type="submit" id="submit_add" class="btn btn-primary">완료</button>
                                            
                                                 </div>
+                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                                                   
                                                 </div> <!-- <div class="modal-content"> end -->
                                                 

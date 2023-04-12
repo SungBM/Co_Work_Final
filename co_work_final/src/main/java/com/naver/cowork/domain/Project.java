@@ -24,5 +24,4 @@ public class Project {
 		private int parti_count;
 		private ArrayList<Project_User> project_parti_forModal;
 		
-		
 	}

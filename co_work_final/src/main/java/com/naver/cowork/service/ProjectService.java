@@ -49,22 +49,18 @@ public interface ProjectService {
 	public Project getDetailProject();
 	
 	public Project insert(Project p);
+	
+	public Project_User insert_user(Project_User u);
 
 	public List<Project_Board> getPojectBoardFeed(int pNum);
 
 	public String getProjectName(int pNum);
 	
-
-	public Project insert_user(Project_User u);
-
 	public List<Project_Board> getProjectDetailList();
 	
 
     public List<Project_Board> getProjectBoardList();
-	
 
-	//@Transactional
-	//public Project insert(Project p) {
 	
 
 	public int getDayCount(String startDate, String endDate);

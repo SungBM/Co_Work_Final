@@ -57,10 +57,32 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	@Transactional
 	public Project insert(Project p) {
-		// TODO Auto-generated method stub
-		return dao.insert(p);
+	    Project project = new Project();
+	    project.setProject_name(p.getProject_name());
+	    project.setProject_state(p.getProject_state());
+	    project.setProject_admin(p.getProject_admin());
+	    project.setProject_start(p.getProject_start());
+	    project.setProject_end(p.getProject_end());
+	    project.setProject_priority(p.getProject_priority());
+
+	    Project result = dao.insert(project);
+
+	    Project_User projectUser = new Project_User();
+	    projectUser.setPROJECT_NUM(project.getProject_num());
+	    projectUser.setUSER_ID(project.getProject_admin());
+	    dao.insert_user(projectUser);
+
+	    if (result == project) {
+	        return project;
+	    } else {
+	        return null;
+	    }
 	}
+
+
+
 
 	@Override
 	public List<Project> getProjectList(String logingID) {
@@ -107,7 +129,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 
-	public Project insert_user(Project_User u) {
+	public Project_User insert_user(Project_User u) {
 		// TODO Auto-generated method stub
 		return null;
 	}

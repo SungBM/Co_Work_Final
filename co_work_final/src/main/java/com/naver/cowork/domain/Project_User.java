@@ -9,7 +9,7 @@ public class Project_User {
 	
 	private int PROJECT_NUM;
 	private String USER_ID;
-	private int PROJECT_USER_NO;
+	private long PROJECT_USER_NO;
 	private String USER_NAME;
 	private String USER_IMG;
 	

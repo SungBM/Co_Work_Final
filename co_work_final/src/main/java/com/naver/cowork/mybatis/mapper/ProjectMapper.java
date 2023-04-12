@@ -27,6 +27,8 @@ public interface ProjectMapper {
 
 	public Project insert_user(Project p);
 	
+	public Project_User insert_user(Project_User u);
+	
 	public List<Project_Board> getProjectDetailList();
 
     public List<Project_Board> getProjectBoardList();
