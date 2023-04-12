@@ -13,6 +13,7 @@
           type="text/css">
     <link href="${pageContext.request.contextPath }/resources/assets/libs/sweetalert2/sweetalert2.min.css"
           rel="stylesheet" type="text/css">
+          <link href="${pageContext.request.contextPath }/resources/assets/css/project_Css/project.css" rel="stylesheet" type="text/css" />
     <meta name="_csrf" content="${_csrf.token }">
     <meta name="_csrf_header" content="${_csrf.headerName}">
     <style>
@@ -23,6 +24,28 @@
         .page-content {
             width: 90%;
         }
+        
+          .warning {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 100px 50px 100px;
+        border-color: transparent transparent yellow transparent;
+        position: relative;
+    }
+    .warning::after {
+        content: "!";
+        color: black;
+        font-size: 40px;
+        font-weight: bold;
+        position: absolute;
+        top: 15px;
+        left: -5px;
+    }
+    .warning-text {
+        text-align: center;
+        margin-top: 10px;
+    }
     </style>
 
 </head>
@@ -41,7 +64,7 @@
                                 </span>
 
                         <span class="logo-lg">
-                            <img src="${pageContext.request.contextPath }/resources/image/logo.png" style="width:200px;">
+                            <img src="${pageContext.request.contextPath }/resources/image/logo8.png" style="width:255px; margin-left: -30px">
                                 </span>
                     </a>
                 </div>

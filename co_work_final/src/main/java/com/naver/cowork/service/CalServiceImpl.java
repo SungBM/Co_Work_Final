@@ -40,4 +40,11 @@ public class CalServiceImpl implements CalService {
     }
 
 
+	@Override
+	public List<Calendar> calendarListForMain(String user_id) {
+		// TODO Auto-generated method stub
+		return dao.calendarListForMain(user_id);
+	}
+
+
 }

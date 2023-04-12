@@ -3,6 +3,35 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.NoticeMapper">
+	<select id="getNoticeListForMain" resultType="notice">
+		  <![CDATA[
+	SELECT NOTICE_NUM,
+       USER_ID,
+       NOTICE_SUBJECT,
+       NOTICE_CONTENT,
+       NOTICE_FILE,
+       NOTICE_RE_REF,
+       NOTICE_RE_LEV,
+       NOTICE_RE_SEQ,
+       NOTICE_READCOUNT,
+       NOTICE_REG_DATE
+	FROM
+	    (SELECT NOTICE_NUM,
+	            USER_ID,
+	            NOTICE_SUBJECT,
+	            NOTICE_CONTENT,
+	            NOTICE_FILE,
+	            NOTICE_RE_REF,
+	            NOTICE_RE_LEV,
+	            NOTICE_RE_SEQ,
+	            NOTICE_READCOUNT,
+	            NOTICE_REG_DATE
+	     FROM NOTICE
+	     ORDER BY NOTICE_REG_DATE DESC)
+	WHERE ROWNUM <= 5
+		  ]]>
+	</select>
+
 
 	<select id="getListCount" resultType="int">
 		select count(*) from notice

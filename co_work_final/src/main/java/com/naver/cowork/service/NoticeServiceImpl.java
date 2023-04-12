@@ -79,6 +79,13 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 
+	@Override
+	public List<Notice> getNoticeListForMain() {
+		// TODO Auto-generated method stub
+		return dao.getNoticeListForMain();
+	}
+
+
 
 	
 	

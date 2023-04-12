@@ -154,15 +154,13 @@ textarea{
 							<td><%--제목 --%>
 								<div>
 									<a href="detail?num=${b.notice_num}">
-										<c:if test="${b.notice_subject.length()<20}">
-											<c:out value="${b.notice_subject}" escapeXml="true"/>
+										<c:if test="${b.NOTICE_SUBJECT.length()<20}">
+											<c:out value="${b.NOTICE_SUBJECT}" escapeXml="true"/>
 										</c:if>
 									</a>
 								</div>	
 							</td>
-							<td><div>${b.user_id}</div></td>
-							<td><div>${b.notice_reg_date}</div></td>
-							<td><div>${b.notice_readcount}</div></td>
+							<td><div>${b.USER_ID}</div></td>
 						</tr>
 					</c:forEach>
 				</tbody>

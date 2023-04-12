@@ -33,7 +33,7 @@ public interface NoticeMapper {
 	
 	//글 등록
 	public void insertNotice(Notice notice);
-	
-	
+
+	public List<Notice> getNoticeListForMain();
 	
 }
