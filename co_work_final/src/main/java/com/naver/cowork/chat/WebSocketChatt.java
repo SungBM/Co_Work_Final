@@ -3,15 +3,15 @@ package com.naver.cowork.chat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
+//
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-
+//
 import org.springframework.stereotype.Service;
-
+//
 @Service
 @ServerEndpoint(value="/chat")
 public class WebSocketChatt {
@@ -30,7 +30,7 @@ public class WebSocketChatt {
 		}
 	}
 	
-	
+//	
 	@OnMessage
 	public void onMessage(String msg, Session session) throws Exception{
 		System.out.println("receive message : " + msg);
@@ -40,7 +40,7 @@ public class WebSocketChatt {
 
 		}
 	}
-	
+//	
 	@OnClose
 	public void onClose(Session s) {
 		System.out.println("session close : " + s);

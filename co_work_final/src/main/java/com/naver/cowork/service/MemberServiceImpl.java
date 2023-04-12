@@ -1,6 +1,7 @@
 package com.naver.cowork.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -117,6 +118,19 @@ public class MemberServiceImpl implements MemberService {
     public int adminUpdate(Member member) {
         return dao.adminUpdate(member);
     }
+
+	@Override
+	public String user_img(String user_id) {
+		return dao.user_img(user_id);
+	}
+    
+    
+    //채팅필드 회원검색
+//	@Override
+//	public List<Map<String, Object>> searchList(String searchword) {
+//		return dao.searchList(searchword);
+//	}
+
 
 
 }

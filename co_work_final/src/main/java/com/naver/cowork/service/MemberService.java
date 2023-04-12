@@ -41,4 +41,7 @@ public interface MemberService {
 
 
     public int adminUpdate(Member member);
+
+	public String user_img(String user_id);
+
 }

@@ -150,5 +150,19 @@
 		delete from user_info
 		where id = #{id}
 	</delete>
+	
+	
+	
+	<select id="searchList" resultType="Map">
+		select u.USER_NAME, u.USER_DEPT, u.USER_EMAIL, u.USER_IMG, d.DEPT_NAME
+		from USER_INFO u, DEPT d
+		where u.USER_NAME like '%' || #{searchword} || '%'
+	</select>
+	
+	<select id="user_img" resultType="String">
+		select user_img
+		from user_info
+		where user_id=#{user_id}
+	</select>
 
 </mapper>

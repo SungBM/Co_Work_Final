@@ -33,6 +33,11 @@ public interface MemberMapper {
     public int stateUpdate(String user_id, String user_auth, String user_state);
     public int adminUpdate(Member member);
 
+	public List<Map<String, Object>> searchList(String searchword);
+
+	public String user_img(String user_id);
+
+
 	
 
 
