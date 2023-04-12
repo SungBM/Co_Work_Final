@@ -111,7 +111,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	    
 	    logger.info(userAgent);
 
-		String url = request.getContextPath() + "/main/main";
+		String url = request.getContextPath() + "/main/main?user_id="+user_id;
 		logger.info(url);
 		response.sendRedirect(url);
 	}

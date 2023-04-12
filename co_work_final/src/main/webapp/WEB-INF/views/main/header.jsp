@@ -5,35 +5,55 @@
 	uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
-<meta charset="utf-8" />
-<link rel="shortcut icon"
-	href="${pageContext.request.contextPath }/resources/assets/images/favicon.ico">
-<link
-	href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css"
-	id="bootstrap-style" rel="stylesheet" type="text/css">
-<link
-	href="${pageContext.request.contextPath }/resources/assets/css/icons.min.css"
-	rel="stylesheet" type="text/css">
-<link
-	href="${pageContext.request.contextPath }/resources/assets/css/app.min.css"
-	id="app-style" rel="stylesheet" type="text/css">
-<link
-	href="${pageContext.request.contextPath }/resources/assets/libs/sweetalert2/sweetalert2.min.css"
-	rel="stylesheet" type="text/css">
-<link
-	href="${pageContext.request.contextPath }/resources/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css"
-	rel="stylesheet" type="text/css">
 
+    <meta charset="utf-8"/>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath }/resources/assets/images/favicon.ico">
+    <link href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css" id="bootstrap-style"
+          rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath }/resources/assets/css/icons.min.css" rel="stylesheet"
+          type="text/css">
+    <link href="${pageContext.request.contextPath }/resources/assets/css/app.min.css" id="app-style" rel="stylesheet"
+          type="text/css">
+    <link href="${pageContext.request.contextPath }/resources/assets/libs/sweetalert2/sweetalert2.min.css"
+          rel="stylesheet" type="text/css">
+          <link href="${pageContext.request.contextPath }/resources/assets/css/project_Css/project.css" rel="stylesheet" type="text/css" />
+    <meta name="_csrf" content="${_csrf.token }">
+    <meta name="_csrf_header" content="${_csrf.headerName}">
+    <style>
+        html, .main-content {
+            background-color: #FFFFFF;
+        }
 
-<meta name="_csrf" content="${_csrf.token }">
-<meta name="_csrf_header" content="${_csrf.headerName}">
-<style>
-html, .main-content {
+        .page-content {
+            width: 90%;
+        }
+        
+          .warning {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 100px 50px 100px;
+        border-color: transparent transparent yellow transparent;
+        position: relative;
+    }
+    .warning::after {
+        content: "!";
+        color: black;
+        font-size: 40px;
+        font-weight: bold;
+        position: absolute;
+        top: 15px;
+        left: -5px;
+    }
+    .warning-text {
+        text-align: center;
+        margin-top: 10px;
+    }
+    html, .main-content {
 	background-color: #FFFFFF;
 }
-
-
-</style>
+    
+    </style>
 
 </head>
 <body data-sidebar="dark">

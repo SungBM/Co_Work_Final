@@ -110,6 +110,8 @@ public class ProjectController {
 		return mv;
 	}
 	
+	
+	
 	@RequestMapping(value = "/ProjectAddProcess" , method =  RequestMethod.GET)
 	public ModelAndView insert(ModelAndView mv , Project project){
 		
@@ -154,8 +156,6 @@ public class ProjectController {
 		String project_Name = projectService.getProjectName(pNum);
 		String [] bmBoard = projectService.getProjectBookmarkList(pNum);
 		List<Proboard_check_user> pcu = projectService.getProBoardCheckUserList(id);
-		List<List<Project_Board_Comment>> commentLists = null;
-		commentLists = new ArrayList<List<Project_Board_Comment>>();
 		
 		for(Project_Board pb : pb_list ) {
 			pb.setPROBOARD_CHECK_USERS(pcu);
@@ -231,7 +231,7 @@ public class ProjectController {
 	
 	@RequestMapping(value = "/ProjectCommentAdd" , method = RequestMethod.POST)
 	@ResponseBody
-	public List<Project_Board_Comment>  ProjectCommentAdd(Project_Board_Comment pbc,HttpServletResponse response) throws Exception {
+	public List<Project_Board_Comment>  ProjectCommentAdd(Project_Board_Comment pbc,@RequestParam(value = "page" , defaultValue = "1", required = false )int page,HttpServletResponse response) throws Exception {
 		MultipartFile commentFile = pbc.getFileNames();
 	       if (!commentFile.isEmpty()) {
 	    	   FileUtil.fileUpload(commentFile, pbc, mysavefolder);
@@ -240,29 +240,39 @@ public class ProjectController {
 	       
 	    int result = projectService.ProjectCommentAdd(pbc);
 	    int pbNum = pbc.getPRO_BOARD_NUM();
-	    List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+	    List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum,page);
 	    
 		return commentList;
 	}
 	
 	@RequestMapping(value = "/getPjectCommentList" , method = RequestMethod.POST)
 	@ResponseBody
-	public List<Project_Board_Comment>getPjectCommentList(int pbNum,HttpServletResponse response) throws Exception {
-		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+	public List<Project_Board_Comment>getPjectCommentList(int pbNum,@RequestParam(value = "page" , defaultValue = "1", required = false )int page,HttpServletResponse response) throws Exception {
+		List<Project_Board_Comment> commentList = null;
+		commentList = projectService.getProjectCommentList(pbNum,page);
+		
 		return commentList;
+	}
+	
+	@GetMapping(value = "/getPjectCommentCount")
+	public void getPjectCommentCount(int pbNum,HttpServletResponse response) throws Exception {
+		int count = projectService.getPjectCommentCount(pbNum);
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(count);
 	}
 	
 	@GetMapping(value = "/commentDelete")
 	@ResponseBody
-	public List<Project_Board_Comment>commentDelete(int pbcNum, int pbNum, HttpServletResponse response) throws Exception{
+	public List<Project_Board_Comment>commentDelete(int pbcNum, int pbNum,@RequestParam(value = "page" , defaultValue = "1", required = false )int page, HttpServletResponse response) throws Exception{
 		int result = projectService.commentDelete(pbcNum);
-		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum,page);
 		return commentList;
 	}
 	
 	@PostMapping(value = "/ProjectCommentUpdate")
 	@ResponseBody
-	public List<Project_Board_Comment>ProjectCommentUpdate(Project_Board_Comment pbc,HttpServletResponse response) throws Exception {
+	public List<Project_Board_Comment>ProjectCommentUpdate(Project_Board_Comment pbc,@RequestParam(value = "page" , defaultValue = "1", required = false )int page,HttpServletResponse response) throws Exception {
 		
 		MultipartFile commentFile = pbc.getFileNames();
 	       if (!commentFile.isEmpty()) {
@@ -272,7 +282,7 @@ public class ProjectController {
 	       
 	    int result = projectService.ProjectCommentUpdate(pbc);
 	    int pbNum = pbc.getPRO_BOARD_NUM();
-	    List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+	    List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum,page);
 	    
 	    
 		return commentList;
@@ -280,7 +290,7 @@ public class ProjectController {
 	
 	@PostMapping(value = "/ProjectCommentReply")
 	@ResponseBody
-	public List<Project_Board_Comment>ProjectCommentReply(Project_Board_Comment pbc,HttpServletResponse response) throws Exception {
+	public List<Project_Board_Comment>ProjectCommentReply(Project_Board_Comment pbc,@RequestParam(value = "page" , defaultValue = "1", required = false )int page,HttpServletResponse response) throws Exception {
 		
 		MultipartFile commentFile = pbc.getFileNames();
 		if (!commentFile.isEmpty()) {
@@ -291,7 +301,7 @@ public class ProjectController {
 		
 		int result = projectService.ProjectCommentReply(pbc);
 		int pbNum = pbc.getPRO_BOARD_NUM();
-		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum);
+		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum,page);
 		
 		for( Project_Board_Comment pbc2 : commentList) {
 			String content = pbc2.getPRO_BO_COMMENT_CONTENT();
