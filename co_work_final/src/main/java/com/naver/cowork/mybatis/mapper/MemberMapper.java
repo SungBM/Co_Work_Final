@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.Member;
 
 @Mapper
@@ -22,7 +23,10 @@ public interface MemberMapper {
 
     public List<Member> getSearchList(Map<String, Object> map);
 
-    public List<Member> members();
+    public List<Member> members(Criteria cri);
+    public int getCount();
+    
+    
     public int passUpdate(String user_id, String user_password);
     public int authUpdate(String user_id, String user_auth);
 

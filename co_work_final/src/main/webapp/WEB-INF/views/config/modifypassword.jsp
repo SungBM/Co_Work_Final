@@ -6,72 +6,16 @@
 <meta name="_csrf" content="${_csrf.token}"/>
 <html lang="en">
 <jsp:include page="../main/header.jsp"></jsp:include>
-<title>설정 - 비밀번호 변경</title>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/js/mypage_js/password.js"></script>
+
+<title>비밀번호 변경</title>
+<style>
+	.page-content{
+		width:80%
+	}
+</style>
 <script>
-    $(function () {
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        $(document).ajaxSend(function (e, xhr, options) {
-            if (token && header) {
-                xhr.setRequestHeader(header, token);
-            }
-        });
-
-        $("#horizontal-password-input, #horizontal-password-input1, #horizontal-password-input2").keyup(function () {
-            var user_password = $("#horizontal-password-input").val();
-            var user_password1 = $("#horizontal-password-input1").val();
-            var user_password2 = $("#horizontal-password-input2").val();
-
-            $.ajax({
-                url: "../member/modiPassProcess",
-                type: "post",
-                data: {
-                    "user_password": user_password,
-                    "user_password1": user_password1,
-                    "user_password2": user_password2
-                },
-                success: function (resp) {
-                    if (resp.check == 'success') {
-                        $("#password").html("<span>현재 비밀번호가 같습니다.</span>")
-                        if (resp.newCheck == 'success') {
-                            $("#password2").html("<span>새 비밀번호와 같습니다.</span>")
-                        } else if (resp.newCheck == 'fail') {
-                            $("#password2").html("<span>새 비밀번호와 다릅니다.</span>")
-                        }
-                    } else if (resp.check == 'fail') {
-                        $("#password").html("<span>현재 비밀번호가 다릅니다.</span>")
-                    }
-                    if (resp.check == 'success' && resp.newCheck == 'success')
-                        $("button[type=submit]").removeAttr("disabled")
-                    else
-                        $("button[type=submit]").attr("disabled", "disabled")
-                }
-            })
-        })
-
-        // $("#horizontal-password-input1, #horizontal-password-input2").keyup(function () {
-        //     var user_password1 = $("#horizontal-password-input1").val();
-        //     var user_password2 = $("#horizontal-password-input2").val();
-        //
-        //     console.log(user_password1 + " " + user_password2)
-        //
-        //     $.ajax({
-        //         url: "../member/passCheck",
-        //         type: "post",
-        //         data: {
-        //             "user_password1": user_password1,
-        //             "user_password2": user_password2
-        //         },
-        //         success: function (resp) {
-        //             if (resp == 'success') {
-        //                 $("#password2").html("<span>새 비밀번호와 같습니다.</span>")
-        //             } else {
-        //                 $("#password2").html("<span>새 비밀번호와 다릅니다. 다시 입력해주세요.</span>")
-        //             }
-        //         }
-        //     })
-        // })
-    })
+ 
 </script>
 </head>
 <div class="main-content">
@@ -79,8 +23,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0 font-size-18">설정> 비밀번호 변경</h4>
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-center">
+                        <h3 class="mb-sm-0 font-size-24">설정> 비밀번호 변경</h3>
                     </div>
                 </div>
             </div>

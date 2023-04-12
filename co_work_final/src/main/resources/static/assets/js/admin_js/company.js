@@ -1,38 +1,106 @@
-function preventClick(e) {
-	e.preventDefault()
-}
-
-$(function() {
-	$('#formFile1').change(function(event) {
-
-		const inputfile = $(this).val().split('\\');
-		const filename1 = inputfile[inputfile.length - 1]; // inputfile.length - 1 = 2
-		const pattern = /(gif|jpg|jpeg|png)$/i; //i(ignore case)는 대소문자 무시를 의미
-
-		if (pattern.test(filename1)) {
-
-			const reader = new FileReader(); // 파일을 읽기 위한 객체 생성
-
-			// DataURL 형식(접두사 data:가 붙은 URL이며 바잉너리 파일을 Base64로 인코딩하여 ASCII 문자열 형식으로 변환 것)
-			// 파일을 읽어옵니다. (참고-Base64 인코딩은 바이너리 데이터를 Text로 변경하는 Encoding 입니다.)
-			// 읽어온 결과는 reader객체의 result  속성에 저장됩니다.
-			// event.target.filed[0] : 파일리스트에서 첫번째 객체를 가져옵니다.
-			reader.readAsDataURL(event.target.files[0]);
-
-			reader.onload = function() { // 읽기에  성공했을 때
-
-				$('#showImage1 > img').attr('src', this.result).css({ "width": "312px", "height": "100px" });
-				$('#showImage1 > img').css({ "width": "312px", "height": "100px" });
-
-			};
+	function deptAllCheck() {
+		if ($("input[name=deptallcheck]").is(':checked')) {
+			$("input[name=dept_no]").prop("checked", true);
 		} else {
-			alert('이미지 파일(gif, jpg, jpeg, png)이 아닌 경우는 무시됩니다.');
-			$('#filename1').text('');
-			$('#showImage1 > img').attr('src', 'image/profile.png');
-			$(this).val('')
-			$('input[name=check]').val('');
+			$("input[name=dept_no]").prop("checked", false);
 		}
-	}) // change() end
+	} // deptAllCheck() end
 
-})
+	function jobAllCheck() {
+		if ($("input[name=joballcheck]").is(':checked')) {
+			$("input[name=job_no]").prop("checked", true);
+		} else {
+			$("input[name=job_no]").prop("checked", false);
+		}
+	} // jobAllCheck() end
 
+	$(document).ready(function() {
+		// $(function () {
+		//     var ordered_items;
+		//     onDragClass: "drag",
+		//     $('#depttable').tableDnD({
+		//         onDrop: function (table, row) {
+		//             ordered_items = $.tableDnD.serialize('id');
+		//         }
+		//     });
+		// })
+
+		$("input[type=checkbox]").click(function() {
+			var dd = $("[name='dept_no']:checked").length;
+			var jj = $("[name='job_no']:checked").length;
+
+			if (dd > 0 && jj == 0) {
+				$("#deptdel").prop("disabled", false);
+				$("#jobdel").prop("disabled", true);
+			} else if (dd > 0 && jj > 0) {
+				$("#deptdel").prop("disabled", false);
+				$("#jobdel").prop("disabled", false);
+			} else if (dd == 0 && jj > 0) {
+				$("#deptdel").prop("disabled", true);
+				$("#jobdel").prop("disabled", false);
+			} else if (dd == 0 && jj == 0) {
+				$("#deptdel").prop("disabled", true);
+				$("#jobdel").prop("disabled", true);
+			}
+		}) // checkbox에 따른 삭제버튼 활성화
+
+		$(document).on("click", "input[name=dept_no]", function(e) {
+			var chks = document.dept.dept_no;
+			var chksChecked = 0;
+			for (var i = 0; i < chks.length; i++) {
+				var cbox = chks[i];
+
+				if (cbox.checked) {
+					chksChecked++;
+				}
+			}
+			if (chks.length == chksChecked) {
+				$("input[name=deptallcheck]").prop("checked", true);
+			} else {
+				$("input[name=deptallcheck]").prop("checked", false);
+			}
+		})
+
+		$(document).on("click", "input[name=job_no]", function(e) {
+			var chks = document.job.job_no;
+			var chksChecked = 0;
+			for (var i = 0; i < chks.length; i++) {
+				var cbox = chks[i];
+				if (cbox.checked) {
+					chksChecked++;
+				}
+			}
+			if (chks.length == chksChecked) {
+				$("input[name=joballcheck]").prop("checked", true);
+			} else {
+				$("input[name=joballcheck]").prop("checked", false);
+			}
+		})
+		
+		$("input[name=dept_name], input[name=job_name]").on('keyup change', function () {
+            const dept_name = $("input[name=dept_name]").val();
+            const job_name = $("input[name=job_name]").val();
+			
+            console.log(dept_name + job_name);
+
+            
+            $.ajax({
+                url: "../admin/comCheck",
+                // type: "post",
+                data: ({
+                	"dept_name" : dept_name,
+                	"job_name" : job_name
+                }),
+                success: function (resp) {
+                    console.log("ajax = ");
+                    if (resp == 'omg') {
+                        $("button[type=submit]").attr("disabled", false);
+                    } else if (resp == 'fail' || !img) {
+                        $("button[type=submit]").attr("disabled", true);
+                    }
+                }
+            })  // ajax end
+        })
+		
+		
+	})
