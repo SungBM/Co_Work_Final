@@ -20,5 +20,10 @@ public interface CalService {
 
     public int calDelete(int cal_no);
 
-
+    // allday Check 확인
+	public void alldayCheck(Calendar calendar);
+	// type Check 확인
+	public void typeCheck(Calendar calendar);
+	
 }
+
