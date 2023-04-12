@@ -202,8 +202,8 @@ File: Main Js File
             $("#dark-mode-switch").prop("checked", false);
             $("#rtl-mode-switch").prop("checked", false);
             $("#dark-rtl-mode-switch").prop("checked", false);
-            $("#bootstrap-style").attr('href', 'assets/css/bootstrap.min.css');
-            $("#app-style").attr('href', 'assets/css/app.min.css');
+            $("#bootstrap-style").attr('href', '../resources/assets/css/bootstrap.min.css');
+            $("#app-style").attr('href', '../resources/assets/css/app.min.css');
             sessionStorage.setItem("is_visited", "light-mode-switch");
         } else if ($("#dark-mode-switch").prop("checked") == true && id === "dark-mode-switch") {
             $("html").removeAttr("dir");

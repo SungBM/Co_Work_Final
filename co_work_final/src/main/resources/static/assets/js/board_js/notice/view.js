@@ -1,12 +1,25 @@
+function confirmDelete() {
+    if (confirm("정말로 삭제하시겠습니까?")) {
+        document.deleteForm.submit();
+    }
+}
+
+
 let option=1;  //선택한 등록순과 최신순을 수정, 삭제, 추가 후에도 유지되도록 하기위한 변수로 사용됩니다.
 
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
+	
+
+
+/*
 function getList(state){//현재 선택한 댓글 정렬방식을 저장합니다. 1=>등록순, 2=>최신순
 	    console.log(state)
 	    option=state;
 		$.ajax({
 			type:"post",
 			url:"CommentList.bo",  //여기로 요청했을때 rdata로 받겠다.
-			data : {"comment_board_num" : $("#comment_board_num").val(), state:state},  //쿼리문에서 이 두개 필요
+			data : {"comment_notice_num" : $("#comment_notice_num").val(), state:state},  //쿼리문에서 이 두개 필요
 			dataType:"json",
 			success:function(rdata){ //object형 변수를 rdata로 받겠다.
 				$('#count').text(rdata.listcount).css('font-family','arial,sans-serif')
@@ -185,12 +198,7 @@ function replyform(num,lev,seq,ref){
 $(function() {
 	getList(option);  //처음 로드 될때는 등록순 정렬
 	
-	$('form[name="deleteForm"]').submit(function() {
-		if ($("#board_pass").val() == '') {
-			alert("비밀번호를 입력하세요");
-			$("#board_pass").focus();
-			return false;
-		}
+	$('form[action="deleteForm"]').submit(function()
 	})// form
 
 	
@@ -213,7 +221,7 @@ $(function() {
 			data : {
 				id : $("#loginid").val(),
 				content : content,
-				comment_board_num : $("#comment_board_num").val(),
+				comment_notice_num : $("#comment_notice_num").val(),
 				comment_re_lev : 0, //원문인 경우 comment_re_seq는 0,
 									//comment_re_ref는 댓글의 원문 글번호
 				comment_re_seq : 0,
@@ -286,7 +294,7 @@ $(function() {
 			data : {
 				id : $("#loginid").val(),
 				content : content,
-				comment_board_num : $("#comment board num").val(),
+				comment_notice_num : $("#comment board num").val(),
 				comment_re_lev : lev,
 				comment_re_ref : comment_re_ref,
 				comment_re_seq : seq
@@ -354,3 +362,4 @@ $(function() {
 
 
 
+*/

@@ -7,124 +7,14 @@
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <meta name="_csrf" content="${_csrf.token}"/>
 <title>구성원 관리</title>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/js/admin_js/members.js"></script>
+
 <style>
     th, tr {
         text-align: center;
     }
 </style>
 <script>
-
-    var user_id = "";
-    var user_name = "";
-    var user_dept = "";
-    var user_job = "";
-    var user_phone = "";
-    var user_fax = "";
-    var user_email = "";
-
-    $(document).ready(function () {
-
-        $('#info').on('show.bs.modal', function (event) {
-            user_id = $(event.relatedTarget).data('user_id');
-            user_name = $(event.relatedTarget).data('user_name');
-            user_dept = $(event.relatedTarget).data('user_dept');
-            user_job = $(event.relatedTarget).data('user_job');
-            user_phone = $(event.relatedTarget).data('user_phone');
-            user_fax = $(event.relatedTarget).data('user_fax');
-            user_email = $(event.relatedTarget).data('user_email');
-
-            $("#user_name").val(user_name)
-            $("#user_id").val(user_id)
-            $("#user_dept").val(user_dept)
-            $("#user_job").val(user_job)
-            $("#user_phone").val(user_phone)
-            $("#user_fax").val(user_fax)
-            $("#user_email").val(user_email)
-
-
-            $("#info").on('keyup change', function () {
-                user_name = $("#user_name").val()
-                user_dept = $("#user_dept :selected").val()
-                user_job = $("#user_job :selected").val()
-                user_phone = $("#user_phone").val()
-                user_fax = $("#user_fax").val()
-                user_email = $("#user_email").val()
-
-                $("#modalSubmit").attr("disabled", false);
-
-                // $.ajax({
-                //     url: "../admin/updateCheck",
-                //     type: "post",
-                //     data: ({
-                //         "user_name" : user_name,
-                //         "user_dept" : user_dept,
-                //         "user_job" : user_job,
-                //         "user_phone" : user_phone,
-                //         "user_fax" : user_fax,
-                //         "user_email" : user_email
-                //     }),
-                //     success: function (resp) {
-                //         if (resp == 'success' || img) {
-                //             $("button[type=submit]").attr("disabled", false);
-                //         } else if (resp == 'fail' || !img) {
-                //             $("button[type=submit]").attr("disabled", true);
-                //         }
-                //     }
-                // }) // ajax end
-            })
-
-        });
-
-        $(document).on("change", "#user_auth", function () {
-            var user_auth = $(this).val();
-            var user_id = $(this).find('option:selected').attr("value2");
-            console.log(user_id);
-
-            $.ajax({
-                url: '../admin/authUpdate',
-                data: {
-                    "user_id": user_id,
-                    "user_auth": user_auth
-                },
-                complete: function (resp) {
-                    console.log("성공인가")
-                    location.reload();
-                }
-            })
-        });
-
-        $(document).on("click", "#stateChange", function () {
-            var clickData = $(this).text();
-            var fullUser_id = $(this).parents().eq(1).children().eq(2).children().eq(1).text();
-            var user_id = fullUser_id.substring(1, fullUser_id.length - 1);
-            var user_auth = "";
-            var user_state = "";
-
-            if (clickData.trim() == '중지') {
-                user_auth = "ROLE_WAIT";
-                user_state = "ST";
-            } else if (clickData.trim() == '승인') {
-                user_auth = "ROLE_MEMBER";
-                user_state = "CP";
-            } else if (clickData.trim() == '복구') {
-                user_auth = "ROLE_MEMBER";
-                user_state = "CP";
-            }
-
-            $.ajax({
-                url: '../admin/stateUpdate',
-                data: {
-                    "user_id": user_id,
-                    "user_auth": user_auth,
-                    "user_state": user_state
-                },
-                complete: function (resp) {
-                    location.reload();
-                }
-            })
-        })
-
-    });
 
 
 </script>
@@ -135,8 +25,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0 font-size-18">구성원> 구성원 관리</h4>
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-center">
+                        <h3 class="mb-sm-0 font-size-24">구성원> 구성원 관리</h3>
 
                     </div>
                 </div>
@@ -144,53 +34,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item waves-effect waves-light" role="presentation"><a class="nav-link active"
-                                                                                                 data-bs-toggle="tab"
-                                                                                                 href="#home-1"
-                                                                                                 role="tab"
-                                                                                                 aria-selected="true">
-                           <span class="d-block d-sm-none">
-                              <i class="fas fa-home"></i>
-                           </span>
-                                <span class="d-none d-sm-block">전체</span>
-                            </a></li>
-                            <li class="nav-item waves-effect waves-light" role="presentation"><a class="nav-link"
-                                                                                                 data-bs-toggle="tab"
-                                                                                                 href="#profile-1"
-                                                                                                 role="tab"
-                                                                                                 aria-selected="false"
-                                                                                                 tabindex="-1">
-                           <span class="d-block d-sm-none">
-                              <i class="far fa-user"></i>
-                           </span>
-                                <span class="d-none d-sm-block">승인</span>
-                            </a></li>
-                            <li class="nav-item waves-effect waves-light" role="presentation"><a class="nav-link"
-                                                                                                 data-bs-toggle="tab"
-                                                                                                 href="#messages-1"
-                                                                                                 role="tab"
-                                                                                                 aria-selected="false"
-                                                                                                 tabindex="-1">
-                           <span class="d-block d-sm-none">
-                              <i class="far fa-envelope"></i>
-                           </span>
-                                <span class="d-none d-sm-block">승인 대기</span>
-                            </a></li>
-                            <li class="nav-item waves-effect waves-light" role="presentation"><a class="nav-link"
-                                                                                                 data-bs-toggle="tab"
-                                                                                                 href="#settings-1"
-                                                                                                 role="tab"
-                                                                                                 aria-selected="false"
-                                                                                                 tabindex="-1">
-                           <span class="d-block d-sm-none">
-                              <i class="fas fa-cog"></i>
-                           </span>
-                                <span class="d-none d-sm-block">이용 중지</span>
-                            </a></li>
-                        </ul>
-
+                      
                         <!-- Tab panes -->
 
                         <div class="tab-content p-3 text-muted">
@@ -199,7 +43,7 @@
                                     <table class="table align-middle table-nowrap table-hover">
                                         <thead>
                                         <tr role="row">
-                                            <th><input class="form-check-input" type="checkbox" id="allCheck"></th>
+                                            <!-- <th><input class="form-check-input" type="checkbox" id="allCheck"></th> -->
                                             <th>#</th>
                                             <th>이름</th>
                                             <th>부서/직책</th>
@@ -213,9 +57,9 @@
                                         <tbody>
                                         <c:forEach var="m" items="${list }">
                                             <tr>
-                                                <td>
+                                                <!-- <td>
                                                     <input class="form-check-input" type="checkbox" id="memCheck">
-                                                </td>
+                                                </td> -->
                                                 <td>
                                                     <div>
                                                         <img class="rounded-circle avatar-xs"
@@ -223,7 +67,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <h5 class="font-size-14 mb-1"><a href=".."
+                                                    <h5 class="font-size-14 mb-1"><a href=""
                                                                                      class="text-dark">${m.user_name}</a>
                                                     </h5>
                                                     <p class="text-muted mb-0">(${m.user_id})</p>
@@ -318,6 +162,44 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="row">
+									<div class="col-lg-12">
+										<ul
+											class="pagination pagination-rounded justify-content-center mt-4">
+											<c:if test="${pageMaker.getCri().pageNum > 1}">
+												<li class="page-item"><a href="../admin/members?pageNum=${pageMaker.getCri().pageNum-1 }"
+													class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
+											</c:if>
+											<c:if test="${pageMaker.getCri().pageNum == 1 }">
+												<li class="page-item disabled"><a href=""
+													class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
+											</c:if>
+											<c:forEach begin="${pageMaker.getPageStart() }"
+												end="${pageMaker.getPageEnd() }" var="idx">
+												<c:if test="${idx == pageMaker.getCri().pageNum }">
+													<li class="page-item active"><a
+														href="../admin/members?pageNum=${idx }" class="page-link">${idx }</a></li>
+												</c:if>
+												<c:if test="${idx != pageMaker.getCri().pageNum }">
+													<li class="page-item"><a
+														href="../admin/members?pageNum=${idx }" class="page-link">${idx }</a></li>
+												</c:if>
+											</c:forEach>
+											<c:if test="${pageMaker.getCri().pageNum < pageMaker.getPageEnd()}">
+												<li class="page-item"><a
+													href="../admin/members?pageNum=${pageMaker.getCri().pageNum+1 }"
+													class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+												</li>
+											</c:if>
+											<c:if test="${pageMaker.getCri().pageNum == pageMaker.getPageEnd()}">
+												<li class="page-item disabled"><a
+													href=".."
+													class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+												</li>
+											</c:if>
+										</ul>
+									</div>
+								</div>
                             </div>
 
                             <div class="tab-pane" id="profile-1" role="tabpanel">
@@ -585,6 +467,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
