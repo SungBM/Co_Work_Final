@@ -1,10 +1,9 @@
 package com.naver.cowork.service;
 
-import java.util.List;
-
+import com.naver.cowork.domain.Dept;
 import org.springframework.stereotype.Service;
 
-import com.naver.cowork.domain.Dept;
+import java.util.List;
 
 @Service
 public interface DeptService {
@@ -18,6 +17,7 @@ public interface DeptService {
     public int insert(Dept dept);
 
     public List<Dept> deptList();
+    
     public String deptName(String user_id);
 
 

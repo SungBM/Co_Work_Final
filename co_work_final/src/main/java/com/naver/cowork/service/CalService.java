@@ -1,10 +1,10 @@
 package com.naver.cowork.service;
 
-import java.util.List;
-
+import com.naver.cowork.domain.Calendar;
+import com.naver.cowork.domain.Dept;
 import org.springframework.stereotype.Service;
 
-import com.naver.cowork.domain.Calendar;
+import java.util.List;
 
 @Service
 public interface CalService {

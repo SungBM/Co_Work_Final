@@ -533,7 +533,7 @@
                                                 <li><a>일별</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="../chat?id=" class="waves-effect">
+                                        <li><a href="../chat/chatForm" class="waves-effect">
 
                                             <i class="bx bx-chat"></i>
                                             <span>채팅</span>
