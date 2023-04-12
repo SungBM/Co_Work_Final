@@ -115,28 +115,19 @@ public class MemberController {
     @PostMapping("/updateProcess")
     public String updateProcess(Member member) throws Exception {
         MultipartFile imgupload = member.getImgupload();
-
         if (!imgupload.isEmpty()) {
             String fileName = imgupload.getOriginalFilename();
             member.setOriginalfile(fileName);
-
             String saveFolder = mysavefolder.getSavefolder();
             String fileDBName = fileDBName(fileName, saveFolder);
-            logger.info("fileDBName = " + fileDBName);
-
             imgupload.transferTo(new File(saveFolder + fileDBName));
-            logger.info("transferTo.path = " + saveFolder + fileDBName);
-
             member.setUser_card(fileDBName);
         }
-
-        logger.info("img = " + member.getUser_img() + "// card = " + member.getUser_card() + "// upload = " + member.getImgupload());
-
-        int result = meberService.mypageUpdate(member);
+        meberService.mypageUpdate(member);
         return "redirect:../member/mypage";
     }
 
-    private String fileDBName(String fileName, String saveFolder) {
+    public static String fileDBName(String fileName, String saveFolder) {
         // 새로운 폴더 이름 : 오늘 년+월+일
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR); // 오늘 연도
