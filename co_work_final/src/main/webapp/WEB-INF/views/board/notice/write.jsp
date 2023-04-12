@@ -6,7 +6,7 @@
 <html lang="en">
 <jsp:include page="../../main/header.jsp"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath }/resources/static/assets/js/board_js/notice/write.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/js/board_js/notice/write.js"></script>
 <style>
 
 textarea{
@@ -44,6 +44,13 @@ label {
 	text-align: right;
 }
 
+form[action=down] > input[type=submit]{
+    position: relative;
+    top: -20px;
+    left: 10px;
+    border: none;
+    cursor : pointer;
+}
 	
 </style>
 <head>
@@ -58,7 +65,7 @@ label {
 				<div class="row">
 				    <div class="col-12">
 				        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-							<h4 class="mb-sm-0 font-size-18">커뮤니티 > 공지사항</h4>
+							<h4 class="mb-sm-0 font-size-18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;작성 페이지</h4>
 				        </div>
 				    </div>
 				</div>
@@ -68,15 +75,15 @@ label {
 		                <div class="card">
 		                    <div class="card-body">
 		                    	<div class="input-group">
-		                    		<input name="notice_subject" id="autoSizingInputGroup" type="text" maxlength="100"
+		                    		<input name="NOTICE_SUBJECT" id="notice_subject" type="text" maxlength="100"
 											 class="form-control" placeholder="제목 입력">
 									<sec:authorize access="isAuthenticated()">
 									<sec:authentication property="principal" var="pinfo" />
-									<input class="input-group-text" name="user_id" id="user_id" value="${pinfo.username}" type="text" readOnly>
-									</sec:authorize> 
+										<input class="input-group-text" name="USER_ID" id="user_id" value="${pinfo.username}" type="text" readOnly>
+									</sec:authorize>  
 	                         	</div>
 								<div class="form-content">
-									<textarea name="notice_content" id="notice_content"
+									<textarea name="NOTICE_CONTENT" id="notice_content"
 												 rows="20" class="form-control"
 												 placeholder="내용을 입력하세요"></textarea>
 								</div>
@@ -84,8 +91,8 @@ label {
 									<div class="file-value">
 										<label class="form-control" >
 										<span id="filevalue"></span>
-											<input type="file" id="upfile" name="notice_file">
-											<img src="../../resources/static/assets/images/board/attach.png">
+											<input type="file" id="upfile" name="uploadfile">
+											<img src="${pageContext.request.contextPath }/resources/assets/images/board/attach.png">
 										</label>
 									</div>
 									<div class="button">
@@ -97,6 +104,7 @@ label {
 						</div>
 					</div>
 				</div>
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			</form>
 		</div> <!-- end row -->
 	</div> <!-- container-fluid -->
