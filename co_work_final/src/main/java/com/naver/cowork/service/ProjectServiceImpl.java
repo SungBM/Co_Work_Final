@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,10 +58,32 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+	@Transactional
 	public Project insert(Project p) {
-		// TODO Auto-generated method stub
-		return dao.insert(p);
+	    Project project = new Project();
+	    project.setProject_name(p.getProject_name());
+	    project.setProject_state(p.getProject_state());
+	    project.setProject_admin(p.getProject_admin());
+	    project.setProject_start(p.getProject_start());
+	    project.setProject_end(p.getProject_end());
+	    project.setProject_priority(p.getProject_priority());
+
+	    Project result = dao.insert(project);
+
+	    Project_User projectUser = new Project_User();
+	    projectUser.setPROJECT_NUM(project.getProject_num());
+	    projectUser.setUSER_ID(project.getProject_admin());
+	    dao.insert_user(projectUser);
+
+	    if (result == project) {
+	        return project;
+	    } else {
+	        return null;
+	    }
 	}
+
+
+
 
 	@Override
 	public List<Project> getProjectList(String logingID) {
@@ -107,7 +130,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 
-	public Project insert_user(Project_User u) {
+	public Project_User insert_user(Project_User u) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -214,6 +237,47 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+
+	public List<Project_Board> getProjectBoardList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int insertProjectBoard(Project_Board board) {
+		return dao.insertProjectBoard(board);
+		
+	}
+
+	@Override
+	 public List<Project> searchByKeyword(String keyword) {
+        return dao.searchByKeyword(keyword);
+	}
+	
+	@Override
+    public List<Project> getAllProjects() {
+        return dao.findAll();
+    }
+	
+	 @Override
+	    public List<Project> getProjectsByCreatorId(String creatorId) {
+	        return dao.findByProBoardCreaterId(creatorId);
+	    }
+
+	    @Override
+	    public List<Project> getFilteredProjects(String filter) {
+	        List<Project> projects;
+	        if (filter.equals("항목 1")) {
+	            projects = getProjectsByCreatorId("HTA123");
+	        } else {
+	            projects = getAllProjects();
+	        }
+	        return projects;
+	    }
+
+	
+
+
 	public int ProjectCommentAdd(Project_Board_Comment pbc) {
 		// TODO Auto-generated method stub
 		return dao.ProjectCommentAdd(pbc);
@@ -249,6 +313,7 @@ public class ProjectServiceImpl implements ProjectService {
 		return dao.ProjectCommentReply(pbc);
 	}
 
+
 	@Override
 	public int getPjectCommentCount(int pbNum) {
 		// TODO Auto-generated method stub
@@ -280,7 +345,7 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return list;
 	}
-	
+
 }
 
 
