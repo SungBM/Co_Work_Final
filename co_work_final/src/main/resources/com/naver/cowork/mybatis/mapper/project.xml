@@ -3,6 +3,86 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.ProjectMapper">
+	<delete id="commentDelete" parameterType="int">
+		delete PROJECT_BOARD_COMMENT where PRO_BO_COMMENT_NUM = ${pbNum}
+	</delete>
+
+	<select id="getProjectCommentList" resultType="Project_Board_Comment" parameterType="int">
+		  <![CDATA[
+		SELECT PRO_BO_COMMENT_NUM, PRO_BO_COMMENT_ID, 
+		PRO_BO_COMMENT_NAME, PRO_BO_COMMENT_CONTENT, PRO_BO_COMMENT_FILE, PRO_BO_COMMENT_RE_LEV, 
+		TO_CHAR(PRO_BO_COMMENT_DATE,'YYYY/MM/DD HH24:MI:SS') 
+		AS PRO_BO_COMMENT_DATE, PRO_BOARD_NUM, PRO_BO_COMMENT_ORIGINFILE, PRO_BO_COMMENT_RE_REF, PRO_BO_COMMENT_RE_SEQ
+		FROM PROJECT_BOARD_COMMENT
+		WHERE PRO_BOARD_NUM = ${pbNum}
+		START WITH PRO_BO_COMMENT_RE_REF IS NULL
+		CONNECT BY PRIOR PRO_BO_COMMENT_NUM = PRO_BO_COMMENT_RE_REF
+		ORDER SIBLINGS BY TO_DATE(PRO_BO_COMMENT_DATE,'YYYY/MM/DD HH24:MI:SS') ASC
+			  ]]>
+	</select>
+	
+	<update id="ProjectCommentUpdate" parameterType="Project_Board_Comment">
+		update PROJECT_BOARD_COMMENT 
+		SET
+			PRO_BO_COMMENT_ID = '${PRO_BO_COMMENT_ID}' ,
+			PRO_BO_COMMENT_NAME = (SELECT USER_NAME FROM USER_INFO WHERE USER_ID = '${PRO_BO_COMMENT_ID}'),
+			PRO_BO_COMMENT_CONTENT = '${PRO_BO_COMMENT_CONTENT}',
+			PRO_BO_COMMENT_FILE = '${PRO_BO_COMMENT_FILE}',
+			PRO_BO_COMMENT_ORIGINFILE = '${PRO_BO_COMMENT_ORIGINFILE}' 
+		WHERE
+			PRO_BO_COMMENT_NUM = ${PRO_BO_COMMENT_NUM}
+	</update>
+	
+	<insert id="ProjectCommentReply" parameterType="Project_Board_Comment">
+		insert into PROJECT_BOARD_COMMENT(
+			PRO_BO_COMMENT_NUM,	
+			PRO_BO_COMMENT_ID,
+			PRO_BO_COMMENT_NAME,
+			PRO_BO_COMMENT_CONTENT,
+			PRO_BO_COMMENT_FILE, 
+			PRO_BO_COMMENT_RE_LEV,
+			PRO_BO_COMMENT_DATE,
+		    PRO_BOARD_NUM,
+			PRO_BO_COMMENT_ORIGINFILE,
+			PRO_BO_COMMENT_RE_REF
+		) values ( 
+			pro_board_comm_seq.NEXTVAL,
+			'${PRO_BO_COMMENT_ID}',
+			(SELECT USER_NAME FROM USER_INFO WHERE USER_ID = '${PRO_BO_COMMENT_ID}'),
+			'${PRO_BO_COMMENT_CONTENT}',
+			'${PRO_BO_COMMENT_FILE}',
+			1,
+			SYSDATE,
+		    ${PRO_BOARD_NUM},
+			'${PRO_BO_COMMENT_ORIGINFILE}',
+			${PRO_BO_COMMENT_RE_REF}
+			
+		 )
+	</insert>
+	
+	<insert id="ProjectCommentAdd" parameterType="Project_Board_Comment">
+		insert into PROJECT_BOARD_COMMENT(
+			PRO_BO_COMMENT_NUM,	
+			PRO_BO_COMMENT_ID,
+			PRO_BO_COMMENT_NAME,
+			PRO_BO_COMMENT_CONTENT,
+			PRO_BO_COMMENT_FILE, 
+			PRO_BO_COMMENT_RE_LEV,
+			PRO_BO_COMMENT_DATE,
+		    PRO_BOARD_NUM,
+			PRO_BO_COMMENT_ORIGINFILE 
+		) values ( 
+			pro_board_comm_seq.NEXTVAL,
+			'${PRO_BO_COMMENT_ID}',
+			(SELECT USER_NAME FROM USER_INFO WHERE USER_ID = '${PRO_BO_COMMENT_ID}'),
+			'${PRO_BO_COMMENT_CONTENT}',
+			'${PRO_BO_COMMENT_FILE}',
+			0,
+			SYSDATE,
+		    ${PRO_BOARD_NUM},
+			'${PRO_BO_COMMENT_ORIGINFILE}'
+		 )
+	</insert>
 
 	<update id="updateUserCheckInfoClear" parameterType="java.util.HashMap">
 		update PROBOARD_CHECK_USER

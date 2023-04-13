@@ -13,7 +13,9 @@
 
 <style>
 .page-content{
+
    margin-left: 100px;
+
 }
 #icon_id{
    display: none;
@@ -97,23 +99,37 @@ textarea {
         <!-- end page title -->
 
         <div class="row">
+
         	 <div class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title mb-4">업무 작성</h3>
+
                         <div style="text-align:center;">
                     <a href="#" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
                       <i class="far fa-file-alt"></i> 글
                     </a> 
+
                     <a href="#" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
                       <i class="fas fa-tasks"></i> 업무
                     </a> 
                     <a href="./project_vote" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
+
+             
+                    <a href="/schedule" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
+                      <i class="far fa-calendar-alt"></i> 일정
+                    </a> 
+                    <a href="/schedule" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
+                      <i class="fas fa-check-square"></i> 할 일
+                    </a> 
+                    <a href="/schedule" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
+
                       <i class="fas fa-vote-yea"></i> 투표
                     </a>
                   </div>
 
                         <hr>
+
                         <form method="POST" action="../project/submit" enctype="multipart/form-data">
                         <div class="form-group">
                     <input type="text" class="form-control" id="PRO_BOARD_SUBJECT" name="PRO_BOARD_SUBJECT" placeholder="제목을 입력하세요" style="border:none; font-size:18px"><br>
@@ -169,6 +185,7 @@ textarea {
 
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
+
                   </form>
                                     </div>
                             </div>
@@ -189,6 +206,7 @@ textarea {
 
 <script>
 
+
 function setActiveButton(btn) {
 	  // 모든 버튼에서 active 클래스 제거
 	  const buttons = document.querySelectorAll('.btn-group button');
@@ -199,5 +217,6 @@ function setActiveButton(btn) {
 	  // 클릭한 버튼에 active 클래스 추가
 	  btn.classList.add('active');
 	}
+
 </script>
 <jsp:include page="../main/footer.jsp"></jsp:include>

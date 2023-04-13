@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
+import com.naver.cowork.domain.Project_Board_Comment;
 import com.naver.cowork.domain.Project_User;
 import com.naver.cowork.mybatis.mapper.ProjectMapper;
 
@@ -79,6 +80,7 @@ public interface ProjectService {
 
 	public List<Proboard_check_user> getProBoardCheckUserList(String id);
 
+
 	public List<Project> searchByKeyword(String keyword);
 	
 	public List<Project> getAllProjects();
@@ -86,6 +88,18 @@ public interface ProjectService {
 	public List<Project> getProjectsByCreatorId(String creatorId);
 	
 	public List<Project> getFilteredProjects(String filter);
+
+	public int ProjectCommentAdd(Project_Board_Comment pbc);
+
+	public List<Project_Board_Comment> getProjectCommentList(int pbNum);
+
+	public int commentDelete(int pbNum);
+
+	public int ProjectCommentUpdate(Project_Board_Comment pbc);
+
+	public int ProjectCommentReply(Project_Board_Comment pbc);
+
+
 }
 
 

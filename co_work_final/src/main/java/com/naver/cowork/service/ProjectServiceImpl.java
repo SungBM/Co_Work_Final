@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
+import com.naver.cowork.domain.Project_Board_Comment;
 import com.naver.cowork.domain.Project_User;
 import com.naver.cowork.mybatis.mapper.ProjectMapper;
 
@@ -236,6 +237,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
+
 	public List<Project_Board> getProjectBoardList() {
 		// TODO Auto-generated method stub
 		return null;
@@ -274,6 +276,34 @@ public class ProjectServiceImpl implements ProjectService {
 	    }
 
 	
+
+
+	public int ProjectCommentAdd(Project_Board_Comment pbc) {
+		// TODO Auto-generated method stub
+		return dao.ProjectCommentAdd(pbc);
+	}
+
+	@Override
+	public List<Project_Board_Comment> getProjectCommentList(int pbNum) {
+		return dao.getProjectCommentList(pbNum);
+	}
+
+	@Override
+	public int commentDelete(int pbNum) {
+		return dao.commentDelete(pbNum);
+	}
+
+	@Override
+	public int ProjectCommentUpdate(Project_Board_Comment pbc) {
+		// TODO Auto-generated method stub
+		return dao.ProjectCommentUpdate(pbc);
+	}
+
+	@Override
+	public int ProjectCommentReply(Project_Board_Comment pbc) {
+		// TODO Auto-generated method stub
+		return dao.ProjectCommentReply(pbc);
+	}
 
 }
 
