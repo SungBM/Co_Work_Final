@@ -1,6 +1,8 @@
 package com.naver.cowork.domain;
 
+
 import org.springframework.web.multipart.MultipartFile;
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +22,6 @@ public class Project_Board_Comment {
 		private int PRO_BO_COMMENT_RE_REF;
 		private MultipartFile fileNames;
 	
+
 
 }

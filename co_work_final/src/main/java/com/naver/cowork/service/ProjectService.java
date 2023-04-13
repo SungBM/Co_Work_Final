@@ -18,9 +18,12 @@ import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
 import com.naver.cowork.domain.Project_Board_Comment;
 import com.naver.cowork.domain.Project_User;
+import com.naver.cowork.mybatis.mapper.ProjectMapper;
 
 @Service
 public interface ProjectService {
+	
+	public int insertProjectBoard(Project_Board board);
 	
 	public void close(PreparedStatement pstmt, Connection conn);
 
@@ -47,21 +50,19 @@ public interface ProjectService {
 	public Project getDetailProject();
 	
 	public Project insert(Project p);
+	
+	public Project_User insert_user(Project_User u);
 
 	public List<Project_Board> getPojectBoardFeed(int pNum);
 
 	public String getProjectName(int pNum);
 	
-
-	public Project insert_user(Project_User u);
-
 	public List<Project_Board> getProjectDetailList();
 	
 
-	//@Transactional
-	//public Project insert(Project p) {
-		
-	//}
+    public List<Project_Board> getProjectBoardList();
+
+	
 
 	public int getDayCount(String startDate, String endDate);
 	//public Project inser_user(Project_user u);
@@ -79,6 +80,15 @@ public interface ProjectService {
 
 	public List<Proboard_check_user> getProBoardCheckUserList(String id);
 
+
+	public List<Project> searchByKeyword(String keyword);
+	
+	public List<Project> getAllProjects();
+	
+	public List<Project> getProjectsByCreatorId(String creatorId);
+	
+	public List<Project> getFilteredProjects(String filter);
+
 	public int ProjectCommentAdd(Project_Board_Comment pbc);
 
 	public List<Project_Board_Comment> getProjectCommentList(int pbNum);
@@ -89,4 +99,12 @@ public interface ProjectService {
 
 	public int ProjectCommentReply(Project_Board_Comment pbc);
 
+
 }
+
+
+
+		
+
+
+
