@@ -3,9 +3,39 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.NoticeMapper">
+	<select id="getNoticeListForMain" resultType="notice">
+		  <![CDATA[
+	SELECT NOTICE_NUM,
+       USER_ID,
+       NOTICE_SUBJECT,
+       NOTICE_CONTENT,
+       NOTICE_FILE,
+       NOTICE_RE_REF,
+       NOTICE_RE_LEV,
+       NOTICE_RE_SEQ,
+       NOTICE_READCOUNT,
+       NOTICE_REG_DATE
+	FROM
+	    (SELECT NOTICE_NUM,
+	            USER_ID,
+	            NOTICE_SUBJECT,
+	            NOTICE_CONTENT,
+	            NOTICE_FILE,
+	            NOTICE_RE_REF,
+	            NOTICE_RE_LEV,
+	            NOTICE_RE_SEQ,
+	            NOTICE_READCOUNT,
+	            NOTICE_REG_DATE
+	     FROM NOTICE
+	     ORDER BY NOTICE_REG_DATE DESC)
+	WHERE ROWNUM <= 5
+		  ]]>
+	</select>
 
-	<select id="getListCount" resultType="int">
-		select count(*) from notice
+
+	<select id="getListCount" parameterType="map" resultType="int">
+		select count(*) from notice		
+		  <include refid="search_"/>
 	</select>
 	
 	<select id="getNoticeList" parameterType="map" resultType="notice">
@@ -13,42 +43,74 @@
 			(select rownum rnum, b.*
 			 from
 				(select * from notice
+		  			<include refid="search_"/>
 				 order by notice_re_ref desc,
 				 notice_re_seq asc) b
-			 where rownum &lt; #{end}
+			 where rownum &lt;=  #{end}
 			)
 		where rnum &gt;= #{start} and rnum &lt;= #{end}
-			
 	</select>
-	<insert id="insert" parameterType="notice">
+	
+	
+	<sql id="search_">
+		<if test="search_field != null">
+			where
+				<choose>
+					<when test="search_field=='notice_subject'">notice_subject</when>
+					<when test="search_field=='user_id'">user_id</when>
+				</choose>
+			like #{search_word}   <!-- 검색해라 위에 있는 값으로 -->
+		</if>
+	</sql>
+	
+	
+	<select id="getNoticeDetail" parameterType="int" resultType="notice">
+		select *
+		from	notice
+		where	NOTICE_NUM=#{number}
+	</select>
+	
+	<insert id="insertNotice" parameterType="notice">
 		<selectKey resultType="int"	order="BEFORE"	keyProperty="NOTICE_NUM">
-		 select nvl(max(NOTICE_NUM),0)+1 from board
+		 select nvl(max(NOTICE_NUM),0)+1 from notice
 		</selectKey>
-		insert into board
+		insert into notice
 	 	(NOTICE_NUM,
-	 	 NOTICE_NAME, NOTICE_PASS, NOTICE_SUBJECT,
+	 	 USER_ID, NOTICE_SUBJECT,
 	 	 NOTICE_CONTENT, NOTICE_FILE, NOTICE_ORIGINAL,
 	 	 NOTICE_RE_REF,
 	 	 NOTICE_RE_LEV, NOTICE_RE_SEQ, NOTICE_READCOUNT,
 	 	 NOTICE_REG_DATE)
 	 	 values
 	 	 (#{NOTICE_NUM},
-	 	  #{NOTICE_NAME}, #{NOTICE_PASS}, #{NOTICE_SUBJECT},
+	 	  #{USER_ID}, #{NOTICE_SUBJECT},
 	 	  #{NOTICE_CONTENT}, #{NOTICE_FILE, jdbcType=VARCHAR}, #{NOTICE_ORIGINAL, jdbcType=VARCHAR},
 	 	  #{NOTICE_NUM},
 	 	  #{NOTICE_RE_LEV}, #{NOTICE_RE_SEQ}, #{NOTICE_READCOUNT},
 	 	    sysdate)
 	</insert>
-	
-	<update id="readCountUpdate" parameterType="int">
-		update notice
-		set NOTICE_READCOUNT=NOTICE+READCOUNT+1
-		where NOTICE_NUM=#{number}
+
+	<update id="setReadCountUpdate" parameterType="int">
+		update	notice
+		set		NOTICE_READCOUNT=NOTICE_READCOUNT+1
+		where	NOTICE_NUM=#{number}
 	</update>
+	 
+	 <update id="noticeModify" parameterType="notice">
+	 	update notice
+	 	set
+	 		NOTICE_SUBJECT=#{NOTICE_SUBJECT},
+	 		NOTICE_CONTENT=#{NOTICE_CONTENT},
+	 		NOTICE_FILE=#{NOTICE_FILE, jdbcType=VARCHAR},
+	 		NOTICE_ORIGINAL=#{NOTICE_ORIGINAL, jdbcType=VARCHAR}
+	 	where NOTICE_NUM=#{NOTICE_NUM}
+	 </update>
 	
-	<select id="detail" parameterType="int" resultType="notice">
-		select *
-		from notice
-		where NOTICE_NUM=#{number}
-	</select>
+		 <delete id="noticeDelete" parameterType="notice">
+	  	delete from notice
+			where NOTICE_RE_REF = #{NOTICE_RE_REF}
+			and 	 NOTICE_RE_LEV >= #{NOTICE_RE_LEV}
+			and 	 NOTICE_RE_SEQ >= #{NOTICE_RE_SEQ}
+	 </delete>
+
 </mapper>

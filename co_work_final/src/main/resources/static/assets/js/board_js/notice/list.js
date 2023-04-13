@@ -1,8 +1,14 @@
 function go(page){
 	const limit = $('#viewcount').val();  //noticeList.jsp에 viewcount임.
-	const data = `limit=${limit}&state=ajax&page=${page}`;  //object형식. limit, page는 변수라서 ""쓰지않음.
+	const search_field = $('#search_field').val();
+	const search_word = $('#search_word').val();
+	const data = `limit=${limit}&state=ajax&page=${page}&search_field=${search_field}&search_word=${search_word}`;  //object형식. limit, page는 변수라서 ""쓰지않음.
 	ajax(data);  //ajax호출
 }
+
+
+
+
 
 //noticeList.jsp 쿼리를 ajax로 변경함
 
@@ -44,14 +50,22 @@ return output;
 //item이 noticelist임. notice_list.jsp랑 비교해가면서 해석해보기
 function ajax(data){
 	console.log(data)
+	let token = $("meta[name='_csrf']").attr("content");
+	let header = $("meta[name='_csrf_header']").attr("content");
 	output="";
+
+
 	
 	$.ajax({
 		type : "POST",
 		data : data,   //위에 ajax매개변수 타입과 같은 것
-		url : "/noticeList_ajax",
+		url : "../notice/noticeList_ajax",
 		dataType : "json",  //데이터타입=json이라는 것은 객체화 해서 불러옴.=오브젝트 형식= {}임.
 		cache : false,  //브라우저에서 캐시쓰지 않겠다. 정적페이지(항상변함없는 html, css같은거). 브라우저 너 캐시쓰지말고 계쏙해서 업데이트해서 보여줘.
+		beforeSend : function(xhr)
+        {   //데이터를 전송하기 전에 헤더에 csrf값을 설정합니다. ajax도 토큰 요청한다.
+        	xhr.setRequestHeader(header, token);		
+        },
 		success : function(data){  //data=변수명은 내 맘대로
 			$("viewcount").val(data.limit);  //받아온 객체 스트링으로옴. 꺼내오려면 data로 접근. 객체화 한 이름 .data 이 데이터를 data로 접근. 페이지 유지. 
 			//$("table").find("font").text("글 개수 : " + data.listcount);
@@ -73,7 +87,6 @@ function ajax(data){
 						
 						let img="";
 						if(item.notice_RE_LEV > 0){
-							img="<img src='image/line.gif'>";
 						}
 						
 						let subject=item.notice_SUBJECT.replace(/</g, '&lt;')
@@ -81,9 +94,9 @@ function ajax(data){
 						
 						output += "<td><div>" + blank + img
 						output += ' <a href="detail?num='+ item.notice_NUM + '">'
-						output += subject + '</a></div></td>'  //브라우저에서 cnt넘어가는 값 꼭 확인! 대문자 말고 소문자로 넘어감.
-						output += '<td><div>' + item.notice_NAME+'</div></td>'
-						output += '<td><div>' + item.notice_DATE+'</div></td>'
+						output += subject + '</a></div></td>'
+						output += '<td><div>' + item.user_ID+'</div></td>'
+						output += '<td><div>' + item.notice_REG_DATE+'</div></td>'
 						output += '<td><div>' + item.notice_READCOUNT+'</div></td></tr>'
 					})
 					output += "</tbody>"
@@ -92,12 +105,20 @@ function ajax(data){
 					$(".pagination").empty(); //페이징 처리 영역 내용 제거. 만들어놓은 class이름 복붙
 					output = "";
 					
-					let digit = '이전&nbsp;'
+					let digit = '&lt;&lt;&nbsp;'
 					let href="";
 					if(data.page > 1){
-						href = 'href=javascript:go(' + (data.page -1) + ')';
+						href = 'href=javascript:go(' + (data.firstPage) + ')';
 					}	
 					output += setPaging(href, digit);
+					
+					digit = '&lt;&nbsp;'
+					href="";
+					if(data.page > 1){
+						href = 'href=javascript:go(' + (data.page-1) + ')';
+					}	
+					output += setPaging(href, digit);
+					
 					
 					for(let i = data.startpage; i<=data.endpage; i++){  //forEach문
 						digit = i;
@@ -108,10 +129,17 @@ function ajax(data){
 						output += setPaging(href, digit);
 					}
 					
-					digit = '&nbsp;다음&nbsp;';
+					digit = '&nbsp;&gt;';
 					href="";
 					if(data.page < data.maxpage){
-						href='href=javascript:go(' + (data.page + 1) + ')';
+						href='href=javascript:go(' + (data.page+1) + ')';
+					}	
+					output += setPaging(href, digit);
+					
+					digit = '&nbsp;&gt;&gt;';
+					href="";
+					if(data.page < data.maxpage){
+						href='href=javascript:go(' + (data.lastPage) + ')';
 					}	
 					output += setPaging(href, digit);
 					
@@ -127,10 +155,15 @@ function ajax(data){
 
 $(function(){
 	$("#write-button").click(function(){		//
-		location.href='write';
+		location.href='noticeWrite';
 	})
 	
 	$("#viewcount").change(function(){
 		go(1); //보여줄 페이지를 1페이지로 설정합니다.
 	}) //change end
+	
+	$("#search_button").click(function(){
+		go(1); //보여줄 페이지를 1페이지로 설정합니다.
+	}) //change end
+	
 });

@@ -284,8 +284,16 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public List<Project_Board_Comment> getProjectCommentList(int pbNum) {
-		return dao.getProjectCommentList(pbNum);
+	public List<Project_Board_Comment> getProjectCommentList(int pbNum,int page) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int limit = 5;
+		int startrow=(page-1)*limit+1;
+		int endrow=startrow+limit-1;
+		map.put("pbNum", pbNum);
+		map.put("start", startrow);
+		map.put("end", endrow);
+		
+		return dao.getProjectCommentList(map);
 	}
 
 	@Override
@@ -303,6 +311,39 @@ public class ProjectServiceImpl implements ProjectService {
 	public int ProjectCommentReply(Project_Board_Comment pbc) {
 		// TODO Auto-generated method stub
 		return dao.ProjectCommentReply(pbc);
+	}
+
+
+	@Override
+	public int getPjectCommentCount(int pbNum) {
+		// TODO Auto-generated method stub
+		return dao.getPjectCommentCount(pbNum);
+	}
+
+	@Override
+	public List<Project> getProjectListForMain() {
+		// TODO Auto-generated method stub
+		return dao.getProjectListForMain();
+	}
+
+	@Override
+	public List<Project> getProjectListWithProg(List<Project> list) {
+		
+		for(Project p : list) {
+			String d1 = p.getProject_start().substring(0, 10);
+			String d2 = p.getProject_end().substring(0, 10);;
+			
+			int prog = getDayCount(d1,d2);
+			if(prog > 100) {
+				prog = 100;
+				p.setProject_prog(prog);
+				p.setProject_state(PJStateEnum.OVERDEADLINE.getState());
+				p.setProject_priority(PJPriorityEnum.NONEPRIORITY.getPriority());
+			} else {
+				p.setProject_prog(prog);
+			}
+		}
+		return list;
 	}
 
 }

@@ -1,9 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <head>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<jsp:include page="../main/header.jsp"/>
+    
 		
         <meta charset="utf-8" />
-        <jsp:include page="../main/header.jsp"/>
         <title>Chat</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
@@ -20,16 +28,20 @@
     <script src="${pageContext.request.contextPath }/resources/assets/js/member/jquery-3.6.3.js"></script>
 	<style>
 	h5{font-weight:bold}
+	
+	.w-100 user-chat{
+	margin-right: auto;
+	}
+	
+	.form-control{
+	background-color: #f3f3f9;
+	}
+	#btnImage{
+	float:right;
+	border: 0;
+	}
 	</style>
-	
-	<script>
-		function showPopup (user_name){
-			window.open("chat/chatting?user_name="+user_name, '_blank', "width=600, height=600, top=10, left=10");
-		//	wondow.close();
-		}
-		
-	</script>
-	
+
     </head>
 
   <!-- <body data-sidebar="dark" data-layout-mode="light"> -->   
@@ -66,11 +78,10 @@
                                     <div class="py-4 border-bottom">
                                         <div class="d-flex">
                                             <div class="flex-shrink-0 align-self-center me-3">
-                                                <img src="assets/images/users/avatar-1.jpg" class="avatar-xs rounded-circle" alt="">
+                                                <img src="../assets/images/users/${userimg }" class="rounded-circle avatar-xs" alt="">
                                             </div>
                                             <div class="flex-grow-1">
-                                                <h5 class="font-size-15 mb-1">${loginid}</h5>
-                                                <p class="text-muted mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active</p>
+                                                 <h5 class="font-size-15 mb-1">내 이름</h5>
                                             </div>
 
                                             <div>
@@ -90,17 +101,18 @@
 
                                     <div class="search-box chat-search-box py-4">
                                         <div class="position-relative">
-                                            <input type="text" class="form-control" placeholder="Search...">
-                                            <i class="bx bx-search-alt search-icon"></i>
+                                            <input type="text" class="form-control" placeholder="이름을 입력하세요" id="search_word"}>
+	                                          <i class="bx bx-search-alt search-icon">
+	                                          </i>
                                         </div>
                                     </div>
 
                                     <div class="chat-leftsidebar-nav">
                                         <ul class="nav nav-pills nav-justified">
                                             <li class="nav-item">
-                                                <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
-                                                    <i class="bx bx-chat font-size-20 d-sm-none"></i>
-                                                    <span class="d-none d-sm-block">멤버</span>
+                                                <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active" type="submit">
+                                                    <i class="bx bx-chat font-size-20 d-sm-none" ></i>
+                                                    <span class="d-none d-sm-block" >검색</span>
                                                 </a>
                                             </li>
                                            
@@ -109,28 +121,36 @@
                                             <div class="tab-pane show active" id="chat">
                                                 <div>
                                                     <ul class="list-unstyled chat-list" data-simplebar style="max-height: 410px;">
-	                                                   
+ 	                                                   <sec:authentication property="principal" var="pinfo" />
+ 	                                            		    <c:forEach var = "m" items="${deptNames }">    <!-- 컨트롤러에서 m로 담은애 적기 -->
+                                                       <c:if test="${m.USER_ID == pinfo.username }">
+                                                       <li class=myinfo>
+                                                       <input type=hidden value=${m.USER_NAME } id=my_name>
+                                                      </c:if>
+                                                      <c:if test="${m.USER_ID != pinfo.username }">
                                                         <li>
-	                                            		    <c:forEach var = "m" items="${members }">    <!-- 컨트롤러에서 m로 담은애 적기 -->
+                                                      </c:if>
+                                                       
                                                             <a href="javascript: void(0);">
                                                                 <div class="d-flex">
                                                                     <div class="flex-shrink-0 align-self-center me-3">
-                                                                        <i class="mdi mdi-circle text-success font-size-10"></i>
                                                                     </div>
                                                                     <div class="flex-shrink-0 align-self-center me-3">
-                                                                        <img src="assets/images/users/${m.user_img }" class="rounded-circle avatar-xs" alt="">
+                                                                    <input type=hidden id=user_name value=${m.USER_NAME }>
+                                                                        <img src="../assets/images/users/${m.USER_IMG }" class="rounded-circle avatar-xs" alt="">
                                                                     </div>
-
+                                                                    <input type=hidden id=user_id value=${m.USER_ID }>
+																	<input type="hidden" id="user_img" value="${m.USER_IMG }">
+																	<input type="hidden" id="user_name" value="${m.USER_NAME}">
                                                                     <div class="flex-grow-1 overflow-hidden">
-                                                                        <h5 class="text-truncate font-size-14 mb-1" onclick="showPopup('${m.user_id}')">${m.user_name}, ${m.dept_name }</h5>
+                                                                        <h5 class="text-truncate font-size-14 mb-1" ><span>${m.USER_NAME}</span><span> <${m.DEPT_NAME }></span></h5>
                                                                        <!-- <input type="text" value="팝업창 호출" onclick="showPopup()"> -->
-                                                                        <p class="text-truncate mb-0">${m.user_email }</p>
+                                                                        <p class="text-truncate mb-0">${m.USER_EMAIL }</p>
                                                                     </div>
-                                                                    <div class="font-size-11">12 min</div>
                                                                 </div>
                                                             </a>
-                                                     </c:forEach> 
                                                         </li>
+                                                     </c:forEach> 
 
                                                         
                                                     </ul>
@@ -146,263 +166,49 @@
 
                                 </div>
                             </div>
-                            <div class="w-150 user-chat">
+                            <div class="w-100 user-chat">
                                 <div class="card">
                                     <div class="p-4 border-bottom ">
                                         <div class="row">
                                             <div class="col-md-4 col-9">
                                                 <h5 class="font-size-15 mb-1">채팅</h5>
+                                                
                                             </div>
-                                            <div class="col-md-8 col-3">
-                                                <ul class="list-inline user-chat-nav text-end mb-0">
-                                                    <li class="list-inline-item d-none d-sm-inline-block">
-                                                        <div class="dropdown">
-                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-search-alt-2"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-md">
-                                                                <form class="p-3">
-                                                                    <div class="form-group m-0">
-                                                                        <div class="input-group">
-                                                                            <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
-                                                                            
-                                                                            <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
-                                                                            
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-inline-item  d-none d-sm-inline-block">
-                                                        <div class="dropdown">
-                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-cog"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <a class="dropdown-item" href="#">View Profile</a>
-                                                                <a class="dropdown-item" href="#">Clear chat</a>
-                                                                <a class="dropdown-item" href="#">Muted</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-    
-                                                    <li class="list-inline-item">
-                                                        <div class="dropdown">
-                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-dots-horizontal-rounded"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <a class="dropdown-item" href="#">Action</a>
-                                                                <a class="dropdown-item" href="#">Another action</a>
-                                                                <a class="dropdown-item" href="#">Something else</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
+                                            
                                                     
-                                                </ul>
+                                            <div class="col-md-8 col-3">
+                                                <button type="button" id="btnImage" ><img src = "../assets/images/board/remove.png" alt="" width=15px height=15px style=border:0>
+                                                            </button>
                                             </div>
                                         </div>
                                     </div>
     
                   <div class="w-100 user-chat">
                                 <div class="card">
-                                    <div class="p-4 border-bottom ">
-                                        <div class="row">
-                                            <div class="col-md-4 col-9">
-                                                <h5 class="font-size-15 mb-1">${user_name}Steven Franklin</h5>
-                                                <p class="text-muted mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active now</p>
-                                            </div>
-                                            <div class="col-md-8 col-3">
-                                                <ul class="list-inline user-chat-nav text-end mb-0">
-                                                    <li class="list-inline-item d-none d-sm-inline-block">
-                                                        <div class="dropdown">
-                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-search-alt-2"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-md">
-                                                                <form class="p-3">
-                                                                    <div class="form-group m-0">
-                                                                        <div class="input-group">
-                                                                            <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
-                                                                            
-                                                                            <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
-                                                                            
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-inline-item  d-none d-sm-inline-block">
-                                                        <div class="dropdown">
-                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-cog"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <a class="dropdown-item" href="#">View Profile</a>
-                                                                <a class="dropdown-item" href="#">Clear chat</a>
-                                                                <a class="dropdown-item" href="#">Muted</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-    
-                                                    <li class="list-inline-item">
-                                                        <div class="dropdown">
-                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-dots-horizontal-rounded"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu dropdown-menu-end">
-                                                                <a class="dropdown-item" href="#">Action</a>
-                                                                <a class="dropdown-item" href="#">Another action</a>
-                                                                <a class="dropdown-item" href="#">Something else</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-    
-    
                                     <div>
-                                        <div class="chat-conversation p-3">
-                                            <ul class="list-unstyled mb-0" data-simplebar style="max-height: 486px;">
-                                                <li> 
+                                        <div class="chat-conversation p-3" style="height:485px">
+											<ul class="list-unstyled mb-0" data-simplebar style="height: 450px; overflow: scroll;" id="fix">
+                                           <div class="simplebar-wrapper" style="margin: 0px;">
+                                           <div class="simplebar-height-auto-observer-wrapper">
+                                           <div class="simplebar-height-auto-observer"></div>
+                                           </div>
+                                           <div class="simplebar-mask">
+                                           <div class="simplebar-offset" style="right: -18.8889px; bottom: 0px;">
+                                           <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                                           <div class="simplebar-content" style="padding: 0px;">
+                                           
+                                                 <li> 
                                                     <div class="chat-day-title">
                                                         <span class="title">Today</span>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div class="conversation-list">
-                                                        <div class="dropdown">
-    
-                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                              </a>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="#">Copy</a>
-                                                                <a class="dropdown-item" href="#">Save</a>
-                                                                <a class="dropdown-item" href="#">Forward</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ctext-wrap">
-                                                            <div class="conversation-name">Steven Franklin</div>
-                                                            <p>
-                                                                Hello!
-                                                            </p>
-                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:00</p>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </li>
-    
-                                                <li class="right">
-                                                    <div class="conversation-list">
-                                                        <div class="dropdown">
-    
-                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                              </a>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="#">Copy</a>
-                                                                <a class="dropdown-item" href="#">Save</a>
-                                                                <a class="dropdown-item" href="#">Forward</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ctext-wrap">
-                                                            <div class="conversation-name">Henry Wells</div>
-                                                            <p>
-                                                                Hi, How are you? What about our next meeting?
-                                                            </p>
-    
-                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:02</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-
-                                                <li>
-                                                    <div class="conversation-list">
-                                                        <div class="dropdown">
-    
-                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                              </a>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="#">Copy</a>
-                                                                <a class="dropdown-item" href="#">Save</a>
-                                                                <a class="dropdown-item" href="#">Forward</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ctext-wrap">
-                                                            <div class="conversation-name">Steven Franklin</div>
-                                                            <p>
-                                                                Yeah everything is fine
-                                                            </p>
-                                                            
-                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:06</p>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </li>
-    
-                                                <li class="last-chat">
-                                                    <div class="conversation-list">
-                                                        <div class="dropdown">
-    
-                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                              </a>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="#">Copy</a>
-                                                                <a class="dropdown-item" href="#">Save</a>
-                                                                <a class="dropdown-item" href="#">Forward</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ctext-wrap">
-                                                            <div class="conversation-name">Steven Franklin</div>
-                                                            <p>& Next meeting tomorrow 10.00AM</p>
-                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:06</p>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </li>
-    
-                                                <li class=" right">
-                                                    <div class="conversation-list">
-                                                        <div class="dropdown">
-    
-                                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                                              </a>
-                                                            <div class="dropdown-menu">
-                                                                <a class="dropdown-item" href="#">Copy</a>
-                                                                <a class="dropdown-item" href="#">Save</a>
-                                                                <a class="dropdown-item" href="#">Forward</a>
-                                                                <a class="dropdown-item" href="#">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ctext-wrap">
-                                                            <div class="conversation-name">Henry Wells</div>
-                                                            <p>
-                                                                Wow that's great
-                                                            </p>
-    
-                                                            <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:07</p>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                
-                                                
-                                            </ul>
-                                        </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                            </ul>   
+                                        </div>  
                                         <div class="p-3 chat-input-section">
                                             <div class="row">
                                                 <div class="col">
@@ -418,7 +224,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <button type="submit" class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light"><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
+                                                    <button type="button" class="btn btn-primary btn-rounded chat-send w-md waves-effect waves-light"><span class="d-none d-sm-inline-block me-2" id="btnSend">Send</span> <i class="mdi mdi-send"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -522,6 +328,7 @@
         <div class="rightbar-overlay"></div>
 
         <!-- JAVASCRIPT -->
+        <script src="${pageContext.request.contextPath }/resources/assets/js/chat_js/chat.js"></script>
         <script src="${pageContext.request.contextPath }/resources/assets/libs/jquery/jquery.min.js"></script>
   	 	<script src="${pageContext.request.contextPath }/resources/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
    		<script src="${pageContext.request.contextPath }/resources/assets/libs/metismenu/metisMenu.min.js"></script>

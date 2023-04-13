@@ -82,13 +82,18 @@ public interface ProjectMapper {
 
 	public int ProjectCommentAdd(Project_Board_Comment pbc);
 
-	public List<Project_Board_Comment> getProjectCommentList(int pbNum);
+	public List<Project_Board_Comment> getProjectCommentList(HashMap<String, Integer> map);
 
 	public int commentDelete(int pbNum);
 
 	public int ProjectCommentUpdate(Project_Board_Comment pbc);
 
 	public int ProjectCommentReply(Project_Board_Comment pbc);
+
+
+	public int getPjectCommentCount(int pbNum);
+
+	public List<Project> getProjectListForMain();
 
 
 }

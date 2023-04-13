@@ -9,8 +9,45 @@
 	values(#{SENDER}, #{MESSAGE}, #{SEND_DATE})
 </insert>
 
-<insert id="insert">
-	insert into CHAT_MESSAGE(ID, SENDER, MESSAGE, SEND_DATE)
-	values(#{ID}, #{SENDER}, #{MESSAGE}, SYSDATE)
+<insert id="chatSave">
+	insert into chat_log(roomNumber, CHAT_DATE, CHAT_SENDER, CHAT_CONTENT)
+	values(#{roomNumber}, sysdate, #{chat_sender}, #{chat_content})
 </insert>
+
+<select id="getRoom" resultType="Map">
+         select roomnumber
+         from chat_member
+         where roomnumber in (select roomnumber
+                            from chat_member
+                            where id = #{user1})
+         and id =#{user2}
+         <if test="user1 == user2">
+         	group by roomnumber
+  			having count(*)=2
+         </if>
+</select>
+
+
+<insert id="createRoom">
+	INSERT ALL
+	INTO chat_member (roomnumber, id) VALUES ((select nvl(max(roomnumber),0)+1 from chat_member), #{user1})
+	INTO chat_member (roomnumber, id) VALUES ((select nvl(max(roomnumber),0)+1 from chat_member), #{user2})
+	SELECT 1 FROM DUAL
+</insert>
+
+
+<select id="getList" resultType="ChatVO">
+	select * from chat_log
+	where roomNumber = #{roomNumber}
+	order by CHAT_DATE
+</select>
+
+<select id="deptNames" resultType="Map">
+	select user_id,user_img, user_email, user_name, user_dept, dept_name
+		from user_info left outer join dept
+		on user_info.user_dept = dept.dept_no
+		order by DECODE(user_state, 'CP', 1, 'WT', 2, 'ST', 3), user_name asc
+</select>
+
+
 </mapper>

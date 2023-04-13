@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.CompanyMapper">
+
+	<select id="companySelect" resultType="String">
+		select company_logo
+		from company
+	</select>
+
+	<insert id="companyInsert">
+		insert into company(company_logo)
+		values
+		(#{company_logo})
+	</insert>
+
+	<update id="companyUpdate">
+		update company
+		set company_logo = #{company_logo}
+	</update>
+</mapper>
