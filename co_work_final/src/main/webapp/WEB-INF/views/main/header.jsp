@@ -69,8 +69,8 @@
 								src="${pageContext.request.contextPath }/resources/assets/images/logo-light.svg"
 								alt="" height="22">
 						</span> <span class="logo-lg"> <img
-								src="${pageContext.request.contextPath }/resources/image/logo.png"
-								style="width: 200px;">
+								src="${pageContext.request.contextPath }/resources/image/logo1.png"
+								style="width: 200px; margin-top: 20px;">
 						</span>
 						</a>
 					</div>

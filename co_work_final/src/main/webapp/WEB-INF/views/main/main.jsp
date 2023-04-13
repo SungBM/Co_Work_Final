@@ -47,9 +47,10 @@
                     <div class="card" style="margin-left: 40px">
                         <div class="card-body main">
                             <h4 class="card-title mb-5"><i class="bx bx-calendar-check"></i>오늘 주요 일정</h4>
-                            <img src="${pageContext.request.contextPath }/resources/image/NoToday.png"
-                            style="width: 300px; height: 250px; margin-top: -50px">
-
+                            <img src="${pageContext.request.contextPath }/resources/image/test1.png"
+                            style="width: 300px; height: 250px; margin-top: -50px; margin-left: 90px;">
+							
+							<h4 style="font-weight: bold; text-align: center;">등록된 일정이 없습니다</h4>
                         </div>
                     </div>
                 </div>
