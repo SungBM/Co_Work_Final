@@ -21,7 +21,7 @@ public interface ProjectMapper {
 	
 	public List<Project> getProjectList(String id);
 
-	public Project insert(Project p);
+	public int insert(Project p);
 
 
 	public Project insert_user(Project p);
@@ -77,6 +77,14 @@ public interface ProjectMapper {
 	public int getPjectCommentCount(int pbNum);
 
 	public List<Project> getProjectListForMain();
+
+	public int insertProjectBoard(Project_Board board);
+
+	public List<Project> searchByKeyword(String keyword);
+
+	public List<Project> getAllProjects();
+
+	public List<Project> getProjectsByCreatorId(String creatorId);
 
 }
 

@@ -16,6 +16,4 @@ public class MeetingRoom {
 	private String meet_img; // 회의실 사진
 	private String meet_imgoriginal; // 회의실 사진 원본 파일명?? 필요없나...?
     private MultipartFile imgupload;
-
-
 }

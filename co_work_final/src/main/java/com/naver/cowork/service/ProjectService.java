@@ -46,7 +46,7 @@ public interface ProjectService {
 
 	public Project getDetailProject();
 	
-	public Project insert(Project p);
+	public int insert(Project p);
 
 	public List<Project_Board> getPojectBoardFeed(int pNum);
 
@@ -94,5 +94,13 @@ public interface ProjectService {
 	public List<Project> getProjectListForMain();
 	
 	public List<Project> getProjectListWithProg(List<Project> list);
+
+	public int insertProjectBoard(Project_Board board);
+
+	public List<Project> searchByKeyword(String keyword);
+
+	public List<Project> getAllProjects();
+
+	public List<Project> getProjectsByCreatorId(String creatorId);
 
 }

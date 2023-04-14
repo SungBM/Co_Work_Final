@@ -22,14 +22,14 @@
                 },
                 success: function (resp) {
                     if (resp.check == 'success') {
-                        $("#password").html("<span>현재 비밀번호가 같습니다.</span>")
+                        $("#password").html("<span class='text-success'>현재 비밀번호가 같습니다.</span>")
                         if (resp.newCheck == 'success') {
-                            $("#password2").html("<span>새 비밀번호와 같습니다.</span>")
+                            $("#password2").html("<span class='text-success'>새 비밀번호와 같습니다.</span>")
                         } else if (resp.newCheck == 'fail') {
-                            $("#password2").html("<span>새 비밀번호와 다릅니다.</span>")
+                            $("#password2").html("<span class='text-danger'>새 비밀번호와 다릅니다.</span>")
                         }
                     } else if (resp.check == 'fail') {
-                        $("#password").html("<span>현재 비밀번호가 다릅니다.</span>")
+                        $("#password").html("<span class='text-danger'>현재 비밀번호가 다릅니다.</span>")
                     }
                     if (resp.check == 'success' && resp.newCheck == 'success')
                         $("button[type=submit]").removeAttr("disabled")

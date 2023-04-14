@@ -47,10 +47,33 @@
                     <div class="card" style="margin-left: 40px">
                         <div class="card-body main">
                             <h4 class="card-title mb-5"><i class="bx bx-calendar-check"></i>오늘 주요 일정</h4>
-                            <img src="${pageContext.request.contextPath }/resources/image/test1.png"
-                            style="width: 300px; height: 250px; margin-top: -50px; margin-left: 90px;">
-							
+                            <c:if test="${calendarList == null}">
+                              <img src="${pageContext.request.contextPath }/resources/image/test1.png"
+                           	 	style="width: 300px; height: 250px; margin-top: -50px; margin-left: 90px;">
 							<h4 style="font-weight: bold; text-align: center;">등록된 일정이 없습니다</h4>
+                            </c:if>
+                                <c:if test="${calendarList != null}">
+                              <table class="table project-list-table table-nowrap align-middle table-borderless"
+                              style="margin-top: -40px;">
+							<thead>
+								<tr>
+									<th scope="col">일정</th>
+									<th scope="col">내용</th>
+									<th scope="col">시작 시간</th>
+									<th scope="col">종료 시간</th>
+								</tr>
+							</thead>
+							<tbody >
+							<c:forEach  var="cl" items="${calendarList }">
+								<td><h5 style="color: ${cl.cal_color}">${cl.cal_title }</h5></td>
+								<td><h5 style="color: ${cl.cal_color}"> ${cl.cal_content }</h5></td>
+								<td><h5>${cl.cal_start_date }</</h5></td>
+								<td><h5>${cl.cal_end_date }</h5></td>
+							</c:forEach>
+							</tbody>
+							</table>
+                            </c:if>
+                          
                         </div>
                     </div>
                 </div>
