@@ -1175,7 +1175,11 @@ a:hover {
 		    $("#sticky").stop().animate({"top":position+currentPosition+"px"},500);
 		  });
 		$("#ProjectDetailList").click(function(){
-			location.href = "../project/ProjectDetailList"
+			var id = $(this).attr('idVal');
+			var pNum = $(this).attr('pNum');
+			console.log(id);
+			console.log(pNum);
+			location.href = "../project/ProjectDetailList?id="+id+"&pNum="+pNum+"";
 		});
 		
 		$(".search").click(function(){
@@ -1279,7 +1283,7 @@ a:hover {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="" id="ProjectDetailList" role="tab">
+                            <a class="nav-link" data-bs-toggle="tab" href="" id="ProjectDetailList" idVal="${id }" pNum="${pNum }" role="tab">
                                	<i class="mdi mdi-playlist-check"></i>
                                 LIST
                             </a>
