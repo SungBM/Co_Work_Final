@@ -6,6 +6,7 @@ import com.naver.cowork.mybatis.mapper.CalMapper;
 import org.apache.ibatis.annotations.Delete;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -72,8 +73,12 @@ public class CalServiceImpl implements CalService {
 
 	@Override
 	public List<Calendar> calendarListForMain(String user_id) {
-		// TODO Auto-generated method stub
-		return dao.calendarListForMain(user_id);
+		List<Calendar> list = dao.calendarListForMain(user_id);
+		for( Calendar cal : list ) {
+			cal.setCal_start_date(cal.getCal_start_date().substring(10,16));
+			cal.setCal_end_date(cal.getCal_end_date().substring(10,16));
+		}
+		return list;
 	}
 
 

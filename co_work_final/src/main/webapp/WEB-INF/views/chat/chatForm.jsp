@@ -78,7 +78,7 @@
                                     <div class="py-4 border-bottom">
                                         <div class="d-flex">
                                             <div class="flex-shrink-0 align-self-center me-3">
-                                                <img src="../assets/images/users/${userimg }" class="rounded-circle avatar-xs" alt="">
+                                                <img src="../assets/images/users/${userimg }" id="user_img" class="rounded-circle avatar-xs" alt="">
                                             </div>
                                             <div class="flex-grow-1">
                                                  <h5 class="font-size-15 mb-1">내 이름</h5>
@@ -339,6 +339,8 @@
    		 <!-- auth-2-carousel init -->
     	<script src="${pageContext.request.contextPath }/resources/assets/js/pages/auth-2-carousel.init.js"></script>
         <script src="${pageContext.request.contextPath }/resources/assets/js/app.js"></script>
-
+	<script type="text/javascript">
+		
+	</script>
     </body>
 </html>
