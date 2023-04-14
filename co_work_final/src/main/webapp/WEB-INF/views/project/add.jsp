@@ -116,6 +116,8 @@ textarea {
                         <hr>
                         <form method="POST" action="../project/submit" enctype="multipart/form-data">
                         <div class="form-group">
+                    <input type="text" class="form-control" id="PRO_BOARD_CREATER_ID" name="PRO_BOARD_CREATER_ID" value=${id }>
+                    <input type="text" class="form-control" id="PROJECT_NUM" name="PROJECT_NUM" value=${pNum }>
                     <input type="text" class="form-control" id="PRO_BOARD_SUBJECT" name="PRO_BOARD_SUBJECT" placeholder="제목을 입력하세요" style="border:none; font-size:18px"><br>
                   </div>
                   <i class="bx bx-list-ol text-muted mb-2 font-size-15" style="font-weight: bold"></i>

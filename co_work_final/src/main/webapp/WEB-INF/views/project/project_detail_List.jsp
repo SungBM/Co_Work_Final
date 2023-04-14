@@ -70,7 +70,7 @@
                <div class="project-list">
                <div class="table-responsive">
                <div style="text-align:right">
-               <a href="../project/add" class="btn btn-secondary waves-effect waves-light">업무 추가</a></div>
+               <a href="../project/add?id=${id }&pNum=${pNum}" class="btn btn-secondary waves-effect waves-light">업무 추가</a></div>
                   <table
                      class="table project-list-table table-nowrap align-middle table-borderless"
                      style="margin-top: -40px;">
