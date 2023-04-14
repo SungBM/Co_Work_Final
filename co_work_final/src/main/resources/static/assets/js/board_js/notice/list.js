@@ -1,5 +1,5 @@
 function go(page){
-	const limit = $('#viewcount').val();  //noticeList.jsp에 viewcount임.
+	const limit = $('viewcount').val();  //noticeList.jsp에 viewcount임.
 	const search_field = $('#search_field').val();
 	const search_word = $('#search_word').val();
 	const data = `limit=${limit}&state=ajax&page=${page}&search_field=${search_field}&search_word=${search_word}`;  //object형식. limit, page는 변수라서 ""쓰지않음.

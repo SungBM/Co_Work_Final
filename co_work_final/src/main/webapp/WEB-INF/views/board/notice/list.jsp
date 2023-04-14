@@ -176,7 +176,7 @@ textarea{
 										<c:param name="page" value="${a }" />
 									</c:url>
 									<li class="page-item">
-										<a href="${go }" class="page-link">${a }</a>
+										<a href="javascript:go(${a })" class="page-link">${a }</a>
 									</li>
 								</c:if>
 							</c:forEach>
@@ -193,7 +193,7 @@ textarea{
 									<c:param name="page" value="${page+1 }" />
 								</c:url>
 								<li class="page-item">
-									<a href="${next }" class="page-link">&nbsp;&gt;</a>
+									<a href="javascript:go(${page+1 })" class="page-link">&nbsp;&gt;</a>
 								</li>						
 							</c:if>
 							
@@ -206,10 +206,10 @@ textarea{
 								<c:url var="end" value="noticeList">
 									<c:param name="search_field" value="${search_field }" />
 									<c:param name="search_word" value="${search_word }" />
-									<c:param name="page" value="${lastPage }" />
+									<c:param name="page" value="${maxpage }" />
 								</c:url>
 								<li class="page-item">
-									<a href="${end }" class="page-link">&nbsp;&gt;&gt;</a>
+									<a href="javascript:go(${maxpage })" class="page-link">&nbsp;&gt;&gt;</a>
 								</li>
 							</c:if>
 						</ul>
