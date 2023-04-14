@@ -64,14 +64,12 @@ textarea{
            <!-- end page title -->  
            
          <!-- 공지 작성 -->
-         <sec:authorize access="isAuthenticated()">
-         <sec:authentication property="principal" var="pinfo" />  <!-- principal은 시큐리티가 가지고 있는 기술. principal로 아이디값을 불러올 수 있음-->
-            <c:if test="${noticedata.USER_ID == pinfo.username || pinfo.username == 'admin1'}">
+           <sec:authorize access="hasRole('ROLE_ADMIN')">
             <div class="write-button">
                <button type="button" class="btn btn-info" id="write-button">작성</button>
             </div>
-            </c:if>
-         </sec:authorize> 
+         	</sec:authorize> 
+
             <!-- 상단기능 -->
             <form action="noticeList">
                <div class="search_area">
