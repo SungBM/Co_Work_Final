@@ -8,7 +8,7 @@ $(function(){
             url: "ProjectAddProcess" , //매개변수로 넘겨받은 url주소
             data : queryString ,
             cache: false,
-            type: "GET",
+            type: "POST",
             success: function(data) {
 	           if(data==1){  //리스트 호출
 		 
