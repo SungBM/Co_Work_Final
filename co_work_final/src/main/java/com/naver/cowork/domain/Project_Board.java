@@ -1,7 +1,8 @@
 package com.naver.cowork.domain;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,5 +29,8 @@ public class Project_Board {
 	private int PROJECT_NUM;
 	private String PRO_BOARD_FILE_ORIGINAL;
 	private List<Proboard_check_user> PROBOARD_CHECK_USERS;
-	}
+	private MultipartFile uploadfile;
+	private String BOARD_ORIGINAL; // 첨부될 파일의 이름
+	private String BOARD_DATE;
 
+}

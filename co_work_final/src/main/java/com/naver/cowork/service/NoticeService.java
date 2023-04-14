@@ -29,4 +29,15 @@ public interface NoticeService {
 	
 	// 조회수
 	public int setReadCountUpdate(int num);
+
+	
+	// 작성자 본인 확인
+	public boolean isNoticeWriter(int num, String pass);
+
+	public List<Notice> getNoticeListForMain();
+	
 }
+
+
+
+

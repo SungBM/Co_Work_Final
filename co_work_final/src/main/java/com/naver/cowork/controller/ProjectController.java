@@ -14,30 +14,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
-import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.cowork.domain.MySaveFolder;
 import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
-
+import com.naver.cowork.domain.Project_Board_Comment;
+import com.naver.cowork.service.FileUtil;
 import com.naver.cowork.service.PJPriorityEnum;
 import com.naver.cowork.service.PJStateEnum;
-
 import com.naver.cowork.service.ProjectService;
 
 @Controller
@@ -114,11 +110,13 @@ public class ProjectController {
 		return mv;
 	}
 	
+	
+	
 	@RequestMapping(value = "/ProjectAddProcess" , method =  RequestMethod.GET)
 	public ModelAndView insert(ModelAndView mv , Project project){
-		System.out.println(project.getProject_name());
-		System.out.println("프로젝트 모달 컨트롤러 들어옴");
-		
+		System.out.println(project.getProject_admin()+"컨트");
+		projectService.insert(project);
+
 		
 		mv.setViewName("project/project_add_modal");
 		return mv;
@@ -130,8 +128,6 @@ public class ProjectController {
 		
 		List<Project_Board> detaillist = projectService.getProjectDetailList();
 		mv.addObject("ProjectDetailList", detaillist);
-		System.out.println(detaillist);
-		System.out.println("프로젝트 디테일 리스트 들어옴");
 		
 			
 		mv.setViewName("project/project_detail_List");
@@ -145,13 +141,75 @@ public class ProjectController {
 	}
 	
 	@PostMapping("/submit")
-	public String submitPost(@RequestParam("title") String title,
-	                         @RequestParam("content") String content,
-	                         @RequestParam("filename") MultipartFile file) {
+	   public String submit(Model model, Project_Board board, 
+	                   @RequestParam("PRO_BOARD_SUBJECT") String PRO_BOARD_SUBJECT, 
+	                        @RequestParam("PRO_BOARD_CONTENT") String PRO_BOARD_CONTENT,
+	                        @RequestParam("uploadfile") MultipartFile uploadfile) {
+	       model.addAttribute("PRO_BOARD_SUBJECT", PRO_BOARD_SUBJECT);
+	       model.addAttribute("PRO_BOARD_CONTENT", PRO_BOARD_CONTENT);
+	       model.addAttribute("uploadfile", uploadfile);
+	       //board.setPRO_BOARD_CONTENT(PRO_BOARD_CONTENT);
+	       //board.setPRO_BOARD_FILE(null);
+	       projectService.insertProjectBoard(board);
+	       System.out.println(PRO_BOARD_SUBJECT);
+	       return "redirect:/project/ProjectDetailList";
+	}
+	
+	@PostMapping("/add")
+	   //@RequestMapping(value="/add",method=RequestMethod.POST)
+	   public String add(Project_Board board, HttpServletRequest request)
+	      throws Exception {
+	      
+	      MultipartFile uploadfile = board.getUploadfile();
+	      
+	      if(!uploadfile.isEmpty()) {
+	         String fileName = uploadfile.getOriginalFilename();//원래 파일명
+	         board.setBOARD_ORIGINAL(fileName);//원래 파일명 저장
+	         
+	         String saveFolder = mysavefolder.getSavefolder();
+	         String fileDBName = fileDBName(fileName, saveFolder);
+	         Logger.info("fileDBName = " + fileDBName);
+	         
+	         // transferTo(File path) : 업로드한 파일을 매개변수의 경로에 저장합니다.
+	         uploadfile.transferTo(new File(saveFolder + fileDBName));
+	         Logger.info("transfeTo path = " + saveFolder + fileDBName);
+	         // 바뀐 파일명으로 저장
+	         board.setPRO_BOARD_FILE(fileDBName);
+	      }
+	      
+	      projectService.insertProjectBoard(board); // 저장메서드 호출
+	      //Logger.info(board.toString());//selectKey로 정의한 BOARD_NUM 값 확인해 봅니다.
+	      return "redirect:/project/ProjectDetailList";
+	   }
 
-	    // 프로젝트 상세 페이지로 리다이렉트
-	    return "redirect:/project/project_detail_List/";
-  }
+
+	   private String fileDBName(String fileName, String saveFolder) {
+	      // TODO Auto-generated method stub
+	      return null;
+	   }
+	   
+	   @GetMapping("/search")
+	   public String searchProject(@RequestParam("keyword") String keyword, Model model) {
+	       List<Project> projectDetails = projectService.searchByKeyword(keyword);
+	       model.addAttribute("ProjectDetailList", projectDetails);
+	       return "/ProjectDetailList";
+	   }
+	   
+	   @GetMapping("/all")
+	    public List<Project> getAllProjects() {
+	        return projectService.getAllProjects();
+	    }
+
+	    @GetMapping("/{PRO_BOARD_CREATER_ID}")
+	    public List<Project> getProjectsByCreatorId(@PathVariable String creatorId) {
+	        return projectService.getProjectsByCreatorId(creatorId);
+	    }
+	    
+	    @GetMapping("/project_vote")
+	    public String projectVote() {
+	      return "/prjeojct/project_vote";
+	    }
+	
 
 	@RequestMapping(value = "projectDetailFeed", method = RequestMethod.GET)
 	public ModelAndView projectDetailFeed(ModelAndView mv, @RequestParam(value = "id")String id,
@@ -163,12 +221,8 @@ public class ProjectController {
 		String [] bmBoard = projectService.getProjectBookmarkList(pNum);
 		List<Proboard_check_user> pcu = projectService.getProBoardCheckUserList(id);
 		
-		System.out.println(pcu);
-		
 		for(Project_Board pb : pb_list ) {
 			pb.setPROBOARD_CHECK_USERS(pcu);
-			System.out.println(pb.getPRO_BOARD_NUM() + "pbn");
-		
 			
 		}
 		
@@ -182,13 +236,14 @@ public class ProjectController {
 	}
 	
 	
+	
+	
 	@ResponseBody
 	@PostMapping("/projectFileDown")
 	public byte[] BoardFileDown(String filename,
 								HttpServletRequest request,
 								String original,
 								HttpServletResponse response) throws Exception {
-
 		
 		String saveFolder = mysavefolder.getSavefolder();
 		String sFilePath = saveFolder + filename;
@@ -208,8 +263,6 @@ public class ProjectController {
 	@RequestMapping(value = "/ProjectLikeIncrease" , method = RequestMethod.GET)
 	public void ProjectLikeIncrease(@RequestParam("pbNum")int pbNum,@RequestParam("id")String id, HttpServletResponse response) throws Exception {
 		int result = projectService.increaseCheck(pbNum,id);
-		System.out.println(pbNum);
-		System.out.println("컨트롤러 들어옴");
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print(result);
@@ -218,7 +271,6 @@ public class ProjectController {
 	@RequestMapping(value = "/ProjectLikeDecrease", method = RequestMethod.GET)
 	public void ProjectLikeDecrease(@RequestParam("pbNum")int pbNum,@RequestParam("id")String id, HttpServletResponse response) throws Exception {
 		int result = projectService.decreaseCheck(pbNum,id);
-		System.out.println(pbNum);
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print(result);
@@ -227,23 +279,98 @@ public class ProjectController {
 	
 	@RequestMapping(value = "/ProjectBookmarkCheckedClear" , method = RequestMethod.GET)
 	public void ProjectBookmarkCheckedClear(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception {
-		System.out.println("ajax 북마크 해제");
 		String resultSubject = projectService.ProjectBookmarkCheckedClear(pbNum);
-		System.out.println(pbNum);
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		System.out.println(resultSubject + "rs");
 		out.print(resultSubject);
 	}
 	
 	@RequestMapping(value = "/ProjectBookmarkChecked" , method = RequestMethod.GET)
 	public void ProjectBookmarkChecked(@RequestParam("pbNum")int pbNum, HttpServletResponse response) throws Exception{
-		System.out.println("ajax 북마크");
 		String resultSubject = projectService.ProjectBookmarkChecked(pbNum);
-		System.out.println(pbNum);
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
-		System.out.println(resultSubject + "rs");
 		out.print(resultSubject);
+	}
+	
+	@RequestMapping(value = "/ProjectCommentAdd" , method = RequestMethod.POST)
+	@ResponseBody
+	public List<Project_Board_Comment>  ProjectCommentAdd(Project_Board_Comment pbc,@RequestParam(value = "page" , defaultValue = "1", required = false )int page,HttpServletResponse response) throws Exception {
+		MultipartFile commentFile = pbc.getFileNames();
+	       if (!commentFile.isEmpty()) {
+	    	   FileUtil.fileUpload(commentFile, pbc, mysavefolder);
+	            
+	        }
+	       
+	    int result = projectService.ProjectCommentAdd(pbc);
+	    int pbNum = pbc.getPRO_BOARD_NUM();
+	    List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum,page);
+	    
+		return commentList;
+	}
+	
+	@RequestMapping(value = "/getPjectCommentList" , method = RequestMethod.POST)
+	@ResponseBody
+	public List<Project_Board_Comment>getPjectCommentList(int pbNum,@RequestParam(value = "page" , defaultValue = "1", required = false )int page,HttpServletResponse response) throws Exception {
+		List<Project_Board_Comment> commentList = null;
+		commentList = projectService.getProjectCommentList(pbNum,page);
+		
+		return commentList;
+	}
+	
+	@GetMapping(value = "/getPjectCommentCount")
+	public void getPjectCommentCount(int pbNum,HttpServletResponse response) throws Exception {
+		int count = projectService.getPjectCommentCount(pbNum);
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(count);
+	}
+	
+	@GetMapping(value = "/commentDelete")
+	@ResponseBody
+	public List<Project_Board_Comment>commentDelete(int pbcNum, int pbNum,@RequestParam(value = "page" , defaultValue = "1", required = false )int page, HttpServletResponse response) throws Exception{
+		int result = projectService.commentDelete(pbcNum);
+		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum,page);
+		return commentList;
+	}
+	
+	@PostMapping(value = "/ProjectCommentUpdate")
+	@ResponseBody
+	public List<Project_Board_Comment>ProjectCommentUpdate(Project_Board_Comment pbc,@RequestParam(value = "page" , defaultValue = "1", required = false )int page,HttpServletResponse response) throws Exception {
+		
+		MultipartFile commentFile = pbc.getFileNames();
+	       if (!commentFile.isEmpty()) {
+	    	   FileUtil.fileUpload(commentFile, pbc, mysavefolder);
+	            
+	        }
+	       
+	    int result = projectService.ProjectCommentUpdate(pbc);
+	    int pbNum = pbc.getPRO_BOARD_NUM();
+	    List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum,page);
+	    
+	    
+		return commentList;
+	}
+	
+	@PostMapping(value = "/ProjectCommentReply")
+	@ResponseBody
+	public List<Project_Board_Comment>ProjectCommentReply(Project_Board_Comment pbc,@RequestParam(value = "page" , defaultValue = "1", required = false )int page,HttpServletResponse response) throws Exception {
+		
+		MultipartFile commentFile = pbc.getFileNames();
+		if (!commentFile.isEmpty()) {
+			FileUtil.fileUpload(commentFile, pbc, mysavefolder);
+			
+		}
+		pbc.setPRO_BO_COMMENT_RE_REF(pbc.getPRO_BO_COMMENT_NUM());
+		
+		int result = projectService.ProjectCommentReply(pbc);
+		int pbNum = pbc.getPRO_BOARD_NUM();
+		List<Project_Board_Comment> commentList = projectService.getProjectCommentList(pbNum,page);
+		
+		for( Project_Board_Comment pbc2 : commentList) {
+			String content = pbc2.getPRO_BO_COMMENT_CONTENT();
+		}
+		
+		return commentList;
 	}
 }

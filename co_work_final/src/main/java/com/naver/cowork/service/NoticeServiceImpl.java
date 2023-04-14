@@ -87,6 +87,26 @@ public class NoticeServiceImpl implements NoticeService {
 
 
 
+	@Override
+	public List<Notice> getNoticeListForMain() {
+		// TODO Auto-generated method stub
+		return dao.getNoticeListForMain();
+	}
+
+
+	@Override
+	public boolean isNoticeWriter(int num, String pass) {
+		// TODO Auto-generated method stub
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("num", num);
+		map.put("pass", pass);
+		if(dao.isNoticeWriter(map) != null) {
+			return true;
+		}
+		return false;
+	}
+
+
 
 	
 	

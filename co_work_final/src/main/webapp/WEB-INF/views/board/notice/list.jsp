@@ -10,47 +10,48 @@
 <style>
 
 textarea{
-	resize: none;
+   resize: none;
 }
 .container-fluid{
-	width:90%;
-	margin: 0 auto;
+   width:90%;
+   margin: 0 auto;
 }
 
 .search_area{        
   text-align: center;
 }
 .form-select{
-	display: inline-block;
-	width:10%;
+   display: inline-block;
+   width:10%;
 }
 .search-bar{
-	display: inline-block;
-	width:50%;
+   display: inline-block;
+   width:50%;
 }
 .search-button{
-	display: inline-block;
+   display: inline-block;
 }
 .write-button{
-	float: right;
+   float: right;
 }
 .rows{
-	float: right;
+   float: right;
 }
 .gray{
-	color: gray;
+   color: gray;
 }
 
-	div > div > table > thead > tr:nth-child(2) > th:nth-child(1){width:13%}
-	div > div > table > thead > tr:nth-child(2) > th:nth-child(2){width:40%}
-	div > div > table > thead > tr:nth-child(2) > th:nth-child(3){width:16%}
-	div > div > table > thead > tr:nth-child(2) > th:nth-child(4){width:16%}
-	div > div > table > thead > tr:nth-child(2) > th:nth-child(5){width:13%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(1){width:13%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(2){width:40%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(3){width:16%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(4){width:16%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(5){width:13%}
 </style>
 <title>공지사항</title>
 </head>
 <body>
 <div class="main-content">
+<<<<<<< HEAD
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- start page title -->
@@ -63,15 +64,13 @@ textarea{
 			</div>
 	        <!-- end page title -->  
 	        
-			<!-- 공지 작성 -->
-			<sec:authorize access="isAuthenticated()">
-			<sec:authentication property="principal" var="pinfo" />  <!-- principal은 시큐리티가 가지고 있는 기술. principal로 아이디값을 불러올 수 있음-->
-				<c:if test="${noticedata.USER_ID == pinfo.username || pinfo.username == 'admin1'}">
-				<div class="write-button">
-					<button type="button" class="btn btn-info" id="write-button">작성</button>
-				</div>
-				</c:if>
-			</sec:authorize> 
+			         <!-- 공지 작성 -->
+         <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <div class="write-button">
+               <button type="button" class="btn btn-info" id="write-button">작성</button>
+            </div>
+         </sec:authorize> 
+
 				<!-- 상단기능 -->
 				<form action="noticeList">
 					<div class="search_area">
@@ -226,7 +225,7 @@ textarea{
 		</div>
 	</div>
 </div>       
-	<!-- 하단푸터 -->
+   <!-- 하단푸터 -->
 <jsp:include page="../../main/footer.jsp"></jsp:include>
 </body>
 </html>

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
+import com.naver.cowork.domain.Project_Board_Comment;
 import com.naver.cowork.domain.Project_User;
 
 @Service
@@ -45,7 +46,7 @@ public interface ProjectService {
 
 	public Project getDetailProject();
 	
-	public Project insert(Project p);
+	public int insert(Project p);
 
 	public List<Project_Board> getPojectBoardFeed(int pNum);
 
@@ -77,5 +78,29 @@ public interface ProjectService {
 	public String ProjectBookmarkChecked(int pbNum);
 
 	public List<Proboard_check_user> getProBoardCheckUserList(String id);
+
+	public int ProjectCommentAdd(Project_Board_Comment pbc);
+
+	public List<Project_Board_Comment> getProjectCommentList(int pbNum, int page);
+
+	public int commentDelete(int pbNum);
+
+	public int ProjectCommentUpdate(Project_Board_Comment pbc);
+
+	public int ProjectCommentReply(Project_Board_Comment pbc);
+
+	public int getPjectCommentCount(int pbNum);
+
+	public List<Project> getProjectListForMain();
+	
+	public List<Project> getProjectListWithProg(List<Project> list);
+
+	public int insertProjectBoard(Project_Board board);
+
+	public List<Project> searchByKeyword(String keyword);
+
+	public List<Project> getAllProjects();
+
+	public List<Project> getProjectsByCreatorId(String creatorId);
 
 }

@@ -32,6 +32,11 @@ public interface NoticeMapper {
 	//조회수
 	public int setReadCountUpdate(int num);
 	
+
+	public Notice isNoticeWriter(HashMap<String, Object> map);
 	
+
+	public List<Notice> getNoticeListForMain();
+
 	
 }

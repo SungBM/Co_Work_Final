@@ -13,6 +13,7 @@ import com.naver.cowork.domain.Proboard_check_user;
 
 import com.naver.cowork.domain.Project;
 import com.naver.cowork.domain.Project_Board;
+import com.naver.cowork.domain.Project_Board_Comment;
 import com.naver.cowork.domain.Project_User;
 
 @Mapper
@@ -20,7 +21,7 @@ public interface ProjectMapper {
 	
 	public List<Project> getProjectList(String id);
 
-	public Project insert(Project p);
+	public int insert(Project p);
 
 
 	public Project insert_user(Project p);
@@ -62,6 +63,28 @@ public interface ProjectMapper {
 	public void updateUserCheckInfo(HashMap<String, Object> map);
 
 	public void updateUserCheckInfoClear(HashMap<String, Object> map);
+
+	public int ProjectCommentAdd(Project_Board_Comment pbc);
+
+	public List<Project_Board_Comment> getProjectCommentList(HashMap<String, Integer> map);
+
+	public int commentDelete(int pbNum);
+
+	public int ProjectCommentUpdate(Project_Board_Comment pbc);
+
+	public int ProjectCommentReply(Project_Board_Comment pbc);
+
+	public int getPjectCommentCount(int pbNum);
+
+	public List<Project> getProjectListForMain();
+
+	public int insertProjectBoard(Project_Board board);
+
+	public List<Project> searchByKeyword(String keyword);
+
+	public List<Project> getAllProjects();
+
+	public List<Project> getProjectsByCreatorId(String creatorId);
 
 }
 

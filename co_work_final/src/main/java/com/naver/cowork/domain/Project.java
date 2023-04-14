@@ -6,8 +6,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 public class Project {
 		private int row_num;
 		private int project_num;
@@ -23,6 +23,5 @@ public class Project {
 		private ArrayList<Project_User> project_parti;
 		private int parti_count;
 		private ArrayList<Project_User> project_parti_forModal;
-		
 		
 	}

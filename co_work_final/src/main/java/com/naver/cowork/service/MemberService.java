@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.Member;
 
 @Service
@@ -21,7 +22,12 @@ public interface MemberService {
 //	public List<Member> getSearchList(int index, String search_word, int page, int limit);
 
     //	public int getSearchListCount(int index, String search_word);
-    public List<Member> members();
+    
+    // 전체 회원 조회
+    public List<Member> members(Criteria cri);
+    
+    // 전체 회원 카운트
+    public int getCount();
 
     public int insert(Member m);
 
@@ -35,4 +41,7 @@ public interface MemberService {
 
 
     public int adminUpdate(Member member);
+
+	public String user_img(String user_id);
+
 }
