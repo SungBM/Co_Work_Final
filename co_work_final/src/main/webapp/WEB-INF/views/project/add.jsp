@@ -107,9 +107,10 @@ textarea {
                     <a href="#" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
                       <i class="fas fa-tasks"></i> 업무
                     </a> 
-                    <a href="./project_vote" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
+                <!--    <a href="./project_vote" style="color: black; margin-right: 100px; display: inline-block; font-size: 15px;">
                       <i class="fas fa-vote-yea"></i> 투표
                     </a>
+                     --> 
                   </div>
 
                         <hr>
