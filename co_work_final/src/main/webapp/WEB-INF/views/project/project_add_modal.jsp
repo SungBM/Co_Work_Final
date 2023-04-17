@@ -33,7 +33,7 @@
                                                        </div>
                                                         <div class="mb-3">
                                                             <label for="message-text" class="col-form-label">관리자</label>
-                                                            <textarea class="form-control" id="project_admin" name="project_admin" ></textarea>
+                                                            <input type="text" class="form-control" id="project_admin" name="project_admin" value="ADMINTEST" readonly="readonly">
                                                         </div>
                                                        <div class="mb-3 row">
                                                  <label for="example-date-input" class="col-md-3 col-form-label" >시작일</label>
@@ -55,8 +55,6 @@
                                                        </div>
                                                     
                                               <div class="mb-3">
-                                                            <label for="message-text" class="col-form-label">참여자</label>
-                                                            <textarea class="form-control" id="project_admin" name="project_admin"></textarea>
                                                         </div>
                                                    </form>      
                                                    </div>   

@@ -3,6 +3,20 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.ProjectMapper">
+	 <insert id="insertProjectBoard">
+     INSERT INTO PROJECT_BOARD (PRO_BOARD_CARTEGORY, PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CONTENT, PRO_BOARD_CREATER_NAME, PRO_BOARD_CREATER_ID, PRO_BOARD_FILE, PRO_BOARD_NUM,PROJECT_NUM)
+      VALUES ('글', #{PRO_BOARD_SUBJECT}, '진행중', 'LOW', #{PRO_BOARD_START}, #{PRO_BOARD_END}, #{PRO_BOARD_CONTENT}, #{PRO_BOARD_CREATER_ID}, #{PRO_BOARD_CREATER_ID}, #{PRO_BOARD_FILE, jdbcType=VARCHAR}, seq_project_board.nextval, #{PROJECT_NUM})
+     </insert>
+     
+     <select id="getAllProjects" resultType="Project">
+        SELECT * FROM PROJECT 
+    </select>
+
+    <select id="getProjectsByCreatorId" resultType="Project">
+        SELECT * FROM PROJECT_BOARD WHERE PRO_BOARD_CREATER_ID = #{PRO_BOARD_CREATER_ID}
+    </select>
+
+
 	<select id="getProjectListForMain" resultType="Project">
 	SELECT PR.*, U.USER_IMG project_admin_img FROM ( SELECT * FROM 
 					    (SELECT ROWNUM row_num,P.* FROM (SELECT * FROM PROJECT ORDER BY PROJECT_END)P 
@@ -27,32 +41,39 @@
 
 	<select id="getProjectCommentList" resultType="Project_Board_Comment" parameterType="java.util.HashMap">
 		  <![CDATA[
-			SELECT *
-			FROM (
-				    SELECT PRO_BO_COMMENT_NUM,
-				        PRO_BO_COMMENT_ID,
-				        PRO_BO_COMMENT_NAME,
-				        PRO_BO_COMMENT_CONTENT,
-				        PRO_BO_COMMENT_FILE,
-				        PRO_BO_COMMENT_RE_LEV,
-				        TO_CHAR(PRO_BO_COMMENT_DATE) AS PRO_BO_COMMENT_DATE,
-				        PRO_BOARD_NUM,
-				        PRO_BO_COMMENT_ORIGINFILE,
-				        PRO_BO_COMMENT_RE_REF,
-				        PRO_BO_COMMENT_RE_SEQ,
-				        ROWNUM AS RN
-				    FROM PROJECT_BOARD_COMMENT
-				    WHERE PRO_BOARD_NUM = ${pbNum}
-				    START WITH PRO_BO_COMMENT_RE_REF IS NULL
-				    CONNECT BY PRIOR PRO_BO_COMMENT_NUM = PRO_BO_COMMENT_RE_REF
-				    ORDER SIBLINGS BY TO_DATE(PRO_BO_COMMENT_DATE) ASC
-				)
-			WHERE RN BETWEEN 
-		    CASE 
-		        WHEN 1 = ${start} THEN 1 
-		        ELSE (SELECT COUNT(*) FROM PROJECT_BOARD_COMMENT WHERE PRO_BOARD_NUM = 1 AND PRO_BO_COMMENT_RE_LEV > 0) + 1
-		    END 
-				AND (${end} + (SELECT COUNT(*) FROM PROJECT_BOARD_COMMENT WHERE PRO_BOARD_NUM = 1 AND PRO_BO_COMMENT_RE_LEV >= 1))
+		SELECT * FROM (
+		    SELECT ROWNUM AS RN,
+		        T.PRO_BO_COMMENT_NUM,
+		        T.PRO_BO_COMMENT_ID,
+		        T.PRO_BO_COMMENT_NAME,
+		        T.PRO_BO_COMMENT_CONTENT,
+		        T.PRO_BO_COMMENT_FILE,
+		        T.PRO_BO_COMMENT_RE_LEV,
+		        T.PRO_BO_COMMENT_DATE,
+		        T.PRO_BOARD_NUM,
+		        T.PRO_BO_COMMENT_ORIGINFILE,
+		        T.PRO_BO_COMMENT_RE_REF,
+		        T.PRO_BO_COMMENT_RE_SEQ
+		    FROM (
+		        SELECT 
+		            PRO_BO_COMMENT_NUM,
+		            PRO_BO_COMMENT_ID,
+		            PRO_BO_COMMENT_NAME,
+		            PRO_BO_COMMENT_CONTENT,
+		            PRO_BO_COMMENT_FILE,
+		            PRO_BO_COMMENT_RE_LEV,
+		            PRO_BO_COMMENT_DATE,
+		            PRO_BOARD_NUM,
+		            PRO_BO_COMMENT_ORIGINFILE,
+		            PRO_BO_COMMENT_RE_REF,
+		            PRO_BO_COMMENT_RE_SEQ,
+		            CASE WHEN PRO_BO_COMMENT_RE_LEV = 1 THEN PRO_BO_COMMENT_RE_REF ELSE PRO_BO_COMMENT_NUM END AS SORT_KEY
+		        FROM PROJECT_BOARD_COMMENT
+		        WHERE PRO_BOARD_NUM = ${pbNum}
+		        ORDER BY SORT_KEY DESC, PRO_BO_COMMENT_RE_LEV ASC
+		    ) T
+		)
+	WHERE RN BETWEEN ${start} AND ${end}
 			  ]]>
 	</select>
 	
@@ -214,33 +235,24 @@
 								ON PR.PROJECT_ADMIN = U.USER_ID 
 	</select>
 
-		<insert id="insert" parameterType="Project">
-		    insert into PROJECT (project_num, project_name, project_state, project_admin, project_start, project_end,project_priority)
-		    values (nvl((select max(project_num) from PROJECT)+1, 0),
-		            #{project_name}, #{project_state}, #{project_admin},
-		            #{project_start}, #{project_end}, #{project_priority})
-		</insert>
-		
-		<insert id="insert_user" parameterType="Project_User">
-		  <selectKey keyProperty="PROJECT_USER_NO" resultType="long" order="BEFORE">
-		    SELECT PROJECT_USER_NO_SEQ.NEXTVAL FROM DUAL
-		  </selectKey>
-		  insert into PROJECT_USER(PROJECT_USER_NO, PROJECT_NUM, USER_ID)
-		  values ('${PROJECT_USER_NO}', #{PROJECT_NUM}, #{USER_ID})
-		</insert>
+	<insert id="insert" parameterType="project">
+		insert into project
+		(PROJECT_NUM, PROJECT_NAME, PROJECT_STATE, PROJECT_ADMIN, PROJECT_START, PROJECT_END, PROJECT_priority)
+		values ( NVL((SELECT MAX(project_num)FROM PROJECT)+1,0 ), #{project_name},#{project_state},#{project_admin},#{project_start},#{project_end},#{project_priority})
+	</insert>
+	
 
-	 <insert id="insertProjectBoard">
-	  INSERT INTO PROJECT_BOARD (PRO_BOARD_CARTEGORY, PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CONTENT, PRO_BOARD_CREATER_NAME, PRO_BOARD_CREATER_ID, PRO_BOARD_FILE, PRO_BOARD_NUM)
-		VALUES ('글', #{PRO_BOARD_SUBJECT}, '진행', '높음', #{PRO_BOARD_START}, #{PRO_BOARD_END}, #{PRO_BOARD_CONTENT}, 'HTA123', 'HTA123', #{PRO_BOARD_FILE, jdbcType=VARCHAR}, seq_project_board.nextval)
- 	 </insert>
-
+	<insert id="insert_user" parameterType="project">
+		insert into project_user
+		values( (select nvl(max #{PROJECT_NUM},0)+1 FROM PROJECT) 
+		                      , #{project_admin} ,  
+		                   (SELECT MAX(ROWNUM)+3 FROM PROJECT_USER) ) 
+	</insert>
 	
 	<select id="getProjectDetailList" resultType="project_board">
        SELECT PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_CREATER_NAME, 
-       PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CREATE_DATE, PRO_BOARD_NUM
-		FROM Project_Board
-		ORDER BY PRO_BOARD_CREATE_DATE DESC
-
+       		  PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CREATE_DATE, PRO_BOARD_NUM
+       		  FROM Project_Board order by PRO_BOARD_END desc
     </select>
 
 
@@ -259,13 +271,5 @@
 	<select id="getProjectUserCount" parameterType="int" resultType="int">
 		select count(*) from project_user where project_num = #{project_num}
 	</select> 
-	
-	<select id="getAllProjects" resultType="Project">
-        SELECT * FROM PROJECT;
-    </select>
-
-    <select id="getProjectsByCreatorId" resultType="Project">
-        SELECT * FROM PROJECT_BOARD WHERE PRO_BOARD_CREATER_ID = #{PRO_BOARD_CREATER_ID};
-    </select>
 
 </mapper>

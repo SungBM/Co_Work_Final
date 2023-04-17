@@ -79,10 +79,10 @@
                                                 <td>${m.user_join_date }</td>
 
                                                 <c:if test="${m.user_auth eq 'ROLE_MEMBER' }">
-                                                    <td>일반 사용자</td>
+                                                    <td class="text-success">일반 사용자</td>
                                                 </c:if>
                                                 <c:if test="${m.user_auth eq 'ROLE_ADMIN' }">
-                                                    <td>관리자</td>
+                                                    <td class="text-primary">관리자</td>
                                                 </c:if>
                                                 <c:if test="${m.user_auth eq 'ROLE_WAIT' }">
                                                     <td>권한없음</td>

@@ -14,7 +14,8 @@
 				 user_card, 
 				 user_fax, 
 				 user_phone, 
-				 user_join_date
+				 user_join_date,
+				 user_auth
 		from user_info where user_id = #{user_id}
 	</select>
 

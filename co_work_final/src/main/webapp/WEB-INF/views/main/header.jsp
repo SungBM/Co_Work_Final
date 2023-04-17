@@ -64,13 +64,13 @@
 					<!-- LOGO -->
 					<div class="navbar-brand-box">
 
-						<a href="../main/main" class="logo logo-light"> <span
+						<a href="${pageContext.request.contextPath }/main/main" class="logo logo-light"> <span
 							class="logo-sm"> <img
 								src="${pageContext.request.contextPath }/resources/assets/images/logo-light.svg"
 								alt="" height="22">
 						</span> <span class="logo-lg"> <img
-								src="${pageContext.request.contextPath }/resources/image/logo.png"
-								style="width: 200px;">
+								src="${pageContext.request.contextPath }/resources/image/logo1.png"
+								style="width: 200px; margin-top: 20px;">
 						</span>
 						</a>
 					</div>
@@ -485,7 +485,7 @@
 							id="page-header-user-dropdown" data-bs-toggle="dropdown"
 							aria-haspopup="true" aria-expanded="false">
 							<img class="rounded-circle header-profile-user"
-								src="${pageContext.request.contextPath }/resources/assets/images/users/avatar-1.jpg"
+								src="${pageContext.request.contextPath }/resources/assets/images/users/avatar-4.jpg"
 								alt="Header Avatar">
 							<sec:authorize access="isAuthenticated()">
 								<sec:authentication property="principal" var="pinfo" />
@@ -556,23 +556,24 @@
 											</a>
 												<ul class="sub-menu" aria-expanded="false">
 													<li><a target="_self"
-														href="../project/ProjectList?id=HTA1" id="project_list">전체</a>
+														href="${pageContext.request.contextPath }/project/ProjectList?id=ADMINTEST" id="project_list">전체</a>
 													</li>
-													<li><a>진행</a></li>
+													
+												<!-- 	<li><a>진행</a></li>
 													<li><a>마감</a></li>
-													<li><a>즐겨찾기</a></li>
+													<li><a>즐겨찾기</a></li> -->
 												</ul></li>
 
-											<li><a href="../member/calendar" class="waves-effect">
+											<li><a href="${pageContext.request.contextPath }/member/calendar" class="waves-effect">
 													<i class="bx bx-calendar"></i> <span>일정</span>
 											</a>
-											<li><a href="../chat?id=" class="waves-effect"> <i
+											<li><a href="../chat/chatForm" class="waves-effect"><i
 													class="bx bx-chat"></i> <span>채팅</span>
 											</a></li>
 
-											<li><a href="javascript: void(0);" class="waves-effect">
+										<!-- <li><a href="javascript: void(0);" class="waves-effect">
 													<i class="bx bx-envelope"></i> <span>이메일</span>
-											</a></li>
+											</a></li> -->	
 
 											<li><a href="javascript: void(0);"
 												class="has-arrow waves-effect"> <i class="bx bx-detail"></i>
@@ -582,7 +583,7 @@
 													<li><a id="notice_List"
 														href="${pageContext.request.contextPath }/notice/noticeList">공지사항
 															게시판</a></li>
-													<li><a>자유 게시판</a></li>
+													<!--  <li><a>자유 게시판</a></li>-->
 												</ul></li>
 
 											<li><a href="javascript: void(0);"
@@ -590,7 +591,7 @@
 													<span>부가서비스</span>
 											</a>
 												<ul class="sub-menu" aria-expanded="false">
-													<li><a>전자 결재</a></li>
+												<!-- 	<li><a>전자 결재</a></li> -->
 													<li><a href="${pageContext.request.contextPath }/meet/rev">예약</a></li>
 													<li><a href="${pageContext.request.contextPath }/meet/revstat">예약내역</a></li>
 												</ul></li>
@@ -607,9 +608,10 @@
 												<ul class="sub-menu" aria-expanded="false">
 													<li><a id="passwordchange"
 														href="${pageContext.request.contextPath }/member/modifyPassword">비밀번호 변경</a></li>
-													<li><a id="mysecurity" href="${pageContext.request.contextPath }/member/mysecurity">보안(미구현)</a></li>
+													<!-- <li><a id="mysecurity" href="${pageContext.request.contextPath }/member/mysecurity">보안(미구현)</a></li>
 													<li><a>알림(미구현)</a></li>
 													<li><a>접속기기(미구현)</a></li>
+													 -->
 												</ul></li>
 												
 											<li style="text-align: center"><a>👇 관리자 메뉴 👇</a></li>
@@ -618,30 +620,32 @@
 													<span>회사 & 회의실</span>
 											</a>
 												<ul class="sub-menu" aria-expanded="false">
-													<li><a id="companyinfo" href="../admin/company">회사정보</a></li>
-													<li><a id="meetinfo" href="../admin/meetManage">회의실</a></li>
-													<li><a>조직도 관리(미구현)</a></li>
-													<li><a>회의실 예약 현황(미구현)</a></li>
+													<li><a id="companyinfo" href="${pageContext.request.contextPath }/admin/company">회사정보</a></li>
+													<li><a id="meetinfo" href="${pageContext.request.contextPath }/admin/meetManage">회의실</a></li>
+												<!--  	<li><a>조직도 관리(미구현)</a></li>
+													<li><a>회의실 예약 현황(미구현)</a></li>-->
 												</ul></li>
 											<li><a href="javascript: void(0);"
 												class="has-arrow waves-effect"> <i class="bx bx-cog"></i>
 													<span>구성원</span>
 											</a>
 												<ul class="sub-menu" aria-expanded="false">
-													<li><a id="membersinfo" href="../admin/members">구성원
+													<li><a id="membersinfo" href="${pageContext.request.contextPath }/admin/members">구성원
 															관리</a></li>
-													<li><a>구성원 초대(미구현)</a></li>
+												<!-- 	<li><a>구성원 초대(미구현)</a></li> -->
 												</ul></li>
 
-											<li><a href="javascript: void(0);"
+										<!-- 	<li><a href="javascript: void(0);"
 												class="has-arrow waves-effect"> <i class="bx bx-cog"></i>
 													<span>전자결재</span>
 											</a>
 												<ul class="sub-menu" aria-expanded="false">
-													<li><a>서식관리(미구현)</a></li>
+												  	<li><a>서식관리(미구현)</a></li>
 													<li><a>조직도 관리(미구현)</a></li>
 													<li><a>회의실 예약 현황(미구현)</a></li>
-												</ul></li>
+													
+												</ul></li> 
+												 -->
 
 										</ul>
 									</div>

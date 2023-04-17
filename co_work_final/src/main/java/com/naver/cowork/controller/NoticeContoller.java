@@ -105,7 +105,7 @@ public class NoticeContoller {
 	int limit = 10; // 한 화면에 출력할 로우 갯수
 	
 	int listcount = noticeService.getListCount(index, search_word); // 총 리스트 수 받아옴
-	
+
 	// 총 페이지 수
 	int maxpage = (listcount + limit -1) / limit;
 	

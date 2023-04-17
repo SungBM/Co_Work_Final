@@ -1175,7 +1175,11 @@ a:hover {
 		    $("#sticky").stop().animate({"top":position+currentPosition+"px"},500);
 		  });
 		$("#ProjectDetailList").click(function(){
-			location.href = "../project/ProjectDetailList"
+			var id = $(this).attr('idVal');
+			var pNum = $(this).attr('pNum');
+			console.log(id);
+			console.log(pNum);
+			location.href = "../project/ProjectDetailList?id="+id+"&pNum="+pNum+"";
 		});
 		
 		$(".search").click(function(){
@@ -1279,7 +1283,7 @@ a:hover {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="" id="ProjectDetailList" role="tab">
+                            <a class="nav-link" data-bs-toggle="tab" href="" id="ProjectDetailList" idVal="${id }" pNum="${pNum }" role="tab">
                                	<i class="mdi mdi-playlist-check"></i>
                                 LIST
                             </a>
@@ -1373,32 +1377,34 @@ a:hover {
 											        <c:set var="splitContent" value="${fn:split(pb.PRO_BOARD_CONTENT, '#')}" />
 											        <c:forEach var="item" items="${splitContent}" varStatus="index">
 											        			 <c:if test="${index.index eq 0}">
-											        			 	${item }
+											        			 	<h5>${item }</h5><br>
 											        			 </c:if>
 											        	         <c:if test="${index.index ne 0}">
-														               <input type="radio" name="vote" value="${item}">${item} <br/>
+											        	         <div class="form-check form-radio-success mb-3">
+														               <input class="form-check-input" type="radio" name="vote" value="${item}">${item} <br/>
+														        </div>
 														         </c:if>
 											        </c:forEach>
 											        <br>
 											         <button class="btn btn-outline-primary waves-effect waves-light voteBtn" style="height: 35px; width: 70px;">제출</button>
 											    	</div>
 											   	  <div class="voteResultView" id="voteResultViewid">
-											   	  	 <p>1.현재진행중인 파트 마무리후 전자결재 파트로 넘어가기</p>
+											   	  	 <p>현재진행중인 파트 마무리후 전자결재 파트로 넘어가기</p>
 	                                      		     <div class="progress animated-progess mb-4">
 						                                <div class="progress-bar" role="progressbar" style="width: 30%" aria-valuenow="10"
 						                                    aria-valuemin="0" aria-valuemax="100"></div>
 						                            </div>
-						                             <p>2.일단 MERGE진행 후에 검토</p>
+						                             <p>일단 MERGE진행 후에 검토</p>
 	                                      		     <div class="progress animated-progess mb-4">
 						                                <div class="progress-bar" role="progressbar" style="width: 40%" aria-valuenow="10"
 						                                    aria-valuemin="0" aria-valuemax="100"></div>
 						                            </div>
-						                             <p>3.전자결재 진행인원 현프로젝트 진행인원분리</p>
+						                             <p>전자결재 진행인원 현프로젝트 진행인원분리</p>
 	                                      		     <div class="progress animated-progess mb-4">
 						                                <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="10"
 						                                    aria-valuemin="0" aria-valuemax="100"></div>
 						                            </div>
-						                             <p>4.프로젝트 마무리후에도 계속해서 유지보수 및 기능개발</p>
+						                             <p>프로젝트 마무리후에도 계속해서 유지보수 및 기능개발</p>
 	                                      		     <div class="progress animated-progess mb-4">
 						                                <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10"
 						                                    aria-valuemin="0" aria-valuemax="100"></div>
