@@ -11,8 +11,7 @@
 		meet_name, meet_max_people, meet_info, meet_status, meet_img
 		from
 		meeting_room
-		order by DECODE(meet_status, 'CP', 1, 'ST', 2), meet_no
-		asc
+		order by DECODE(meet_status, 'CP', 1, 'ST', 2), meet_no	asc
 	</select>
 	<!-- 예약 조회 -->
 	<select id="getReserv" resultType="MeetReservation">
