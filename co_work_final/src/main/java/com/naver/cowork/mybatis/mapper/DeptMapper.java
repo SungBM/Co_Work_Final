@@ -22,6 +22,6 @@ public interface DeptMapper {
 
     public int deptNo(String user_id);
 
-
+    public int deptCheck(Dept dept);
 
 }
