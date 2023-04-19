@@ -54,34 +54,52 @@
     </update>
 
 	<select id="members" resultType="member">
-		select rn,
-                user_id,
-				user_img, 
-				user_email, 
-				user_name, 
-				user_auth, 
-				user_dept, 
-				user_job, 
-				user_fax, 
-				user_state, 
-				user_join_date, 
-				user_phone, 
-				user_card
-		from (		select ROWNUM rn, user_id,
-				user_img, 
-				user_email, 
-				user_name, 
-				user_auth, 
-				user_dept, 
-				user_job, 
-				user_fax, 
-				user_state, 
-				user_join_date, 
-				user_phone, 
-				user_card
-                from user_info
-           		order by DECODE(user_state, 'CP', 1, 'WT', 2, 'ST', 3), user_auth asc
-                )
+		select
+			rn,
+			user_id,
+			user_img,
+			user_email,
+			user_name,
+			user_auth,
+			user_dept,
+			user_job,
+			user_fax,
+			user_state,
+			user_join_date,
+			user_phone,
+			user_card
+		from (
+				 select ROWNUM rn,
+						A.user_id,
+						A.user_img,
+						A.user_email,
+						A.user_name,
+						A.user_auth,
+						A.user_dept,
+						A.user_job,
+						A.user_fax,
+						A.user_state,
+						A.user_join_date,
+						A.user_phone,
+						A.user_card
+				 from (
+						  select
+							  user_id,
+							  user_img,
+							  user_email,
+							  user_name,
+							  user_auth,
+							  user_dept,
+							  user_job,
+							  user_fax,
+							  user_state,
+							  user_join_date,
+							  user_phone,
+							  user_card
+						  from user_info
+						  order by DECODE(user_state, 'CP', 1, 'WT', 2, 'ST', 3), user_auth asc
+					  ) A
+			 )
         <![CDATA[
 		where rn > #{skip} and rn <= #{viewSize} * #{pageNum}
 		]]>
