@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.EDMSMapper">
+
+    <select id="getMyDoc" resultType="edms">
+        select d.DOCUMENT_FORM_CODE,
+               d.DOCUMENT_TITLE,
+               d.DOCUMENT_CATEGORY_NUM,
+               d.DOCUMENT_FORM_DATE,
+               d.DOCUMENT_STATE,
+               a.approval_date,
+               a.approval_state,
+               u.USER_NAME,
+               d.dept_name,
+               j.job_name
+        from DOCUMENT_FORM d
+                 inner join approval_line a
+                            on a.document_no = d.document_form_code AND a.approval_level = d.approval_level
+                 inner join user_info u
+                            on a.approval_user_id = u.user_id
+                 inner join dept d
+                            on u.user_dept = d.dept_no
+                 inner join job j
+                            on u.user_job = j.job_no
+        where d.user_id = #{user_id}
+        order by DOCUMENT_FORM_DATE ASC
+    </select>
+
+    <select id="getMyDocApp" resultType="edms">
+        <![CDATA[
+        select d.DOCUMENT_CATEGORY_NUM,
+               d.DOCUMENT_TITLE,
+               u.USER_NAME,
+               d.dept_name,
+               j.job_name,
+               d.DOCUMENT_FORM_DATE,
+               a.approval_level,
+               a.approval_date
+
+        from DOCUMENT_FORM d
+                 inner join approval_line a
+                            on a.document_no = d.document_form_code AND a.approval_level <= d.approval_level
+
+                 inner join user_info u
+                            on a.approval_user_id = u.user_id
+                 inner join dept d
+                            on u.user_dept = d.dept_no
+                 inner join job j
+                            on u.user_job = j.job_no
+        where a.approval_user_id = #{user_id}
+        order by DOCUMENT_FORM_DATE ASC
+        ]]>
+    </select>
+
+    <select id="getCountDoc" resultType="int">
+        select COUNT(d.DOCUMENT_FORM_CODE)
+        from DOCUMENT_FORM d
+                 inner join approval_line a
+                            on a.document_no = d.document_form_code AND a.approval_level = d.approval_level
+                 inner join user_info u
+                            on a.approval_user_id = u.user_id
+                 inner join dept d
+                            on u.user_dept = d.dept_no
+                 inner join job j
+                            on u.user_job = j.job_no
+        where d.user_id = #{user_id}
+    </select>
+
+    <select id="getCountDocApp" resultType="int">
+        <![CDATA[
+        select COUNT(d.DOCUMENT_CATEGORY_NUM)
+        from DOCUMENT_FORM d
+                 inner join approval_line a
+                            on a.document_no = d.document_form_code AND a.approval_level <= d.approval_level
+
+                 inner join user_info u
+                            on a.approval_user_id = u.user_id
+                 inner join dept d
+                            on u.user_dept = d.dept_no
+                 inner join job j
+                            on u.user_job = j.job_no
+        where a.approval_user_id = #{user_id}
+        ]]>
+    </select>
+
+</mapper>
