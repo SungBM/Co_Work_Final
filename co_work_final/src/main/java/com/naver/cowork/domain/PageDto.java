@@ -1,8 +1,11 @@
 package com.naver.cowork.domain;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class PageDto {
 
 	private int pageStart; // 페이지 시작 번호
