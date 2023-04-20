@@ -1,157 +1,200 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
-	namespace="com.naver.cowork.mybatis.mapper.MeetingRoomMapper">
+        namespace="com.naver.cowork.mybatis.mapper.MeetingRoomMapper">
 
-	<!-- 회의실 조회 -->
-	<select id="meetingRoomAll" resultType="MeetingRoom">
-		select meet_no,
-		meet_name, meet_max_people, meet_info, meet_status, meet_img
-		from
-		meeting_room
-		order by DECODE(meet_status, 'CP', 1, 'ST', 2), meet_no	asc
-	</select>
-	<!-- 예약 조회 -->
-	<select id="getReserv" resultType="MeetReservation">
-		<!-- select meet_no, user_id, rev_start_time, rev_end_time, rev_people, 
-			rev_content from meet_reservation where meet_no = #{meet_no} -->
+    <!-- 회의실 조회 -->
+    <select id="meetingRoomAll" resultType="MeetingRoom">
+        select meet_no,
+               meet_name,
+               meet_max_people,
+               meet_info,
+               meet_status,
+               meet_img
+        from meeting_room
+        order by DECODE(meet_status, 'CP', 1, 'ST', 2), meet_no asc
+    </select>
+    <!-- 예약 조회 -->
+    <select id="getReserv" resultType="MeetReservation">
+        <!-- select meet_no, user_id, rev_start_time, rev_end_time, rev_people,
+            rev_content from meet_reservation where meet_no = #{meet_no} -->
 
-		select a.rev_no, a.meet_no, a.user_id, a.rev_start_time,
-		a.rev_end_time, a.rev_people, a.rev_content,
-		b.user_name, b.user_dept, b.user_job,
-		c.dept_name, d.job_name
-		from meet_reservation a
-		join user_info b
-		on a.user_id = b.user_id
-		join dept c
-		on b.user_dept = c.dept_no
-		join job d
-		on b.user_job = d.job_no
-		where a.meet_no = #{meet_no}
-	</select>
-	<!-- 예약시간 조회 -->
-	<select id="getRevTime" resultType="MeetReservation">
-		select meet_no, user_id,
-		rev_start_time, rev_end_time
-		from meet_reservation
-		where rev_start_time
-		LIKE '%'||#{startDate}||'%' AND meet_no = #{meetNo}
-	</select>
-	<!-- 선택한 미팅룸 조회 -->
-	<select id="meetRoomSelect" resultType="MeetingRoom">
-		select meet_no,
-				meet_name, 
-				meet_max_people, 
-				meet_info, 
-				meet_img,
-				meet_status
-		from meeting_room
-		where
-		meet_no = #{meet_no}
-	</select>
-	<!-- 예약내역 -->
-	<select id="getMeetRev" resultType="MeetReservation">
-		select a.rev_no, a.meet_no,
-		a.user_id, a.rev_start_time, a.rev_end_time, a.rev_people,
-		a.rev_content,
-		b.user_name, b.user_dept, b.user_job,
-		c.dept_name, d.job_name,
-		e.meet_name
-		from meet_reservation a
-		join user_info b
-		on a.user_id = b.user_id
-		join dept c
-		on b.user_dept = c.dept_no
-		join job d
-		on b.user_job = d.job_no
-		join meeting_room e
-		on a.meet_no = e.meet_no
-		where a.user_id = #{user_id}
-		order by
-		rev_start_time asc
-	</select>
-	<insert id="insertReserv">
-		insert into meet_reservation(rev_no, meet_no,
-		user_id, rev_start_time, rev_end_time, rev_people, rev_content,
-		rev_status)
-		values(rev_seq.NEXTVAL, #{meet_no}, #{user_id},
-		#{rev_start_time}, #{rev_end_time}, 0, #{rev_content}, 0)
-	</insert>
+        select a.rev_no, a.meet_no, a.user_id, a.rev_start_time,
+        a.rev_end_time, a.rev_people, a.rev_content,
+        b.user_name, b.user_dept, b.user_job,
+        c.dept_name, d.job_name
+        from meet_reservation a
+        join user_info b
+        on a.user_id = b.user_id
+        join dept c
+        on b.user_dept = c.dept_no
+        join job d
+        on b.user_job = d.job_no
+        where a.meet_no = #{meet_no}
+    </select>
+    <!-- 예약시간 조회 -->
+    <select id="getRevTime" resultType="MeetReservation">
+        select meet_no,
+               user_id,
+               rev_start_time,
+               rev_end_time
+        from meet_reservation
+        where rev_start_time
+            LIKE '%' || #{startDate} || '%'
+          AND meet_no = #{meetNo}
+    </select>
+    <!-- 선택한 미팅룸 조회 -->
+    <select id="meetRoomSelect" resultType="MeetingRoom">
+        select meet_no,
+               meet_name,
+               meet_max_people,
+               meet_info,
+               meet_img,
+               meet_status
+        from meeting_room
+        where meet_no = #{meet_no}
+    </select>
+    <!-- 예약내역 -->
+    <select id="getMeetRev" resultType="MeetReservation">
+        select a.rev_no,
+               a.meet_no,
+               a.user_id,
+               a.rev_start_time,
+               a.rev_end_time,
+               a.rev_people,
+               a.rev_content,
+               b.user_name,
+               b.user_dept,
+               b.user_job,
+               c.dept_name,
+               d.job_name,
+               e.meet_name
+        from meet_reservation a
+                 join user_info b
+                      on a.user_id = b.user_id
+                 join dept c
+                      on b.user_dept = c.dept_no
+                 join job d
+                      on b.user_job = d.job_no
+                 join meeting_room e
+                      on a.meet_no = e.meet_no
+        where a.user_id = #{user_id}
+        order by rev_start_time asc
+    </select>
+    <insert id="insertReserv">
+        insert into meet_reservation(rev_no, meet_no,
+                                     user_id, rev_start_time, rev_end_time, rev_people, rev_content,
+                                     rev_status)
+        values (rev_seq.NEXTVAL, #{meet_no}, #{user_id},
+                #{rev_start_time}, #{rev_end_time}, 0, #{rev_content}, 0)
+    </insert>
 
-	<delete id="meetDelete">
-		delete
-		from meet_reservation
-		where rev_no = #{rev_no}
-	</delete>
+    <delete id="meetDelete">
+        delete
+        from meet_reservation
+        where rev_no = #{rev_no}
+    </delete>
 
-	<select id="getMeetList" resultType="MeetReservation">
+    <select id="getMeetList" resultType="MeetReservation">
 
-		select rn, rev_no, meet_no, user_id, rev_start_time, rev_end_time,
-			   rev_people, rev_content,
-			   user_name, user_dept, user_job,
-			   dept_name, job_name,
-			   meet_name
-		from (
-				 select rownum rn, z.rev_no, z.meet_no, z.user_id,
-						z.rev_start_time, z.rev_end_time, z.rev_people, z.rev_content,
-						z.user_name, z.user_dept, z.user_job,
-						z.dept_name, z.job_name,
-						z.meet_name
-				 from (
-						  select  rev_no, a.meet_no, a.user_id,
-								  a.rev_start_time, a.rev_end_time, a.rev_people, a.rev_content,
-								  b.user_name, b.user_dept, b.user_job,
-								  c.dept_name, d.job_name,
-								  e.meet_name
-						  from meet_reservation a
+        select rn,
+               rev_no,
+               meet_no,
+               user_id,
+               rev_start_time,
+               rev_end_time,
+               rev_people,
+               rev_content,
+               user_name,
+               user_dept,
+               user_job,
+               dept_name,
+               job_name,
+               meet_name
+        from (select rownum rn,
+                     z.rev_no,
+                     z.meet_no,
+                     z.user_id,
+                     z.rev_start_time,
+                     z.rev_end_time,
+                     z.rev_people,
+                     z.rev_content,
+                     z.user_name,
+                     z.user_dept,
+                     z.user_job,
+                     z.dept_name,
+                     z.job_name,
+                     z.meet_name
+              from (select rev_no,
+                           a.meet_no,
+                           a.user_id,
+                           a.rev_start_time,
+                           a.rev_end_time,
+                           a.rev_people,
+                           a.rev_content,
+                           b.user_name,
+                           b.user_dept,
+                           b.user_job,
+                           c.dept_name,
+                           d.job_name,
+                           e.meet_name
+                    from meet_reservation a
 
-								   join user_info b
-										on a.user_id = b.user_id
+                             join user_info b
+                                  on a.user_id = b.user_id
 
-								   join dept c
-										on b.user_dept = c.dept_no
+                             join dept c
+                                  on b.user_dept = c.dept_no
 
-								   join job d
-										on b.user_job = d.job_no
+                             join job d
+                                  on b.user_job = d.job_no
 
-								   join meeting_room e
-										on a.meet_no = e.meet_no
+                             join meeting_room e
+                                  on a.meet_no = e.meet_no
 
-						  where a.user_id = #{user_id} and rownum > 0
-						  order by rev_start_time desc) z
-			 )
+                    where a.user_id = #{user_id}
+                      and rownum > 0
+                    order by rev_start_time desc) z)
 		
 		<![CDATA[
-		where rn > #{skip} and rn <= #{viewSize} * #{pageNum}
-		]]>
-	</select>
+		where rn > #{skip}
+          and rn <= #{viewSize} * #{pageNum}
+        ]]>
+    </select>
 
-	<select id="getMeetCount" resultType="int">
-		select count(rev_no)
-		from
-		meet_reservation
-		where user_id = #{user_id}
-	</select>
-	
-	<insert id="addMeetRoom">
-		insert into meeting_room(meet_no, meet_name, meet_max_people, meet_info, meet_status, meet_img, meet_imgoriginal)
-		values(meet_seq.NEXTVAL, #{meet_name}, #{meet_max_people}, #{meet_info}, #{meet_status}, #{meet_img}, #{meet_imgoriginal})
-	</insert>
-	
-	<update id="meetingRoomUpdate">
-		update meeting_room
-		set
-			meet_name = #{meet_name},
-			meet_max_people = #{meet_max_people},
-			meet_info = #{meet_info},
-			meet_status = #{meet_status}
-			<if test="meet_img != null">
-			, meet_img = #{meet_img},
-			meet_imgoriginal = #{meet_imgoriginal}
-			</if>
-		where meet_no = #{meet_no}
-	</update>
+    <select id="getMeetCount" resultType="int">
+        select count(rev_no)
+        from meet_reservation
+        where user_id = #{user_id}
+    </select>
 
+    <insert id="addMeetRoom">
+        insert into meeting_room(meet_no, meet_name, meet_max_people, meet_info, meet_status, meet_img,
+                                 meet_imgoriginal)
+        values (meet_seq.NEXTVAL, #{meet_name}, #{meet_max_people}, #{meet_info}, #{meet_status}, #{meet_img},
+                #{meet_imgoriginal})
+    </insert>
+
+    <update id="meetingRoomUpdate">
+        update meeting_room
+        set
+        meet_name = #{meet_name},
+        meet_max_people = #{meet_max_people},
+        meet_info = #{meet_info},
+        meet_status = #{meet_status}
+        <if test="meet_img != null">
+            , meet_img = #{meet_img},
+            meet_imgoriginal = #{meet_imgoriginal}
+        </if>
+        where meet_no = #{meet_no}
+    </update>
+
+    <delete id="meetRoomDelete">
+        delete
+        meeting_room
+		where meet_no =
+        #{meet_no}
+    </delete>
 </mapper>

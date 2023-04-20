@@ -36,4 +36,5 @@ public interface MeetingRoomService {
 	
 	public int meetingRoomUpdate(MeetingRoom mr);
 
+    public int meetRoomDelete(int meetNo);
 }

@@ -211,13 +211,7 @@ public class AdminController {
         return mv;
     }
 
-    @GetMapping("/meetModify")
-    public ModelAndView meetModify(ModelAndView mv, int meet_no, MeetingRoom mRoom) {
-        mRoom = meetservice.meetRoomSelect(meet_no);
-        mv.setViewName("meeting/meetModi");
-        mv.addObject("mr", mRoom);
-        return mv;
-    }
+
 
     @PostMapping("/meetModiProcess")
     public String meetModiProcess(MeetingRoom mr) throws IllegalStateException, IOException {
@@ -233,7 +227,21 @@ public class AdminController {
 
         meetservice.meetingRoomUpdate(mr);
         return "redirect:../admin/meetModify?meet_no=" + mr.getMeet_no();
+    }
 
+    @GetMapping("/meetRoomModify")
+    public ModelAndView meetRoomModify(ModelAndView mv, int meet_no, MeetingRoom mRoom) {
+        mRoom = meetservice.meetRoomSelect(meet_no);
+        mv.setViewName("meeting/meetModi");
+        mv.addObject("mr", mRoom);
+        return mv;
+    }
+
+    @GetMapping("/meetRoomDelete")
+    public String meetRoomDelete(int meet_no){
+        int result = meetservice.meetRoomDelete(meet_no);
+        System.out.println(meet_no);
+        return "redirect:/admin/meetManage";
     }
 
 }
