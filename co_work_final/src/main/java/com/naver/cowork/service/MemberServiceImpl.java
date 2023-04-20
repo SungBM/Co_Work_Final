@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.Member;
 import com.naver.cowork.mybatis.mapper.MemberMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -49,6 +50,7 @@ public class MemberServiceImpl implements MemberService {
 //		dao.delete(id);
 //	}
 //
+    @Transactional
     public int mypageUpdate(Member m) {
         return dao.mypageUpdate(m);
     }
@@ -103,18 +105,22 @@ public class MemberServiceImpl implements MemberService {
         return (rmemer == null) ? -1 : 1;
     }
 
+    @Transactional
     public int passUpdate(String user_id, String user_password) {
         return dao.passUpdate(user_id, user_password);
     }
 
+    @Transactional
     public int authUpdate(String user_id, String user_auth) {
         return dao.authUpdate(user_id, user_auth);
     }
 
+    @Transactional
     public int stateUpdate(String user_id, String user_auth, String user_state) {
         return dao.stateUpdate(user_id, user_auth, user_state);
     }
 
+    @Transactional
     public int adminUpdate(Member member) {
         return dao.adminUpdate(member);
     }
