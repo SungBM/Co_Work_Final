@@ -12,31 +12,42 @@ public class Criteria {
 	private int skip;  // 페이지 skip
 	private String user_id;
 	private int document_no;
-	
+	private String startDate;
+	private String endDate;
+	private String searchSelect;
+	private String searchData;
+	private String title;
+	private String name;
+
 	public Criteria(int pageNum, int viewSize) {
 		this.pageNum = pageNum;
 		this.viewSize = viewSize;
 		this.skip = (pageNum - 1) * viewSize;
 	}
-	
+
 	public Criteria() {
 		this(1, 10);
 	}
-	
+
 	public void setPageNum(int pageNum) {
 		this.pageNum = pageNum;
 		this.skip = (this.pageNum - 1) * viewSize;
 	}
-	
+
 	public String makeQueryString(int pageNum) {
 		UriComponents uriComponents = UriComponentsBuilder.newInstance()
 				.queryParam("pageNum", pageNum)
 				.queryParam("viewSize", viewSize)
 				.queryParam("user_id", user_id)
 				.queryParam("document_no", document_no)
+				.queryParam("startDate", startDate)
+				.queryParam("endDate", endDate)
+				.queryParam("searchSelect", searchSelect)
+				.queryParam("searchData", searchData)
+
 				.build()
 				.encode();
 		return uriComponents.toUriString();
 	}
-	
+
 }

@@ -78,50 +78,53 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-body border-bottom">
-                            <div class="row">
-                                <div class="col-xxl-1 col-lg-2 align-self-center">
-                                    <span class="fw-bold">상신일</span>
-                                </div>
-                                <div class="col-xxl-2 col-lg-2">
-                                    <div class="input-group" id="datepicker">
-                                        <input type="text" class="form-control form-control-sm" id="datePicker"
-                                               style="height: 28px">
-                                        <span class="input-group-text" style="height: 28px"><i
-                                                class="mdi mdi-calendar"></i></span>
+                        <form action="myDoc" type="get">
+                            <div class="card-body border-bottom">
+                                <div class="row">
+                                    <div class="col-xxl-1 col-lg-2 align-self-center">
+                                        <span class="fw-bold">상신일</span>
                                     </div>
-                                </div>
-                                <div class="col-xxl-1 col-lg-1 align-self-center text-center" style="width: 30px">
-                                    <span class="fw-bold">~</span>
-                                </div>
-                                <div class="col-xxl-2 col-lg-2">
-                                    <div class="input-group" id="datepicker1">
-                                        <input type="text" class="form-control form-control-sm" id="datePicker1"
-                                               style="height: 28px">
-                                        <span class="input-group-text" style="height: 28px"><i
-                                                class="mdi mdi-calendar"></i></span>
+                                    <div class="col-xxl-2 col-lg-2">
+                                        <div class="input-group" id="datepicker">
+                                            <input type="text" class="form-control form-control-sm" id="datePicker"
+                                                   style="height: 28px" name="startDate">
+                                            <span class="input-group-text" style="height: 28px"><i
+                                                    class="mdi mdi-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-1 col-lg-1 align-self-center text-center" style="width: 30px">
+                                        <span class="fw-bold">~</span>
+                                    </div>
+                                    <div class="col-xxl-2 col-lg-2">
+                                        <div class="input-group" id="datepicker1">
+                                            <input type="text" class="form-control form-control-sm" id="datePicker1"
+                                                   style="height: 28px" name="endDate">
+                                            <span class="input-group-text" style="height: 28px"><i
+                                                    class="mdi mdi-calendar"></i></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xxl-1 col-lg-2 align-self-center ms-5">
+                                        <span class="fw-bold">검색</span>
+                                    </div>
+                                    <div class="col-xxl-2 col-lg-2">
+                                        <select class="form-select form-select-sm" style="width: 100px"
+                                                id="selectSearch" name="searchSelect">
+                                            <option value="s_title">기안제목</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xxl-2 col-lg-2">
+                                        <input type="text" name="searchData" class="form-control form-control-sm"
+                                               style="margin-left: -3.5rem">
                                     </div>
                                 </div>
 
-                                <div class="col-xxl-1 col-lg-2 align-self-center ms-5">
-                                    <span class="fw-bold">검색</span>
-                                </div>
-                                <div class="col-xxl-2 col-lg-2">
-                                    <select class="form-select form-select-sm" style="width: 100px" id="selectSearch">
-                                        <option value="title">기안제목</option>
-                                        <option value="category">양식</option>
-                                    </select>
-                                </div>
-                                <div class="col-xxl-2 col-lg-2">
-                                    <input type="text" class="form-control form-control-sm"
-                                           style="margin-left: -3.5rem">
+                                <hr class="mt-3">
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">조회</button>
                                 </div>
                             </div>
-                            <hr class="mt-3">
-                            <div class="text-center">
-                                <button class="btn btn-primary">조회</button>
-                            </div>
-                        </div>
+                        </form>
 
                     </div>
                 </div>
@@ -141,21 +144,23 @@
                             </thead>
                             <tbody>
                             <c:forEach items="${docList}" var="list">
-                            <tr>
-                                <td>${list.DOCUMENT_FORM_CODE}</td>
-                                <td>${list.CATEGORY_RESULT}</td>
-                                <td><a class="text-dark text-decoration-underline" href="">${list.DOCUMENT_TITLE}</a></td>
-                                <td>${list.DOCUMENT_FORM_DATE}</td>
-                                <td>
-                                    <a name="appLine" href=""
-                                       data-bs-toggle="offcanvas"
-                                       data-bs-target="#offcanvasRight"
-                                       aria-controls="offcanvasRight">${list.USER_NAME} ${list.JOB_NAME} | ${list.DEPT_NAME}
-                                    </a>
+                                <tr>
+                                    <td>${list.DOCUMENT_FORM_CODE}</td>
+                                    <td>${list.CATEGORY_RESULT}</td>
+                                    <td><a class="text-dark text-decoration-underline"
+                                           href="">${list.DOCUMENT_TITLE}</a></td>
+                                    <td>${list.DOCUMENT_FORM_DATE}</td>
+                                    <td>
+                                        <a name="appLine" href=""
+                                           data-bs-toggle="offcanvas"
+                                           data-bs-target="#offcanvasRight"
+                                           aria-controls="offcanvasRight">${list.USER_NAME} ${list.JOB_NAME}
+                                            | ${list.DEPT_NAME}
+                                        </a>
 
-                                </td>
-                                <td>${list.STATE_RESULT}</td>
-                            </tr>
+                                    </td>
+                                    <td>${list.STATE_RESULT}</td>
+                                </tr>
                             </c:forEach>
                             </tbody>
                         </table>
