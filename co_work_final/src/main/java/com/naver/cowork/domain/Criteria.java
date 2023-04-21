@@ -11,7 +11,14 @@ public class Criteria {
 	private int viewSize;  // 한 페이지 출력 data
 	private int skip;  // 페이지 skip
 	private String user_id;
-	
+	private int document_no;
+	private String startDate;
+	private String endDate;
+	private String searchSelect;
+	private String searchData;
+	private String title;
+	private String name;
+
 	public Criteria(int pageNum, int viewSize) {
 		this.pageNum = pageNum;
 		this.viewSize = viewSize;
@@ -32,6 +39,12 @@ public class Criteria {
 				.queryParam("pageNum", pageNum)
 				.queryParam("viewSize", viewSize)
 				.queryParam("user_id", user_id)
+				.queryParam("document_no", document_no)
+				.queryParam("startDate", startDate)
+				.queryParam("endDate", endDate)
+				.queryParam("searchSelect", searchSelect)
+				.queryParam("searchData", searchData)
+
 				.build()
 				.encode();
 		return uriComponents.toUriString();
