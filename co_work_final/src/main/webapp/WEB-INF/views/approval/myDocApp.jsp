@@ -76,8 +76,7 @@
             <!-- end page title -->
             <div class="row">
                 <div class="col-lg-12">
-                    < class="card">
-                    <form action="myDocApp" type="get">
+                    <div class="card">
                         <div class="card-body border-bottom">
                             <div class="row">
                                 <div class="col-xxl-1 col-lg-2 align-self-center">
@@ -86,7 +85,7 @@
                                 <div class="col-xxl-2 col-lg-2">
                                     <div class="input-group" id="datepicker">
                                         <input type="text" class="form-control form-control-sm" id="datePicker"
-                                               style="height: 28px" name="startDate">
+                                               style="height: 28px">
                                         <span class="input-group-text" style="height: 28px"><i
                                                 class="mdi mdi-calendar"></i></span>
                                     </div>
@@ -97,7 +96,7 @@
                                 <div class="col-xxl-2 col-lg-2">
                                     <div class="input-group" id="datepicker1">
                                         <input type="text" class="form-control form-control-sm" id="datePicker1"
-                                               style="height: 28px" name="endDate">
+                                               style="height: 28px">
                                         <span class="input-group-text" style="height: 28px"><i
                                                 class="mdi mdi-calendar"></i></span>
                                     </div>
@@ -107,113 +106,112 @@
                                     <span class="fw-bold">검색</span>
                                 </div>
                                 <div class="col-xxl-2 col-lg-2">
-                                    <select class="form-select form-select-sm" style="width: 100px"
-                                            id="selectSearch" name="searchSelect">
-                                        <option value="s_title">기안제목</option>
-                                        <option value="s_name">기안자</option>
+                                    <select class="form-select form-select-sm" style="width: 100px" id="selectSearch">
+                                        <option value="title">기안제목</option>
+                                        <option value="name">기안자</option>
                                     </select>
                                 </div>
                                 <div class="col-xxl-2 col-lg-2">
-                                    <input type="text" name="searchData" class="form-control form-control-sm"
+                                    <input type="text" class="form-control form-control-sm"
                                            style="margin-left: -3.5rem">
                                 </div>
                             </div>
                             <hr class="mt-3">
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">조회</button>
+                                <button class="btn btn-primary">조회</button>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-            <div class="card-body">
 
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle nowrap">
-                        <thead>
-                        <tr>
-                            <th scope="col">양식</th>
-                            <th scope="col">기안제목</th>
-                            <th scope="col">기안자</th>
-                            <th scope="col">상신일시</th>
-                            <th scope="col">결재구분</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${docAppList}" var="list">
-                            <tr>
-                                <td>${list.CATEGORY_RESULT}</td>
-                                <td><a class="text-dark text-decoration-underline"
-                                       href="">${list.DOCUMENT_TITLE}</a></td>
-                                <td><input type="hidden" value="${list.DOCUMENT_FORM_CODE}">
-                                    <a name="appLine" href=""
-                                       data-bs-toggle="offcanvas"
-                                       data-bs-target="#offcanvasRight"
-                                       aria-controls="offcanvasRight">${list.USER_NAME} ${list.JOB_NAME}
-                                        | ${list.DEPT_NAME}</a></td>
-                                <td>${list.DOCUMENT_FORM_DATE}</td>
-                                <td>${list.APPROVAL_DATE_RESULT}</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-auto">
-                        <div class="card d-inline-block ms-auto mb-0">
-                            <div class="card-body p-2">
-                                <nav aria-label="Page navigation example" class="mb-0">
-                                    <ul class="pagination mb-0">
-                                        <c:if test="${pageMaker.getCri().pageNum > 1}">
-                                            <li class="page-item"><a
-                                                    href="myDocApp?pageNum=${pageMaker.getCri().pageNum-1 }"
-                                                    class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
-                                        </c:if>
-                                        <c:if test="${pageMaker.getCri().pageNum == 1 }">
-                                            <li class="page-item disabled"><a href=""
-                                                                              class="page-link"><i
-                                                    class="mdi mdi-chevron-left"></i></a></li>
-                                        </c:if>
-                                        <c:forEach begin="${pageMaker.getPageStart() }"
-                                                   end="${pageMaker.getPageEnd() }" var="idx">
-                                            <c:if test="${idx == pageMaker.getCri().pageNum }">
-                                                <li class="page-item active"><a
-                                                        href="myDocApp?pageNum=${idx }"
-                                                        class="page-link">${idx }</a></li>
-                                            </c:if>
-                                            <c:if test="${idx != pageMaker.getCri().pageNum }">
-                                                <li class="page-item"><a
-                                                        href="myDocApp?pageNum=${idx }"
-                                                        class="page-link">${idx }</a></li>
-                                            </c:if>
-                                        </c:forEach>
-                                        <c:if test="${pageMaker.getCri().pageNum < pageMaker.getPageEnd()}">
-                                            <li class="page-item"><a
-                                                    href="myDocApp?pageNum=${pageMaker.getCri().pageNum+1 }"
-                                                    class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-                                            </li>
-                                        </c:if>
-                                        <c:if test="${pageMaker.getCri().pageNum == pageMaker.getPageEnd()}">
-                                            <li class="page-item disabled"><a
-                                                    href=".."
-                                                    class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-                                            </li>
-                                        </c:if>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
                     </div>
-                    <!--end col-->
                 </div>
-                <!--end row-->
-            </div>
-        </div><!--end card-->
-    </div><!--end col-->
+                <div class="card-body">
 
-</div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle nowrap">
+                            <thead>
+                            <tr>
+                                <th scope="col">양식</th>
+                                <th scope="col">기안제목</th>
+                                <th scope="col">기안자</th>
+                                <th scope="col">상신일시</th>
+                                <th scope="col">결재구분</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${docAppList}" var="list">
+                                <tr>
+                                    <td>${list.CATEGORY_RESULT}</td>
+                                    <td><a class="text-dark text-decoration-underline"
+                                           href="">${list.DOCUMENT_TITLE}</a></td>
+                                    <td><input type="hidden" value="${list.DOCUMENT_FORM_CODE}">
+                                        <a name="appLine" href=""
+                                           data-bs-toggle="offcanvas"
+                                           data-bs-target="#offcanvasRight"
+                                           aria-controls="offcanvasRight">${list.USER_NAME} ${list.JOB_NAME}
+                                            | ${list.DEPT_NAME}</a></td>
+                                    <td>${list.DOCUMENT_FORM_DATE}</td>
+                                    <td>${list.APPROVAL_DATE_RESULT}</td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <div class="card d-inline-block ms-auto mb-0">
+                                <div class="card-body p-2">
+                                    <nav aria-label="Page navigation example" class="mb-0">
+                                        <ul class="pagination mb-0">
+                                            <c:if test="${pageMaker.getCri().pageNum > 1}">
+                                                <li class="page-item"><a
+                                                        href="myDocApp?pageNum=${pageMaker.getCri().pageNum-1 }"
+                                                        class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
+                                            </c:if>
+                                            <c:if test="${pageMaker.getCri().pageNum == 1 }">
+                                                <li class="page-item disabled"><a href=""
+                                                                                  class="page-link"><i
+                                                        class="mdi mdi-chevron-left"></i></a></li>
+                                            </c:if>
+                                            <c:forEach begin="${pageMaker.getPageStart() }"
+                                                       end="${pageMaker.getPageEnd() }" var="idx">
+                                                <c:if test="${idx == pageMaker.getCri().pageNum }">
+                                                    <li class="page-item active"><a
+                                                            href="myDocApp?pageNum=${idx }"
+                                                            class="page-link">${idx }</a></li>
+                                                </c:if>
+                                                <c:if test="${idx != pageMaker.getCri().pageNum }">
+                                                    <li class="page-item"><a
+                                                            href="myDocApp?pageNum=${idx }"
+                                                            class="page-link">${idx }</a></li>
+                                                </c:if>
+                                            </c:forEach>
+                                            <c:if test="${pageMaker.getCri().pageNum < pageMaker.getPageEnd()}">
+                                                <li class="page-item"><a
+                                                        href="myDocApp?pageNum=${pageMaker.getCri().pageNum+1 }"
+                                                        class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${pageMaker.getCri().pageNum == pageMaker.getPageEnd()}">
+                                                <li class="page-item disabled"><a
+                                                        href=".."
+                                                        class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
 
-<!-- end row -->
+    </div>
+
+    <!-- end row -->
 
 </div> <!-- container-fluid -->
 <!-- End Page-content -->
