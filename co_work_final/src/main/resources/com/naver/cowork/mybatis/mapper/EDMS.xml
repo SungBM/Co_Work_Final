@@ -5,6 +5,7 @@
 <mapper namespace="com.naver.cowork.mybatis.mapper.EDMSMapper">
 
     <select id="getMyDoc" resultType="edms">
+        <![CDATA[
         select rn,
                DOCUMENT_FORM_CODE,
                DOCUMENT_TITLE,
@@ -50,10 +51,18 @@
                     where d.user_id = #{user_id}
                     order by DOCUMENT_FORM_DATE ASC) z)
 
-		<![CDATA[
-		where rn > #{skip}
+        where rn > #{skip}
           and rn <= #{viewSize} * #{pageNum}
         ]]>
+        <if test="startDate != null">
+            and document_form_date between TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS') and TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
+        </if>
+        <if test="searchData != null">
+            and document_title LIKE '%'||#{searchData}||'%'
+        </if>
+
+
+
     </select>
 
     <select id="getMyDocApp" resultType="edms">
@@ -104,6 +113,16 @@
         where rn > #{skip}
           and rn <= #{viewSize} * #{pageNum}
         ]]>
+        <if test="startDate != null">
+            and document_form_date between TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS') and TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
+        </if>
+        <if test="searchSelect == 's_title'">
+            and document_title LIKE '%'||#{searchData}||'%'
+        </if>
+        <if test="searchSelect == 's_name'">
+            and user_name LIKE '%'||#{searchData}||'%'
+        </if>
+
     </select>
 
     <select id="getCountDoc" resultType="int">
@@ -149,7 +168,6 @@
         where a.document_no = #{document_no}
         ORDER BY a.APPROVAL_LEVEL ASC
     </select>
-
 
 
 </mapper>

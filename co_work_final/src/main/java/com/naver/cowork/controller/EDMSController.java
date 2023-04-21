@@ -69,6 +69,8 @@ public class EDMSController {
     public ModelAndView myDoc(ModelAndView mv, Principal principal, Criteria cri) {
         String user_id = principal.getName();
         cri.setUser_id(user_id);
+        cri.setEndDate(cri.getEndDate() + " 23:59:59");
+        logger.info(cri.getSearchSelect());
         List<EDMS> docList = edmsservice.getMyDoc(cri);
         int total = edmsservice.getCountDoc(user_id);
         PageDto pageMaker = new PageDto(cri, total);
@@ -82,6 +84,8 @@ public class EDMSController {
     public ModelAndView myDocApp(ModelAndView mv, Principal principal, Criteria cri) {
         String user_id = principal.getName();
         cri.setUser_id(user_id);
+        cri.setEndDate(cri.getEndDate() + " 23:59:59");
+        logger.info(cri.getSearchSelect());
         List<EDMS> docAppList = edmsservice.getMyDocApp(cri);
         int total = edmsservice.getCountDocApp(user_id);
         PageDto pageMaker = new PageDto(cri, total);
@@ -97,5 +101,11 @@ public class EDMSController {
         int document_no = Integer.parseInt(String.valueOf(param.get("data")));
         List<EDMS> getAppLine = edmsservice.getAppLine(document_no);
         return getAppLine;
+    }
+
+    @GetMapping("/searchMyDoc")
+    public String searchMyDoc(){
+
+        return "redirect:";
     }
 }
