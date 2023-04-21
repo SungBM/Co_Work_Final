@@ -36,6 +36,18 @@
         $("#datePicker").datepicker('setDate', '-90D');
         $("#datePicker1").datepicker('setDate', 'today');
 
+        $(document).on("click", "a[name=appLine]", function () {
+            var data = $(this).parent().prev().prev().prev().prev().text();
+            $.ajax({
+                type: "GET",
+                url: "getAppLine",
+                data: {"data": data},
+                success: function (data) {
+                    resultHtml(data);
+                }
+
+            })
+        })
 
 
     });//ready end
@@ -97,7 +109,7 @@
                                 <div class="col-xxl-2 col-lg-2">
                                     <select class="form-select form-select-sm" style="width: 100px" id="selectSearch">
                                         <option value="title">기안제목</option>
-                                        <option value="name">기안자</option>
+                                        <option value="category">양식</option>
                                     </select>
                                 </div>
                                 <div class="col-xxl-2 col-lg-2">
@@ -135,7 +147,7 @@
                                 <td><a class="text-dark text-decoration-underline" href="">${list.DOCUMENT_TITLE}</a></td>
                                 <td>${list.DOCUMENT_FORM_DATE}</td>
                                 <td>
-                                    <a href=""
+                                    <a name="appLine" href=""
                                        data-bs-toggle="offcanvas"
                                        data-bs-target="#offcanvasRight"
                                        aria-controls="offcanvasRight">${list.USER_NAME} ${list.JOB_NAME} | ${list.DEPT_NAME}
@@ -154,26 +166,41 @@
                                 <div class="card-body p-2">
                                     <nav aria-label="Page navigation example" class="mb-0">
                                         <ul class="pagination mb-0">
-                                            <li class="page-item">
-                                                <a class="page-link" href="javascript:void(0);" aria-label="Previous">
-                                                    <span aria-hidden="true">«</span>
-                                                </a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="javascript:void(0);">1</a>
-                                            </li>
-                                            <li class="page-item active"><a class="page-link"
-                                                                            href="javascript:void(0);">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a>
-                                            </li>
-                                            <li class="page-item"><a class="page-link"
-                                                                     href="javascript:void(0);">...</a></li>
-                                            <li class="page-item"><a class="page-link" href="javascript:void(0);">12</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="javascript:void(0);" aria-label="Next">
-                                                    <span aria-hidden="true">»</span>
-                                                </a>
-                                            </li>
+                                            <c:if test="${pageMaker.getCri().pageNum > 1}">
+                                                <li class="page-item"><a
+                                                        href="myDoc?pageNum=${pageMaker.getCri().pageNum-1 }"
+                                                        class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
+                                            </c:if>
+                                            <c:if test="${pageMaker.getCri().pageNum == 1 }">
+                                                <li class="page-item disabled"><a href=""
+                                                                                  class="page-link"><i
+                                                        class="mdi mdi-chevron-left"></i></a></li>
+                                            </c:if>
+                                            <c:forEach begin="${pageMaker.getPageStart() }"
+                                                       end="${pageMaker.getPageEnd() }" var="idx">
+                                                <c:if test="${idx == pageMaker.getCri().pageNum }">
+                                                    <li class="page-item active"><a
+                                                            href="myDoc?pageNum=${idx }"
+                                                            class="page-link">${idx }</a></li>
+                                                </c:if>
+                                                <c:if test="${idx != pageMaker.getCri().pageNum }">
+                                                    <li class="page-item"><a
+                                                            href="myDoc?pageNum=${idx }"
+                                                            class="page-link">${idx }</a></li>
+                                                </c:if>
+                                            </c:forEach>
+                                            <c:if test="${pageMaker.getCri().pageNum < pageMaker.getPageEnd()}">
+                                                <li class="page-item"><a
+                                                        href="myDoc?pageNum=${pageMaker.getCri().pageNum+1 }"
+                                                        class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${pageMaker.getCri().pageNum == pageMaker.getPageEnd()}">
+                                                <li class="page-item disabled"><a
+                                                        href=".."
+                                                        class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                                </li>
+                                            </c:if>
                                         </ul>
                                     </nav>
                                 </div>
@@ -196,48 +223,44 @@
      aria-modal="true" role="dialog">
     <div class="offcanvas-body">
         <span class="font-size-16 fw-bold mb-3">결재선</span>
-        <table class="table align-middle table-hover table-bordered table-sm mt-3">
-            <thead>
-            <tr>
-                <th scope="col" class="">순번</th>
-                <th scope="col">결재자</th>
-                <th scope="col">유형</th>
-                <th scope="col">상태</th>
-                <th scope="col">일자</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>4</td>
-                <td>차홍 부장 | 개발2팀</td>
-                <td>결재안함</td>
-                <td>결재</td>
-                <td>2023.04.18 13:08</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>최용수 차장 | 개발2팀</td>
-                <td>결재안함</td>
-                <td>결재</td>
-                <td>2023.04.18 13:08</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>임시 대리 | 개발2팀</td>
-                <td>결재안함</td>
-                <td>결재</td>
-                <td>2023.04.18 13:08</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>박주호 사원 | 개발2팀</td>
-                <td>전결</td>
-                <td>결재</td>
-                <td>2023.04.18 13:08</td>
-            </tr>
-            </tbody>
+        <div id="display">
+
+        </div>
         </table>
+
     </div>
 </div>
-<!-- apexcharts -->
-<script src="assets/libs/apexcharts/apexcharts.min.js"></script>
+<script>
+    function resultHtml(data) {
+        var html = '<table class="table align-middle table-hover table-bordered table-sm mt-3">';
+        html += '<thead>';
+        html += '<tr>';
+        html += '<th scope="col" class="">순번</th>';
+        html += '<th scope="col" >결재자</th>';
+        html += '<th scope="col" >유형</th>';
+        html += '<th scope="col" >상태</th>';
+        html += '<th scope="col" >일자</th>';
+        html += '</tr>';
+
+        <c:if test="data[i].approval_DATE == null">
+        <td></td>
+        </c:if>
+        <c:if test="data[i].approval_DATE != null">
+        <td>data[i].approval_DATE</td>
+        </c:if>
+
+
+        for (var i = 0; i < data.length; i++) {
+            html += '<tr>';
+            html += '<td>' + parseInt(i + 1) + '</td>';
+            html += '<td>' + data[i].user_NAME + ' ' + data[i].job_NAME + ' | ' + data[i].dept_NAME + '</td>';
+            html += '<td>' + data[i].state_RESULT + '</td>';
+            html += '<td>결재</td>';
+            html += '<td>' + data[i].approval_DATE_RESULT + '</td>';
+
+            console.log(data[i])
+        }
+        $("#display").empty();
+        $("#display").append(html);
+    }
+</script>

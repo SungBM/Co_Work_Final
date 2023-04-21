@@ -11,6 +11,7 @@ public class Criteria {
 	private int viewSize;  // 한 페이지 출력 data
 	private int skip;  // 페이지 skip
 	private String user_id;
+	private int document_no;
 	
 	public Criteria(int pageNum, int viewSize) {
 		this.pageNum = pageNum;
@@ -32,6 +33,7 @@ public class Criteria {
 				.queryParam("pageNum", pageNum)
 				.queryParam("viewSize", viewSize)
 				.queryParam("user_id", user_id)
+				.queryParam("document_no", document_no)
 				.build()
 				.encode();
 		return uriComponents.toUriString();

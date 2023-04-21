@@ -22,4 +22,6 @@ public class EDMS {
     private String APPROVAL_DATE;
     private String APPROVAL_DATE_RESULT;
     private String CATEGORY_RESULT;
+    private int APPROVAL_STATE;
+    private String APPROVAL_STATE_RESULT;
 }

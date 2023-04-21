@@ -1,6 +1,7 @@
 package com.naver.cowork.service;
 
 import com.naver.cowork.domain.ChatVO;
+import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.EDMS;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +11,13 @@ import java.util.Map;
 
 @Service
 public interface EDMSService {
-    public List<EDMS> getMyDoc(String user_id);
+    public List<EDMS> getMyDoc(Criteria cri);
 
-    public List<EDMS> getMyDocApp(String user_id);
+    public List<EDMS> getMyDocApp(Criteria cri);
 
     public int getCountDoc(String user_id);
 
     public int getCountDocApp(String user_id);
+    public List<EDMS> getAppLine(int document_no);
+
 }

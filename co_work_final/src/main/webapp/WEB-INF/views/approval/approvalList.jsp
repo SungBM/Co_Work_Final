@@ -11,6 +11,20 @@
 
 </style>
 <script>
+    $(document).ready(function () {
+        $(document).on("click", "a[name=appLine]", function () {
+            var data = $(this).parent().prev().prev().prev().text();
+            $.ajax({
+                type: "GET",
+                url: "getAppLine",
+                data: {"data": data},
+                success: function (data) {
+                    resultHtml(data);
+                }
+
+            })
+        })
+    })
 
 </script>
 </head>
@@ -62,7 +76,8 @@
                                                     <div class="card-body p-3">
                                                         <div class="">
                                                             <h5 class="font-size-14 mb-1 fw-bold text-info">상신한</h5>
-                                                            <p class="font-size-18 mb-0 fw-bold text-center"><a href="myDoc">${getCountDoc} 건</a></p>
+                                                            <p class="font-size-18 mb-0 fw-bold text-center"><a
+                                                                    href="myDoc">${getCountDoc} 건</a></p>
                                                         </div>
                                                     </div>
 
@@ -75,7 +90,8 @@
                                                     <div class="card-body p-3">
                                                         <div class="h-100">
                                                             <h5 class="font-size-14 mb-1 fw-bold text-info">결재전</h5>
-                                                            <p class="font-size-18 mb-0 fw-bold text-center"><a href="myDocApp">${getCountDocApp} 건</a></p>
+                                                            <p class="font-size-18 mb-0 fw-bold text-center"><a
+                                                                    href="myDocApp">${getCountDocApp} 건</a></p>
                                                         </div>
                                                     </div>
 
@@ -105,19 +121,21 @@
                                                 </thead>
                                                 <tbody>
                                                 <c:forEach items="${docList}" var="list" end="2">
-                                                <tr>
-                                                    <td>${list.DOCUMENT_FORM_CODE}</td>
-                                                    <td>${list.CATEGORY_RESULT}</td>
-                                                    <td><a class="text-dark text-decoration-underline" href="">${list.DOCUMENT_TITLE}</a></td>
-                                                    <td>
-                                                        <a href=""
-                                                           data-bs-toggle="offcanvas"
-                                                           data-bs-target="#offcanvasRight"
-                                                           aria-controls="offcanvasRight">${list.USER_NAME} ${list.JOB_NAME} | ${list.DEPT_NAME}
-                                                        </a>
-                                                    </td>
-                                                    <td>${list.DOCUMENT_FORM_DATE}</td>
-                                                </tr>
+                                                    <tr>
+                                                        <td>${list.DOCUMENT_FORM_CODE}</td>
+                                                        <td>${list.CATEGORY_RESULT}</td>
+                                                        <td><a class="text-dark text-decoration-underline"
+                                                               href="">${list.DOCUMENT_TITLE}</a></td>
+                                                        <td>
+                                                            <a name="appLine" href=""
+                                                               data-bs-toggle="offcanvas"
+                                                               data-bs-target="#offcanvasRight"
+                                                               aria-controls="offcanvasRight">${list.USER_NAME} ${list.JOB_NAME}
+                                                                | ${list.DEPT_NAME}
+                                                            </a>
+                                                        </td>
+                                                        <td>${list.DOCUMENT_FORM_DATE}</td>
+                                                    </tr>
                                                 </c:forEach>
                                                 </tbody>
                                             </table>
@@ -142,48 +160,44 @@
      aria-modal="true" role="dialog">
     <div class="offcanvas-body">
         <span class="font-size-16 fw-bold mb-3">결재선</span>
-        <table class="table align-middle table-hover table-bordered table-sm mt-3">
-            <thead>
-            <tr>
-                <th scope="col" class="">순번</th>
-                <th scope="col" >결재자</th>
-                <th scope="col" >유형</th>
-                <th scope="col" >상태</th>
-                <th scope="col" >일자</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>4</td>
-                <td>차홍 부장 | 개발2팀</td>
-                <td>결재안함</td>
-                <td>결재</td>
-                <td>2023.04.18 13:08</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>최용수 차장 | 개발2팀</td>
-                <td>결재안함</td>
-                <td>결재</td>
-                <td>2023.04.18 13:08</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>임시 대리 | 개발2팀</td>
-                <td>결재안함</td>
-                <td>결재</td>
-                <td>2023.04.18 13:08</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>박주호 사원 | 개발2팀</td>
-                <td>전결</td>
-                <td>결재</td>
-                <td>2023.04.18 13:08</td>
-            </tr>
-            </tbody>
+        <div id="display">
+
+        </div>
         </table>
+
     </div>
 </div>
-<!-- apexcharts -->
-<script src="assets/libs/apexcharts/apexcharts.min.js"></script>
+<script>
+    function resultHtml(data) {
+        var html = '<table class="table align-middle table-hover table-bordered table-sm mt-3">';
+        html += '<thead>';
+        html += '<tr>';
+        html += '<th scope="col" class="">순번</th>';
+        html += '<th scope="col" >결재자</th>';
+        html += '<th scope="col" >유형</th>';
+        html += '<th scope="col" >상태</th>';
+        html += '<th scope="col" >일자</th>';
+        html += '</tr>';
+
+        <c:if test="data[i].approval_DATE == null">
+        <td></td>
+        </c:if>
+        <c:if test="data[i].approval_DATE != null">
+        <td>data[i].approval_DATE</td>
+        </c:if>
+
+
+        for (var i = 0; i < data.length; i++) {
+            html += '<tr>';
+            html += '<td>' + parseInt(i + 1) + '</td>';
+            html += '<td>' + data[i].user_NAME + ' ' + data[i].job_NAME + ' | ' + data[i].dept_NAME + '</td>';
+            html += '<td>' + data[i].state_RESULT + '</td>';
+            html += '<td>결재</td>';
+            html += '<td>' + data[i].approval_DATE_RESULT + '</td>';
+
+            console.log(data[i])
+        }
+        $("#display").empty();
+        $("#display").append(html);
+    }
+</script>

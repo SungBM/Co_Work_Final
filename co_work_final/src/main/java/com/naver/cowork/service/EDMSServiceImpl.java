@@ -1,6 +1,7 @@
 package com.naver.cowork.service;
 
 import com.naver.cowork.domain.ChatVO;
+import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.EDMS;
 import com.naver.cowork.mybatis.mapper.ChatMapper;
 import com.naver.cowork.mybatis.mapper.EDMSMapper;
@@ -21,8 +22,8 @@ public class EDMSServiceImpl implements EDMSService {
         this.dao = dao;
     }
 
-    public List<EDMS> getMyDoc(String user_id) {
-        List<EDMS> docList = dao.getMyDoc(user_id);
+    public List<EDMS> getMyDoc(Criteria cri) {
+        List<EDMS> docList = dao.getMyDoc(cri);
         for (EDMS e : docList) {
             if (e.getDOCUMENT_STATE() == edmsResultEnum.WAIT.getValue()) {
                 e.setSTATE_RESULT("대기");
@@ -41,8 +42,8 @@ public class EDMSServiceImpl implements EDMSService {
         return docList;
     }
 
-    public List<EDMS> getMyDocApp(String user_id) {
-        List<EDMS> docAppList = dao.getMyDocApp(user_id);
+    public List<EDMS> getMyDocApp(Criteria cri) {
+        List<EDMS> docAppList = dao.getMyDocApp(cri);
         for (EDMS e : docAppList) {
             if (e.getAPPROVAL_DATE() == null || e.getAPPROVAL_DATE() == "") {
                 e.setAPPROVAL_DATE_RESULT("결재");
@@ -64,5 +65,25 @@ public class EDMSServiceImpl implements EDMSService {
     public int getCountDocApp(String user_id){
         return dao.getCountDocApp(user_id);
     }
+    public List<EDMS> getAppLine(int document_no){
+        List<EDMS> AppLine = dao.getAppLine(document_no);
+        for(EDMS e : AppLine){
+            if(e.getAPPROVAL_STATE() == 0){
+                e.setSTATE_RESULT("결재안함");
+            } else if(e.getAPPROVAL_STATE() == 1){
+                e.setSTATE_RESULT("결재완료");
+            } else {
+                e.setSTATE_RESULT("반려");
+            }
+
+            if(e.getAPPROVAL_DATE() != null){
+                e.setAPPROVAL_DATE_RESULT(e.getAPPROVAL_DATE());
+            } else {
+                e.setAPPROVAL_DATE_RESULT("-");
+            }
+        }
+        return AppLine;
+    }
+
 
 }
