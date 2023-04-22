@@ -19,5 +19,7 @@ public interface CalMapper {
 
     public int calDelete(int cal_no);
 
+	public List<Calendar> calendarListForMain(String user_id);
+
 
 }

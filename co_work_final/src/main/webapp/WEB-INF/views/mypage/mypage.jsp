@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <jsp:include page="../main/header.jsp"/>
+<script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/js/mypage_js/mypage.js"></script>
+
 <head>
     <title>내 프로필</title>
     <style>
@@ -39,8 +41,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="page-title-box d-sm-flex">
-                        <h4 class="mb-sm-0 font-size-18">내 프로필> 수정</h4>
+                    <div class="page-title-box d-sm-flex justify-content-center">
+                        <h3 class="mb-sm-0 font-size-24">내 프로필> 수정</h3>
                     </div>
                 </div>
             </div>
@@ -89,8 +91,10 @@
                         <div class="col-10 mt-5  align-items-center container-fluid">
                             <label class="form-label" for="user_phone"><b>연락처</b></label>
                             <div class="input-group" id="user_phone">
-                                <input type="text" class="form-control" name="user_phone"
-                                       value="${memberinfo.user_phone}">
+<%--                                <input type="text" class="form-control" name="user_phone"
+                                       value="${memberinfo.user_phone}"> --%>
+                                       <input id="input-mask" class="form-control input-mask" name="user_phone" data-inputmask="'mask': '999-9999-9999'" im-insert="true" value="${memberinfo.user_phone}">
+                                       
                             </div>
                         </div>
 
@@ -129,7 +133,8 @@
                         <div class="col-10 mt-5  align-items-center container-fluid">
                             <label class="form-label" for="user_fax"><b>팩스번호</b></label>
                             <div class="input-group" id="user_fax">
-                                <input type="text" class="form-control" name="user_fax" value="${memberinfo.user_fax}">
+<%--                                 <input type="text" class="form-control" name="user_fax" value="${memberinfo.user_fax}"> --%>
+                                <input id="input-mask" class="form-control input-mask" name="user_fax" data-inputmask="'mask': '999-999-9999'" im-insert="true" value="${memberinfo.user_fax}">
                             </div>
                         </div>
 
@@ -156,36 +161,9 @@
     <!-- End Page-content -->
 </div>
 </body>
+<script src="../assets/libs/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<script src="../assets/js/pages/form-mask.init.js"></script>
 <script>
-    $(function () {
 
-        // 정보 변경 시 버튼 활성화
-        $("input[name=user_phone], input[name=user_fax], input[type=file]").on('keyup change', function () {
-            const phone = $("input[name=user_phone]").val();
-            const fax = $("input[name=user_fax]").val();
-            const id = $("input[name=user_id]").val();
-            const img = $("input[type=file]").val();
-
-            $.ajax({
-                url: "../member/updateCheck",
-                // type: "post",
-                data: ({
-                    "user_phone": phone,
-                    "user_fax": fax,
-                    "user_id": id
-                }),
-                success: function (resp) {
-                    console.log("ajax = " + phone, fax, img);
-                    if (resp == 'success' || img) {
-                        $("button[type=submit]").attr("disabled", false);
-                    } else if (resp == 'fail' || !img) {
-                        $("button[type=submit]").attr("disabled", true);
-                    }
-                }
-            })
-        }) // 연락처, 팩스번호 바뀌면 정보변경 버튼 활성화 end
-
-
-    })
 </script>
 </html>

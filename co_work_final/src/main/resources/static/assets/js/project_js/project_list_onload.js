@@ -11,8 +11,8 @@ $(function(){
 		   y = event.clientY; 
 		   var win_x = $( window ).width();
 		   var win_y = $( window ).height();
-		   var rx = ( win_x - x ) - 400;
-		   var ry = ( y  ) - 80;
+		   var rx = ( win_x - x ) + 430;
+		   var ry = ( y  )  -400;
 		   console.log("윈 x : " + win_x + "윈 y" + win_y);
 		   console.log('x좌표:' +x + ', y좌표:' + y);
 		   console.log('차이 x:' + rx + ', 차이 y:' + ry);
@@ -58,6 +58,9 @@ $(function(){
 				case "요청 확인" :
 					$(this).addClass('bg-danger');
 					break;
+				case "1" :
+					$(this).css('background-color','#556ee6');
+					break;
 			}
 			
 		});
@@ -78,6 +81,10 @@ $(function(){
 					break;	
 				case "요청 확인" :
 					$(this).css({'color':'#f1b44c'});
+					break;
+				case "1" :
+					$(this).addClass('text-success')
+					$(this).text("진행전");
 					break;
 			}
 			/*

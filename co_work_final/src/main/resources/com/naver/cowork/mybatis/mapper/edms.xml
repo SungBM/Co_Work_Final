@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.EDMSMapper">
+	<select id="getSerialNumber" resultType="int">
+		  select max(serialnumber) from DOCUMENT_FORM
+	</select>
+
+	<select id="getUsersInfo" parameterType="String" resultType="Member">
+		SELECT d.DEPT_NAME AS dname, j.JOB_NAME AS jname, ui.USER_IMG, ui.USER_ID, ui.USER_NAME
+		FROM user_info ui
+		JOIN dept d
+		ON ui.USER_DEPT = d.DEPT_NO
+		JOIN job j
+		ON ui.USER_JOB = j.JOB_NO
+		WHERE ui.USER_ID = '${loginId}'
+	</select>
+
+	<select id="getDeptMeberList" parameterType="String" resultType="Member">
+		SELECT d.DEPT_NAME AS dname, j.JOB_NAME AS jname, ui.USER_IMG, ui.USER_ID, ui.USER_NAME
+		FROM user_info ui
+		JOIN dept d
+		ON ui.USER_DEPT = d.DEPT_NO
+		JOIN job j
+		ON ui.USER_JOB = j.JOB_NO
+		WHERE d.DEPT_NAME = '${dept_name}'
+		order by JOB_ORDER desc
+	</select>
+
+	<select id="deptList" resultType="Dept">
+		select DEPT_NAME from dept order by DEPT_NAME asc
+	</select>
+
+	<select id="getAllUsersInfo" parameterType="String" resultType="Member">
+		select 
+			user_id,
+			user_name,
+			user_job,
+			user_dept 
+		from user_info
+		where user_id != #{loginId}
+		
+	</select>
+
+	<insert id="insertDocForm">
+		INSERT INTO DOCUMENT_FORM  
+		(
+			DOCUMENT_FORM_CODE,
+			DOCUMENT_TITLE,
+			DOCUMENT_CATEGORY_NUM,
+			USER_ID,
+			DOCUMENT_FORM_DATE,
+			DOCUMENT_STATE,
+			APPROVAL_NOW_LEVEL,
+			SERIALNUMBER
+		)
+		VALUES 
+		(
+			#{DOCUMENT_FORM_CODE},
+			#{DOCUMENT_TITLE},
+			#{DOCUMENT_CATEGORY_NUM},
+			#{USER_ID},
+			SYSDATE,
+			0,
+			1,
+			doc_seq.NEXTVAL
+		)
+		
+	</insert>
+	
+	<insert id="insertApproval">
+		INSERT INTO APPROVAL_LINE 
+		(
+			APPROVAL_NUM,
+			DOCUMENT_FORM_CODE,
+			APPROVAL_USER_ID,
+			APPROVAL_DATE,
+			APPROVAL_STATE,
+			APPROVAL_LEVEL
+		)
+		VALUES 
+		(
+			approval_seq.NEXTVAL,
+			#{DOCUMENT_FORM_CODE},
+			#{APPROVAL_USER_ID},
+			SYSDATE,
+			0,
+			#{APPROVAL_LEVEL}
+			
+		)		
+	</insert>
+	
+	<insert id="insertBsTrip">
+		INSERT INTO BSTRIP 
+		(
+			DOCUMENT_FORM_CODE,
+			BSTRIPDATE,
+			BSTRIPDESTINATION,
+			BSTRIPSTOPOVER,
+			BSTRIPLOCATION,
+			BSTRIPLOCATIONBSCONTENT,
+			BSTRIPPERDIEM,
+			BSTRIPROOMCHARGE,
+			BSTRIPTRANSPORTATIONCOST,
+			BSTRIPEXTRACOST,
+			BSTRIPALLCOST
+		)
+		VALUES 
+		( 
+			#{DOCUMENT_FORM_CODE},
+			#{bstripDate},
+			#{bstripDestination},
+			#{bstripStopOver},
+			#{bstripLocation},
+			#{bsContent},
+			#{bstripPerDiem},
+			#{bstripRoomCharge},
+			#{bstripTransportationCost},
+			#{bstripExtraCost},
+			#{bstripAllCost}
+			
+		)
+	</insert>
+
+</mapper>

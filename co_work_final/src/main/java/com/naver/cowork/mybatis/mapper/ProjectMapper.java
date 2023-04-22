@@ -19,21 +19,16 @@ import com.naver.cowork.domain.Project_User;
 @Mapper
 public interface ProjectMapper {
 	
-	public int insertProjectBoard(Project_Board board);
-	
 	public List<Project> getProjectList(String id);
 
-	public Project insert(Project p);
+	public int insert(Project p);
 
 
 	public Project insert_user(Project p);
 	
-	public Project_User insert_user(Project_User u);
-	
 	public List<Project_Board> getProjectDetailList();
-
-    public List<Project_Board> getProjectBoardList();
 	
+
 
 	public int getListCount();
 
@@ -69,20 +64,9 @@ public interface ProjectMapper {
 
 	public void updateUserCheckInfoClear(HashMap<String, Object> map);
 
-
-	public List<Project> searchByKeyword(String keyword);
-
-	public List<Project> findAll();
-
-	public List<Project> findByProBoardCreaterId(String creatorId);
-
-
-
-
-
 	public int ProjectCommentAdd(Project_Board_Comment pbc);
 
-	public List<Project_Board_Comment> getProjectCommentList(int pbNum);
+	public List<Project_Board_Comment> getProjectCommentList(HashMap<String, Integer> map);
 
 	public int commentDelete(int pbNum);
 
@@ -90,6 +74,17 @@ public interface ProjectMapper {
 
 	public int ProjectCommentReply(Project_Board_Comment pbc);
 
+	public int getPjectCommentCount(int pbNum);
+
+	public List<Project> getProjectListForMain();
+
+	public int insertProjectBoard(Project_Board board);
+
+	public List<Project> searchByKeyword(String keyword);
+
+	public List<Project> getAllProjects();
+
+	public List<Project> getProjectsByCreatorId(String creatorId);
 
 }
 

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
+
 <body>
 <jsp:include page="../main/header.jsp"/>
 <div class="main-content">
@@ -11,24 +13,69 @@
                 <div class="col-xl-6">
                     <div class="card">
                         <div class="card-body main">
-                            <h4 class="card-title mb-5">${id}공지사항${saveid}</h4>
-                            <ul>
-                                <li>2번글</li>
-                                <li>3번글</li>
-                                <li>4번글</li>
-
-                            </ul>
-
+                            <h4 class="card-title mb-5"><i class="bx bx-book-bookmark"></i> 공지사항${saveid}</h4>
+                <table class="table table-striped" style="margin-top: -30px;">
+				<thead>
+					<tr>
+						<th><div>NO.</div></th>
+						<th><div>제목</div></th>
+						<th><div>작성자</div></th>
+					</tr>
+				</thead>
+				<tbody>
+				<c:forEach var="b" items="${noticelist}">
+						<tr>
+						<td>${b.NOTICE_NUM}</td>
+							<td><%--제목 --%>
+								<div>
+									<a href="detail?num=${b.NOTICE_NUM}">
+											${b.NOTICE_SUBJECT}
+									</a>
+								</div>	
+							</td>
+							<td><div>${b.USER_ID}</div></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+				</table>
                         </div>
                     </div>
                 </div>
 
                 <!-- 커뮤니티 -->
                 <div class="col-xl-6">
-                    <div class="card">
-                        <div class="card-body main">
-                            <h4 class="card-title mb-5">커뮤니티</h4>
-
+                    <div class="card" style="margin-left: 40px">
+                        <div class="card-body main" style="margin-left: -50px; margin-top: -6px;">
+                            <h4 class="card-title mb-5"><i class="bx bx-calendar-check"></i>오늘 주요 일정</h4>
+                            <c:if test="${calendarList eq null}">
+                              <img src="${pageContext.request.contextPath }/resources/image/test1.png"
+                           	 	style="width: 300px; height: 250px; margin-top: -50px; margin-left: 90px;">
+							<h4 style="font-weight: bold; text-align: center;">등록된 일정이 없습니다</h4>
+                            </c:if>
+                                <c:if test="${calendarList ne null}">
+                              <table class="table project-list-table table-nowrap align-middle table-borderless"
+                              style="margin-top: -40px;">
+							<thead>
+								<tr>
+									<th scope="col">일정</th>
+									<th scope="col">내용</th>
+									<th scope="col">시작 시간</th>
+									<th scope="col">종료 시간</th>
+								</tr>
+							</thead>
+							<tbody >
+							<c:forEach  var="cl" items="${calendarList }">
+							<tr>
+								<td><p style="color: ${cl.cal_color}">${cl.cal_title }</p></td>
+								<td><p style="color: ${cl.cal_color}"> ${cl.cal_content }</p></td>
+								<td><p>${cl.cal_start_date }</p></td>
+								<td><p>${cl.cal_end_date }</p></td>
+							</tr>
+							</c:forEach>
+							</tbody>
+							</table>
+                            </c:if>
+                          
                         </div>
                     </div>
                 </div>
@@ -39,213 +86,74 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body main">
-                            <h4 class="card-title mb-4">장터</h4>
-                            <div class="table-responsive">
-                                <table class="table align-middle table-nowrap mb-0">
-                                    <thead class="table-light">
-                                    <tr>
-                                        <th style="width: 20px;">
-                                            <div class="form-check font-size-16 align-middle">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck01">
-                                                <label class="form-check-label" for="transactionCheck01"></label>
-                                            </div>
-                                        </th>
-                                        <th class="align-middle">Order ID</th>
-                                        <th class="align-middle">Billing Name</th>
-                                        <th class="align-middle">Date</th>
-                                        <th class="align-middle">Total</th>
-                                        <th class="align-middle">Payment Status</th>
-                                        <th class="align-middle">Payment Method</th>
-                                        <th class="align-middle">View Details</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check font-size-16">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck02">
-                                                <label class="form-check-label" for="transactionCheck02"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2540</a></td>
-                                        <td>Neal Matthews</td>
-                                        <td>
-                                            07 Oct, 2019
-                                        </td>
-                                        <td>
-                                            $400
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success font-size-11">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="fab fa-cc-mastercard me-1"></i> Mastercard
-                                        </td>
-                                        <td>
-                                            <!-- Button trigger modal -->
-                                            <button type="button"
-                                                    class="btn btn-primary btn-sm btn-rounded waves-effect waves-light"
-                                                    data-bs-toggle="modal" data-bs-target=".transaction-detailModal">
-                                                View Details
-                                            </button>
-                                        </td>
-                                    </tr>
+                            <h4 class="card-title mb-4"><i class="bx bx-folder-open"></i>주요 프로젝트 목록</h4>
+                           <table
+							class="table project-list-table table-nowrap align-middle table-borderless">
+							<thead>
+								<tr>
+									<th scope="col" style="width: 100px">${listcount }PROJECT</th>
+									<th scope="col">프로젝트</th>
+									<th scope="col">상태</th>
+									<th scope="col">PROGRESS</th>
+									<th scope="col">시작일</th>
+									<th scope="col">종료일</th>
+									<th scope="col">우선순위</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="p" items="${projectList }">
+									<tr>
+										<c:if test="${p.row_num <= 6 }">
+											<td><img
+												src="${pageContext.request.contextPath }/resources/image/project/img-${p.row_num }.png" alt=""
+												class="avatar-sm"></td>
+										</c:if>
+										<c:if test="${p.row_num > 6  }">
+											<td><img
+												src="${pageContext.request.contextPath }/resources/image/project/img-${p.row_num -6}.png" alt=""
+												class="avatar-sm"></td>
+										</c:if>
 
-                                    <tr>
-                                        <td>
-                                            <div class="form-check font-size-16">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck03">
-                                                <label class="form-check-label" for="transactionCheck03"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2541</a></td>
-                                        <td>Jamal Burnett</td>
-                                        <td>
-                                            07 Oct, 2019
-                                        </td>
-                                        <td>
-                                            $380
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-danger font-size-11">Chargeback</span>
-                                        </td>
-                                        <td>
-                                            <i class="fab fa-cc-visa me-1"></i> Visa
-                                        </td>
-                                        <td>
-                                            <!-- Button trigger modal -->
-                                            <button type="button"
-                                                    class="btn btn-primary btn-sm btn-rounded waves-effect waves-light"
-                                                    data-bs-toggle="modal" data-bs-target=".transaction-detailModal">
-                                                View Details
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="form-check font-size-16">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck04">
-                                                <label class="form-check-label" for="transactionCheck04"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2542</a></td>
-                                        <td>Juan Mitchell</td>
-                                        <td>
-                                            06 Oct, 2019
-                                        </td>
-                                        <td>
-                                            $384
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success font-size-11">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="fab fa-cc-paypal me-1"></i> Paypal
-                                        </td>
-                                        <td>
-                                            <!-- Button trigger modal -->
-                                            <button type="button"
-                                                    class="btn btn-primary btn-sm btn-rounded waves-effect waves-light"
-                                                    data-bs-toggle="modal" data-bs-target=".transaction-detailModal">
-                                                View Details
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check font-size-16">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck05">
-                                                <label class="form-check-label" for="transactionCheck05"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2543</a></td>
-                                        <td>Barry Dick</td>
-                                        <td>
-                                            05 Oct, 2019
-                                        </td>
-                                        <td>
-                                            $412
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success font-size-11">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="fab fa-cc-mastercard me-1"></i> Mastercard
-                                        </td>
-                                        <td>
-                                            <!-- Button trigger modal -->
-                                            <button type="button"
-                                                    class="btn btn-primary btn-sm btn-rounded waves-effect waves-light"
-                                                    data-bs-toggle="modal" data-bs-target=".transaction-detailModal">
-                                                View Details
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check font-size-16">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck06">
-                                                <label class="form-check-label" for="transactionCheck06"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2544</a></td>
-                                        <td>Ronald Taylor</td>
-                                        <td>
-                                            04 Oct, 2019
-                                        </td>
-                                        <td>
-                                            $404
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-warning font-size-11">Refund</span>
-                                        </td>
-                                        <td>
-                                            <i class="fab fa-cc-visa me-1"></i> Visa
-                                        </td>
-                                        <td>
-                                            <!-- Button trigger modal -->
-                                            <button type="button"
-                                                    class="btn btn-primary btn-sm btn-rounded waves-effect waves-light"
-                                                    data-bs-toggle="modal" data-bs-target=".transaction-detailModal">
-                                                View Details
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="form-check font-size-16">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck07">
-                                                <label class="form-check-label" for="transactionCheck07"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="javascript: void(0);" class="text-body fw-bold">#SK2545</a></td>
-                                        <td>Jacob Hunter</td>
-                                        <td>
-                                            04 Oct, 2019
-                                        </td>
-                                        <td>
-                                            $392
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success font-size-11">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="fab fa-cc-paypal me-1"></i> Paypal
-                                        </td>
-                                        <td>
-                                            <!-- Button trigger modal -->
-                                            <button type="button"
-                                                    class="btn btn-primary btn-sm btn-rounded waves-effect waves-light"
-                                                    data-bs-toggle="modal" data-bs-target=".transaction-detailModal">
-                                                View Details
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- end table-responsive -->
+										<td>
+											<h5 class="text-truncate font-size-14"
+											id="projectDetail" aria-value="${p.project_num }">
+												<a href="#" class="text-dark"> <c:out
+														value="${p.project_name }" />
+												</a>
+											</h5>
+											<p hidden="true" id="${p.project_num }"></p>
+										</td>
+										<td>
+											<h5 id="getState" aria-valuenow="${p.project_state }"
+												class="text-truncate state font-size-14">
+												<c:out value="${p.project_state }" />
+											</h5>
+										</td>
+										<td>
+											<div class="">
+												<div class="progress">
+													<div
+														class="progress-bar progress-bar-striped progress-bar-animated"
+														role="progressbar" aria-valuenow="${p.project_prog }"
+														aria-valuemin="100" aria-valuemax="100"
+														style="width: ${p.project_prog}%">${p.project_prog }%
+													</div>
+												</div>
+											</div>
+										</td>
+										<td><c:out value="${p.project_start.substring(0,10) }" /></td>
+										<td><c:out value="${p.project_end.substring(0,10) }" /> <c:if
+												test="${p.project_end == null}">
+                                    		미정
+                                    </c:if></td>
+										<td><span class="badge "
+											aria-valuenow="${p.project_state }" style="width: 50%">${p.project_priority }</span></td>
+										
+										
+									</tr>
+								</c:forEach>
+							</tbody>
+							</table>
                         </div>
                     </div>
                 </div>
@@ -255,6 +163,8 @@
         </div>
     </div>
 </div>
+ <script src="${pageContext.request.contextPath }/resources/assets/js/project_js/project_list_onload.js"></script>
+
 </body>
 
 

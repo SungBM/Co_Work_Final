@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <jsp:include page="../../main/header.jsp"></jsp:include>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/assets/js/board_js/notice/view.js"></script>
 <style>
 
 textarea{
@@ -44,73 +46,107 @@ label {
 <title>공지사항 작성</title>
 </head>
 <body>
-<div class="page-content">
-    <div class="container-fluid">
-
-        <!-- start page title -->
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-					<h4 class="mb-sm-0 font-size-18">커뮤니티 > 공지사항</h4>
-                </div>
-            </div>
-        </div>
-        <!-- end page title -->
-        <!-- view페이지 -->
-		<div class="card">
-			<div class="card-body">
-				<div class="float-date">
-						<span><c:out value="${noticedata.notice_reg_date}"/></span>
-				</div>
-				<div class="input-group">
-	               	<div id="autoSizingInputGroup" class="form-control"><c:out value="${noticedata.notice_subject}"/></div>
-					<input class="input-group-text" id="user_id" value="${noticedata.user_id}" type="text" readOnly>
-                </div>			
-
-
-
-				<div class="form-content">
-					<textarea class="form-control" id="notice_content" rows="20">${noticedata.notice_content}</textarea>
-				</div>
-				
-				<div class="bottom-active" >
-					<div class="file-value">
-						<label class="form-control" >
-							<span id="filevalue"></span>
-							<!-- 파일 첨부한 경우 -->
-							<c:if test="${!empty noticedata.notice_file}">
-								<a href="NoticeFileDown.bon?filename=${noticedata.notice_file}" target="_blank">
-								${noticedata.notice_file}
-								<img src="image/board/down.png" width="10px">
-								</a>
-							</c:if>
-							<c:if test="${empty noticedata.notice_file}">
-								<img src="image/board/down.png" width="10px">
-							</c:if>
-						</label>
+<div class="main-content">
+	<div class="page-content">
+	    <div class="container-fluid">
+	
+	        <!-- start page title -->
+	        <div class="row">
+	            <div class="col-12">
+	                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+						<h4 class="mb-sm-0 font-size-18">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;상세페이지</h4>
+	                </div>
+	            </div>
+	        </div>
+	        <!-- end page title -->
+	        <!-- view페이지 -->
+			<div class="card">
+				<div class="card-body">
+					<div class="float-date">
+							<span><c:out value="${noticedata.NOTICE_REG_DATE}"/></span>
 					</div>
-					<div class="button-admin">
-						<c:if test="${id == 'HTA1'}">
+					<div class="input-group">
+		               	<div id="autoSizingInputGroup" class="form-control"><c:out value="${noticedata.NOTICE_SUBJECT}"/></div>
+						<sec:authorize access="isAuthenticated()">
+						<sec:authentication property="principal" var="pinfo" />
+							<input class="input-group-text" name="USER_ID"  id="user_id" value="${pinfo.username}" type="text" readOnly>
+	                	</sec:authorize> 
+	                </div>		
+					<div class="form-content">
+						<textarea name="NOTICE_CONTENT" class="form-control" id="notice_content" rows="20" readOnly>${noticedata.NOTICE_CONTENT}</textarea>
+					</div>
+					
+					<div class="bottom-active" >
+						<div class="file-value">
+							<label class="form-control" style="height:40px" >
+								<!-- 파일 첨부한 경우 -->
+								<c:if test="${!empty noticedata.NOTICE_FILE}">
+									<a href="#" onclick="document.getElementById('downForm').submit(); return false;">
+								        ${noticedata.NOTICE_ORIGINAL }
+								        <img src="${pageContext.request.contextPath }/resources/assets/images/board/down.png" width="10px">
+									</a>
+									<form id="downForm" method="post" action="down" style="display:none;">
+						  				<input type="hidden" value="${noticedata.NOTICE_FILE }" name="filename" >
+						  				<input type="hidden" value="${noticedata.NOTICE_ORIGINAL }" name="original" >
+						  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+										<img src="${pageContext.request.contextPath }/resources/assets/images/board/down.png" width="10px">
+									</form>
+								</c:if>
+								
+								<!-- 파일 첨부 안함 -->
+								<c:if test="${empty noticedata.NOTICE_FILE}">
+								</c:if>
+							</label>
+						</div>
+						<sec:authorize access="isAuthenticated()">
+						<sec:authentication property="principal" var="pinfo" />  <!-- principal은 시큐리티가 가지고 있는 기술. principal로 아이디값을 불러올 수 있음-->
+			 			<c:if test="${noticedata.USER_ID == pinfo.username || pinfo.username == 'admin1'}">
 							<%--href의 주소를 #으로 설정합니다. --%>
-							<a onclick="return confirm('정말로 삭제하시겠습니까?')"
-								href="NoticeDeleteAction.bon?num=${noticedata.notice_num}">	
-								<button class="btn btn-danger">삭제</button>	
+							<div class="button-admin">
+							<a href="#">	
+								<button class="btn btn-danger" onclick="confirmDelete()" data-toggle="modal"
+		 							data-target="#myModal">삭제</button>
 							</a>
-							<a href="NoticeModifyView.bon?num=${noticedata.notice_num}">
+							<a href="modifyView?num=${noticedata.NOTICE_NUM}">
 								<button class="btn btn-info">수정</button>
 							</a>
+							</div>
 						</c:if>
+						</sec:authorize> 
+						<div class="button-user">
+							<a href="noticeList">
+								<button type=reset class="btn btn-secondary">목록</button>
+				 			</a>
+						</div>
 					</div>
-					<div class="button-user">
-						<a href="NoticeList.bon">
-							<button type=reset class="btn btn-secondary">목록</button>
-			 			</a>
-					</div>
+				</div>			
+			</div>	    
+		</div> <!-- container-fluid -->
+		<%-- modal 시작 --%>
+		<div class="modal" id="myModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<%-- Modal body --%>
+					<div class="modal-body">
+						<form name="deleteForm" action="delete" method="post">
+							<%-- http://localhost:8088/Board/BoardDetailAction.bo?num=22
+								주소를 보면 num을 파라미터로 넘기고 있습니다.
+								이 값을 가져와서 ${param.num}을 사용
+								또는 ${boarddata.board_num}
+							 --%>
+							 <input type="hidden" name="num" value="${param.num }" id="notice_num">
+							 <button type="submit" class="btn btn-primary">전송</button>
+							 <button type="button" class="btn btn-danger" data-dismiss="modal">취소</button>
+							 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+						</form>
+					</div>				
 				</div>
-			</div>				
-		</div>	    
-	</div> 
-</div><!-- container-fluid -->
+			</div>
+		</div>
+		<%-- div class="model" id="myModal" end --%>
+		
+	</div>
+</div>
 <!-- End Page-content -->
 <jsp:include page="../../main/footer.jsp"></jsp:include>
 </body>

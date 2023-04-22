@@ -3,6 +3,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.CalMapper">
+	<select id="calendarListForMain" resultType="calendar">
+		SELECT CAL_NO,
+       CAL_TYPE,
+       CAL_TITLE,
+       CAL_CONTENT,
+       CAL_REGI_DATE,
+       CAL_START_DATE,
+       CAL_END_DATE,
+       CAL_ALLDAY,
+       CAL_STATUS,
+       CAL_COLOR,
+       USER_ID
+	FROM
+	    (SELECT CAL_NO,
+	            CAL_TYPE,
+	            CAL_TITLE,
+	            CAL_CONTENT,
+	            CAL_REGI_DATE,
+	            CAL_START_DATE,
+	            CAL_END_DATE,
+	            CAL_ALLDAY,
+	            CAL_STATUS,
+	            CAL_COLOR,
+	            USER_ID
+	     FROM CALENDAR
+	     WHERE TRUNC(CAL_START_DATE) = TRUNC(SYSDATE))
+	WHERE ROWNUM<![CDATA[ <= ]]>5
+	</select>
 
     <select id="calAll" resultType="calendar">
         select cal_no,

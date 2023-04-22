@@ -16,6 +16,8 @@ public class Member {
     private String user_auth = "ROLE_MEMBER";
     private Object user_dept;
     private Object user_job;
+    private String dname;
+    private String jname;
     private String user_fax;
     private String user_intro;
     private String user_card;
@@ -32,5 +34,12 @@ public class Member {
     private String originalfile;
     private String dept_name;
     private String job_name;
+    
+    
+	public String getUser_join_date() {
+		return user_join_date.substring(0, 10);
+	}
 
+    
+    
 }
