@@ -69,7 +69,7 @@
 								src="${pageContext.request.contextPath }/resources/assets/images/logo-light.svg"
 								alt="" height="22">
 						</span> <span class="logo-lg"> <img
-								src="${pageContext.request.contextPath }/resources/image/logo1.png"
+								src="${pageContext.request.contextPath }/resources/image/bbs202341632225908.png"
 								style="width: 200px; margin-top: 20px;">
 						</span>
 						</a>
@@ -634,8 +634,8 @@
 															관리</a></li>
 												<!-- 	<li><a>구성원 초대(미구현)</a></li> -->
 												</ul></li>
-
-										<!-- 	<li><a href="javascript: void(0);"
+											
+										 	<li><a href="${pageContext.request.contextPath }/edms/edmsList"
 												class="has-arrow waves-effect"> <i class="bx bx-cog"></i>
 													<span>전자결재</span>
 											</a>
@@ -645,7 +645,7 @@
 													<li><a>회의실 예약 현황(미구현)</a></li>
 													
 												</ul></li> 
-												 -->
+												 
 
 										</ul>
 									</div>
