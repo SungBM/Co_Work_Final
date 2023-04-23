@@ -27,6 +27,7 @@ public class SecurityConfig  {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+		.antMatchers("/api/ehcache/all").permitAll()
 		  .antMatchers("/resources/**/**").permitAll()
           .antMatchers("/member/main").permitAll()
           .antMatchers("/member/login").permitAll()
@@ -63,8 +64,8 @@ public class SecurityConfig  {
           
 
           .antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
-          .antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
-          .antMatchers("/**").access("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')");
+          .antMatchers("/member/info").access("hasRole('ROLE_ADMIN')");
+         // .antMatchers("/**").access("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')");
 		http.formLogin().loginPage("/member/login")
 				.loginProcessingUrl("/member/loginProcess")
 				.usernameParameter("id")

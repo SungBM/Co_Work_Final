@@ -583,7 +583,7 @@
 													<li><a id="notice_List"
 														href="${pageContext.request.contextPath }/notice/noticeList">공지사항
 															게시판</a></li>
-													<!--  <li><a>자유 게시판</a></li>-->
+													<li><a id="freeBoard" href="${pageContext.request.contextPath}/freeBoard/freeBoardList" >자유 게시판</a></li>
 												</ul></li>
 
 											<li><a href="javascript: void(0);"
