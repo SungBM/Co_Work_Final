@@ -591,7 +591,7 @@
 													<span>부가서비스</span>
 											</a>
 												<ul class="sub-menu" aria-expanded="false">
-												 	<li><a href="${pageContext.request.contextPath }/edms/edmsaddcomments">전자 결재</a></li> 
+												 	<li><a href="${pageContext.request.contextPath }/edms/edmsaddcomments?document_form_code=NNHOJ-P5FNAST&approval_user_id=HTA1">전자 결재</a></li> 
 													<li><a href="${pageContext.request.contextPath }/meet/rev">예약</a></li>
 													<li><a href="${pageContext.request.contextPath }/meet/revstat">예약내역</a></li>
 												</ul></li>

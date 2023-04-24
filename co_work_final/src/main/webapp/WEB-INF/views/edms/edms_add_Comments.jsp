@@ -94,7 +94,7 @@ table {
 								   <div class="col-xl-4">
 									  <p class="text-muted mb-2">문서 번호 : <span><c:out value="${documents.DOCUMENT_FORM_CODE}"/></span></p>
 									  <p class="text-muted mb-2">기안 일자 : <span><c:out value="${documents.DOCUMENT_FORM_DATE}"/></span></p>
-									  <p class="text-muted mb-2">기안 부서 : <span><c:out value="${users.USER_DEPT}"/></span></p>
+									  <p class="text-muted mb-2">기안 부서 : <span><c:out value="${users.DEPT_NAME}"/></span></p>
 									  <p class="text-muted mb-2">기 안 자 : <span><c:out value="${users.USER_NAME}"/></span></p>
 									  <p class="text-muted mb-2">결재 상태 : <span><c:out value="${documents.DOCUMENT_STATE_STR}"/></span></p>
 									  
@@ -103,22 +103,24 @@ table {
 								        <table class="edms">
 										  <tr>
 										    <td rowspan="3"><p class="text-muted mb-2">결<br>재 </p></td>
-										    <td><p class="text-muted mb-2">대리 </p></td>
-										    <td><p class="text-muted mb-2">과장 </p></td>
-										    <td><p class="text-muted mb-2">차장 </p></td>
-										    <td><p class="text-muted mb-2">부장</p></td>
+										  <c:forEach items="${approval }" var="list">
+										    <td><p class="text-muted mb-2">${list.JOB_NAME } </p></td>
+										  </c:forEach>
 										  </tr>
 										  <tr>
-										    <td><p class="text-muted mb-2">김길동 </p></td>
-										    <td><p class="text-muted mb-2">박길동 </p></td>
-										    <td><p class="text-muted mb-2">최길동 </p></td>
-										    <td><p class="text-muted mb-2">홍길동</p></td>
+										  <c:forEach items="${approval }" var="list">
+										    <td><p class="text-muted mb-2">${list.USER_NAME } </p></td>
+										  </c:forEach>
 										  </tr>
 										   <tr>
-										    <td><p class="text-muted mb-4">    </p></td>
+										   <c:forEach items="${approval }" var="list">
+										   	 <c:if test="${list.APPROVAL_STATE == 1}">
+										    <td><p class="mb-2" style="color:blue;">${list.USER_NAME } ${list.JOB_NAME }<br>${list.APPROVAL_DATE }</p></td>
+										     </c:if>
+										     <c:if test="${list.APPROVAL_STATE == 0}">
 										    <td><p class="text-muted mb-2">    </p></td>
-										    <td><p class="text-muted mb-2">    </p></td>
-										    <td><p class="text-muted mb-2">    </p></td>
+										     </c:if>
+										   </c:forEach>
 										  </tr>
 										</table>
 								    </div>
@@ -166,7 +168,7 @@ table {
 													<td width=69
 														style='width: 51.9pt; border-top: solid black 1.0pt; border-left: solid black 1.0pt; border-bottom: none; border-right: none; padding: 8.5pt 8.5pt 8.5pt 8.5pt; height: 55.8pt'>
 														<p class=a align=center
-															style='margin-top: 4.8pt; margin-right: 0in; margin-bottom: .8pt; margin-left: 0in; text-align: center; line-height: normal; word-break: normal'>
+															style='margin-top: 4.8pt; margin-right: 0in; margin-bottom: .8pt; margin-left: 0in; line-height: normal; word-break: normal'>
 															<span lang=ZH-CN
 																style='font-family: "Gulim", sans-serif; letter-spacing: .05pt'>목적지 :<br> ${bstrip.BSTRIPDESTINATION }</span>
 														</p>
@@ -357,7 +359,7 @@ table {
 														<p class=a align=center
 															style='margin-top: 0in; margin-right: 1.25pt; margin-bottom: 0in; margin-left: 1.25pt; margin-bottom: .0001pt; text-align: center; line-height: normal; word-break: normal'>
 															<b><span lang=ZH-CN
-																style='font-family: "Gulim", sans-serif; letter-spacing: .05pt'>신청자 소속 : ${users.USER_DEPT}</span></b><b><span
+																style='font-family: "Gulim", sans-serif; letter-spacing: .05pt'>신청자 소속 : ${users.DEPT_NAME}</span></b><b><span
 																style='font-family: "Arial Unicode MS", serif; letter-spacing: .05pt'>
 															</span></b>
 														</p>
@@ -520,26 +522,29 @@ table {
 
 
 											<hr>
+											<c:forEach items="${approval }" var="list">
+											<c:if test="${userId == list.USER_ID }">
                                             <div class="mt-5">
                                                 <h4 class="font-size-15"><i
                                                         class="bx bx-message-dots text-muted align-middle me-1"></i>
                                                     의견달기 </h4>
-										     <div>
-										        <div class="flex-shrink-0 me-3">
-										            <div class="avatar-xs"></div>
-										        </div>
-										        <form action="../edms/edmsdetail" method="post">
-												    <div class="flex-grow-1">
-												        <textarea id="approvalOpinion" class="form-control" rows="3" name="approvalOpinion"></textarea>
-												        <button id="submitOpinion" class="bg-dark bg-soft p-2 mt-3 float-end">의견 달기</button>
-												    </div>
-												    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-												</form>
-
-										</div>
-
-
+											     <div>
+											        <div class="flex-shrink-0 me-3">
+											            <div class="avatar-xs"></div>
+											        </div>
+											        <form action="../edms/edmsdetail" method="post">
+													    <div class="flex-grow-1">
+													        <textarea id="approvalOpinion" class="form-control" rows="3" name="approvalOpinion"></textarea>
+													        <input type="hidden" name="DOCUMENT_FORM_CODE" value="${documents.DOCUMENT_FORM_CODE}">
+													        <input type="hidden" name="APPROVAL_USER_ID" value="${users.APPROVAL_USER_ID}">
+													        <button id="submitOpinion" class="bg-dark bg-soft p-2 mt-3 float-end">의견 달기</button>
+													    </div>
+													    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+													</form> 
 												</div>
+											</div>
+											</c:if>
+											</c:forEach>
 
                                             </div>
 

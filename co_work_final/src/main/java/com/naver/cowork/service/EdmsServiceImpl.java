@@ -16,23 +16,27 @@ public class EdmsServiceImpl implements EdmsService {
     }
 
     @Override
-    public List<Map<String, Object>> getDocumentForm() {
-        return dao.getDocumentForm();
+    public List<Map<String, Object>> getDocumentForm(String document_form_code) {
+        return dao.getDocumentForm(document_form_code);
     }
     
     @Override
-    public List<Map<String, Object>> selectUserId() {
-        return dao.selectUserId();
+    public List<Map<String, Object>> selectUserId(String document_form_code) {
+        return dao.selectUserId(document_form_code);
     }
     
     @Override
-    public int updateOpinion(String opinion) {
-        return dao.updateOpinion(opinion);
+    public int updateOpinion(Map<String, String> data){
+        return dao.updateOpinion(data);
     }
 
 	@Override
-	public List<Map<String, Object>> selectBstripColumns() {
-		return dao.selectBstripColumns();
+	public List<Map<String, Object>> selectBstripColumns(String document_form_code) {
+		return dao.selectBstripColumns(document_form_code);
+	}
+	
+	public List<Map<String, Object>> selectApprovalLine(String document_form_code){
+		return dao.selectApprovalLine(document_form_code);
 	}
 
 }

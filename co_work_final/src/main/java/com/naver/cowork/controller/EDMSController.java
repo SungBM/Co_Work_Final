@@ -1,5 +1,6 @@
  package com.naver.cowork.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,10 +41,12 @@ public class EDMSController {
 	
 	//전자결재 상세 페이지로 이동
 	@GetMapping("/edmsaddcomments")
-	public ModelAndView getEdmsDetail(ModelAndView mv) {
-	List<Map<String, Object>> documentsList = edmsService.getDocumentForm();
-	List<Map<String, Object>> usersList = edmsService.selectUserId();
-	List<Map<String, Object>> bstripList = edmsService.selectBstripColumns(); 
+	public ModelAndView getEdmsDetail(ModelAndView mv, String document_form_code, String approval_user_id, Principal principal) {
+	List<Map<String, Object>> documentsList = edmsService.getDocumentForm(document_form_code);  // 매개변수 입력해야함.  document_form_code
+	List<Map<String, Object>> usersList = edmsService.selectUserId(document_form_code);  // 매개변수 입력해야함.  document_form_code
+	List<Map<String, Object>> bstripList = edmsService.selectBstripColumns(document_form_code);   // 매개변수 입력해야함.  approval_num+approval_user_id
+	//List<Map<String, Object>> approvalList = edmsService.selectApprovalLine(document_form_code);  // 결재라인 가져오는
+	String user_id = principal.getName();
 	if(documentsList != null && !documentsList.isEmpty() && usersList != null && !usersList.isEmpty() && bstripList != null && !bstripList.isEmpty()) {
 	    Map<String, Object> documents = documentsList.get(0);
 	    Map<String, Object> users = usersList.get(0);
@@ -52,10 +55,14 @@ public class EDMSController {
 	    mv.addObject("documents", documents);
 	    mv.addObject("users", users);
 	    mv.addObject("bstrip", bstrip); 
+	    mv.addObject("approval", usersList);
+	    mv.addObject("userId", user_id);
 
 	    System.out.println("현재 가져온 documents 정보 : " + documents);
 	    System.out.println("현재 가져온 users 정보 : " + users);
 	    System.out.println("현재 가져온 bstrip 정보 : " + bstrip); 
+	    System.out.println("현재 가져온 approval 정보 : " + usersList); 
+	    System.out.println("현재 가져온 userId 정보 : " + user_id); 
 	} else {
 	    System.out.println("문서 정보, 사용자 정보 또는 BSTRIP 정보를 가져올 수 없습니다.");
 	}
@@ -95,30 +102,41 @@ public class EDMSController {
 	}
 
 	//의견 달기
-		@PostMapping("/edmsdetail")
-		public ModelAndView updateOpinion(@RequestParam("approvalOpinion") ModelAndView mv, String approvalOpinion) {
-		List<Map<String, Object>> documentsList = edmsService.getDocumentForm();
-		List<Map<String, Object>> usersList = edmsService.selectUserId();
-		List<Map<String, Object>> bstripList = edmsService.selectBstripColumns(); 
-		edmsService.updateOpinion(approvalOpinion);
-		if(documentsList != null && !documentsList.isEmpty() && usersList != null && !usersList.isEmpty() && bstripList != null && !bstripList.isEmpty()) {
-		    Map<String, Object> documents = documentsList.get(0);
-		    Map<String, Object> users = usersList.get(0);
-		    Map<String, Object> bstrip = bstripList.get(0); 
-//test1
-		    mv.addObject("documents", documents);
-		    mv.addObject("users", users);
-		    mv.addObject("bstrip", bstrip); 
+	@PostMapping("/edmsdetail")
+	public ModelAndView updateOpinion(ModelAndView mv,
+		    @RequestParam("approvalOpinion") String approvalOpinion,
+		    @RequestParam("DOCUMENT_FORM_CODE") String document_form_code,
+		    Principal principal) {
+	    List<Map<String, Object>> documentsList = edmsService.getDocumentForm(document_form_code);
+	    List<Map<String, Object>> usersList = edmsService.selectUserId(document_form_code);
+	    List<Map<String, Object>> bstripList = edmsService.selectBstripColumns(document_form_code);
+		String user_id = principal.getName(); // 접속중인 id 가져오기
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("opinion", approvalOpinion);
+		data.put("document_form_code", document_form_code);
+		data.put("approval_user_id", user_id);
+	    edmsService.updateOpinion(data);
 
-		    System.out.println("현재 가져온 documents 정보 : " + documents);
-		    System.out.println("현재 가져온 users 정보 : " + users);
-		    System.out.println("현재 가져온 bstrip 정보 : " + bstrip); 
-		} else {
-		    System.out.println("문서 정보, 사용자 정보 또는 BSTRIP 정보를 가져올 수 없습니다.");
-		}
-		mv.setViewName("edms/edms_Detail");
+	    if(documentsList != null && !documentsList.isEmpty() && usersList != null && !usersList.isEmpty() && bstripList != null && !bstripList.isEmpty()) {
+	        Map<String, Object> documents = documentsList.get(0);
+	        Map<String, Object> users = usersList.get(0);
+	        Map<String, Object> bstrip = bstripList.get(0);
+
+	        mv.addObject("documents", documents);
+	        mv.addObject("users", users);
+	        mv.addObject("bstrip", bstrip);
+
+	        System.out.println("현재 가져온 documents 정보 : " + documents);
+	        System.out.println("현재 가져온 users 정보 : " + users);
+	        System.out.println("현재 가져온 bstrip 정보 : " + bstrip);
+	    } else {
+	        System.out.println("문서 정보, 사용자 정보 또는 BSTRIP 정보를 가져올 수 없습니다.");
+	    }
+	    
+	    mv.setViewName("edms/edms_Detail");
 	    return mv;
-		}
+	}
+
 
 
 

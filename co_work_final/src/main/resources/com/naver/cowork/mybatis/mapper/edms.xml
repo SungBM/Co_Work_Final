@@ -12,28 +12,55 @@
               ELSE '진행중'
            END AS DOCUMENT_STATE_STR
     FROM DOCUMENT_FORM
+    WHERE DOCUMENT_FORM_CODE = #{DOCUMENT_FORM_CODE}
 </select>
-
 
 <select id="selectUserId" resultType="map">
-  SELECT USER_INFO.USER_ID, USER_INFO.USER_DEPT, USER_INFO.USER_NAME
+  SELECT USER_INFO.USER_ID,
+	   DEPT.DEPT_NAME, 
+	   USER_INFO.USER_NAME,
+	   JOB.JOB_NAME,
+	   APPROVAL_STATE,
+	   APPROVAL_DATE
   FROM APPROVAL_LINE
-  INNER JOIN USER_INFO ON APPROVAL_LINE.APPROVAL_USER_ID = USER_INFO.USER_ID
+  INNER JOIN USER_INFO USER_INFO ON APPROVAL_LINE.APPROVAL_USER_ID = USER_INFO.USER_ID
+  INNER JOIN DEPT DEPT ON DEPT_NO = USER_INFO.USER_DEPT
+  INNER JOIN JOB JOB ON JOB_NO = USER_INFO.USER_JOB
+  WHERE DOCUMENT_FORM_CODE = #{DOCUMENT_FORM_CODE}
+  ORDER BY APPROVAL_LEVEL ASC
 </select>
 
 
-<update id="updateOpinion">
-    UPDATE APPROVAL_LINE SET APPROVAL_OPINION = #{param1}
-    WHERE APPROVAL_NUM = '16'
+<update id="updateOpinion" parameterType="map">
+    UPDATE APPROVAL_LINE 
+    SET APPROVAL_OPINION = #{opinion}
+    WHERE DOCUMENT_FORM_CODE = #{document_form_code} AND APPROVAL_USER_ID = #{approval_user_id}
 </update>
+
 
 <select id="selectBstripColumns" resultType="map">
   SELECT BSTRIPDATE, BSTRIPDESTINATION, BSTRIPSTOPOVER, BSTRIPLOCATION, BSTRIPLOCATIONBSCONTENT, BSTRIPPERDIEM, 
   BSTRIPROOMCHARGE, BSTRIPTRANSPORTATIONCOST, BSTRIPEXTRACOST, BSTRIPALLCOST
   FROM BSTRIP
+  WHERE DOCUMENT_FORM_CODE = #{DOCUMENT_FORM_CODE}
 </select>
 
-
+<select id="selectApprovalLine" resultType="list">
+select u.user_name,
+	   j.job_name, 
+	   d.dept_name, 
+	   a.approval_state, 
+	   a.approval_date
+from approval_line a
+	inner join user_info u
+		on u.user_id = a.approval_user_id
+	inner join dept d
+		on u.user_dept = d.dept_no
+	inner join job j
+		on u.user_job = j.job_no
+where a.document_form_code = #{document_form_code}
+order by a.approval_level asc
+</select>
 
 
 
