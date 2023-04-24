@@ -32,7 +32,7 @@ img{width:20px;}
 }
 
 label {
-	text-align: right;
+	text-align: left;
 }
 
 form[action=down] > input[type=submit]{

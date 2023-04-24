@@ -6,16 +6,15 @@
 <jsp:include page="../main/header.jsp"/>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/assets/js/board_js/jquery-3.6.3.js"></script>
-<link href="${pageContext.request.contextPath }/resources/assets/css/freeBoard_css/freewrite.css" rel="stylesheet" type="text/css" />
 <script src="${pageContext.request.contextPath }/resources/assets/js/freeBoard_js/freeWrite.js"></script>
-
+<link href="${pageContext.request.contextPath }/resources/assets/css/freeBoard_css/freewrite.css" rel="stylesheet" type="text/css" />
 <title>게시글 작성</title>
 </head>
 <body>
 <div class="main-content">
+			<form action="add" method="post" enctype="multipart/form-data" name="freeboardform">	
 	<div class="page-content">
 	    <div class="container-fluid">
-			<form action="add" method="post" enctype="multipart/form-data" name="freeboardform">	
 				<!-- start page title -->
 				<div class="row">
 				    <div class="col-12">
@@ -68,9 +67,9 @@
 					</div>
 				</div>
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-			</form>
 		</div> <!-- end row -->
 	</div> <!-- container-fluid -->
+			</form>
 </div>
 <!-- End Page-content -->
 <jsp:include page="../main/footer.jsp"></jsp:include>

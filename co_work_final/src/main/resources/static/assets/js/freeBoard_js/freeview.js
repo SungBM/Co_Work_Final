@@ -43,7 +43,7 @@ $(function(){
 								+ "<img src='/cowork/resources/assets/images/board/delete.png' width='15px' class='remove'>"
 								+ "<input type='hidden' value='" + this.num + "'>";
 						}
-						output += "<tr><td>" + this.id + "</td>";
+						output += "<tr><td>" + 'co-work' + "</td>";
 						
 						//XSS(Cross-Site Scripting) : 권한이 없는 사용자가 웹 사이트에 스크립트를 삽입하는 공격 기법
 						//이것을 방지 하기 위한 방법으로 2번처럼 <td></td> 영역을 만든 뒤 3번에서 text()안에
@@ -114,7 +114,6 @@ $(function(){
 		$(".float-left").text('총 50자까지 가능합니다.');
 		
 		if(buttonText == "등록"){	//댓글을 추가하는 경우
-			console.log($("#loginId").text())
 			url = "../comment/add";
 			data = {
 				"CONTENT" : content,

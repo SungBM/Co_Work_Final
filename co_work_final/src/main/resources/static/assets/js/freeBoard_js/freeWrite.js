@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$("#user_id").val($("#loginId").text());
+	$("#user_id").val("co-work");
 	
 	$("#upfile").change(function(){
 	console.log($(this).val())
@@ -7,7 +7,7 @@ $(document).ready(function(){
 	$('#filevalue').text(inputfile[inputfile.length -1]);
 	});
 	
-	$("from[action=add]").submit(function(){
+	$("form[action=add]").submit(function(){
 		if($.trim($("#freeboard_pass").val())==""){
 			alert("비밀번호를 입력하세요");
 			$("#freeboard_pass").focus();
@@ -23,6 +23,7 @@ $(document).ready(function(){
 		if($.trim($("#freeboard_content").val())==""){
 			alert("내용을 입력하세요");
 			$("#freeboard_content").focus();
+			console.log($("#freeboard_content") + ": freeboard");
 			return false;
 		}
 	}); //submit

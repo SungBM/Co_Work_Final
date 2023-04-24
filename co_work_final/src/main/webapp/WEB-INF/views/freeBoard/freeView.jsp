@@ -7,9 +7,6 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath }/resources/assets/js/board_js/jquery-3.6.3.js"></script>
 <link href="${pageContext.request.contextPath }/resources/assets/css/freeBoard_css/freeBoardView.css" rel="stylesheet" type="text/css" />
-<style>
-
-</style>
 <script src="${pageContext.request.contextPath }/resources/assets/js/freeBoard_js/freeview.js"></script>
 <script>
 let result = "${result}";
