@@ -9,7 +9,9 @@ import com.naver.cowork.service.CalService;
 import com.naver.cowork.service.DeptService;
 import com.naver.cowork.service.JobService;
 import com.naver.cowork.service.MemberService;
-import com.naver.cowork.task.SendMail;
+import com.naver.cowork.task.MailFormSenders;
+//import com.naver.cowork.task.SendMail;
+import com.naver.cowork.task.SendMailService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,18 +50,23 @@ public class MemberController {
     private DeptService deptservice;
     private JobService jobservice;
     private PasswordEncoder passwordEncoder;
-    private SendMail sendMail;
+    //private SendMail sendMail;
     private MySaveFolder mysavefolder;
+    private MailFormSenders mSender;
 
     @Autowired
-    public MemberController(MemberService meberService, SendMail sendMail, PasswordEncoder passwordEncoder, MySaveFolder mysavefolder, CalService calservice, DeptService deptservice, JobService jobservice) {
+    public MemberController(MemberService meberService, //SendMail sendMail, 
+    		PasswordEncoder passwordEncoder, MySaveFolder mysavefolder, 
+    		CalService calservice, DeptService deptservice, 
+    		JobService jobservice,  MailFormSenders mSender) {
         this.meberService = meberService;
-        this.sendMail = sendMail;
+       // this.sendMail = sendMail;
         this.passwordEncoder = passwordEncoder;
         this.mysavefolder = mysavefolder;
         this.calservice = calservice;
         this.deptservice = deptservice;
         this.jobservice = jobservice;
+        this.mSender = mSender;
     }
 
 
@@ -239,6 +246,11 @@ public class MemberController {
     public String join() {
         return "member/joinForm";
     }
+    
+    @RequestMapping(value = "/mypage_Detail", method = RequestMethod.GET)
+    public String mydetail() {
+    	return "mypage/mypage_Detail";
+    }
 
     @RequestMapping(value = "/joinProcess")
     public String joinProcess(Member member, RedirectAttributes rattr,
@@ -285,13 +297,16 @@ public class MemberController {
     @GetMapping(value = "/sendMail")
     public void sendMail(@RequestParam("user_email") String receiver, HttpServletResponse response)
             throws Exception {
-        MailVO mail = new MailVO();
-        mail.setTo(receiver);
-        String num = sendMail.sendMail(mail);
+//        MailVO mail = new MailVO();
+//        mail.setTo(receiver);
+//        String num = sendMail.sendMail(mail);
+//        response.setContentType("text/html;charset=utf-8");
+//        PrintWriter out = response.getWriter();
+//        
+        MailVO mail = mSender.setMailInfo("msb9876", receiver);
+        String num =  mSender.sendMail(mail);
         response.setContentType("text/html;charset=utf-8");
         PrintWriter out = response.getWriter();
         out.print(num);
     }
-
-
 }

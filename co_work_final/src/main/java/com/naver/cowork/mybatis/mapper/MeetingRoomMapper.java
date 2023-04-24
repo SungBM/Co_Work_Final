@@ -33,4 +33,7 @@ public interface MeetingRoomMapper {
 	public int addMeetRoom(MeetingRoom mr); // 회의실 추가
 	
 	public int meetingRoomUpdate(MeetingRoom mr);  // 회의실 정보 업데이트
+
+	public int meetRoomDelete(int meetNo); // 회의실 삭제
+
 }

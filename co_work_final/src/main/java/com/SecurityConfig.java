@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.util.AntPathMatcher;
 
 import com.naver.security.CustomAccessDeniedHandler;
 import com.naver.security.CustomUserDetailsService;
@@ -62,6 +61,7 @@ public class SecurityConfig  {
           .antMatchers("/meet/meetManage").permitAll()
           .antMatchers("/meet/meetAdd").permitAll()
           .antMatchers("/meet/meetAddProcess").permitAll()
+          .antMatchers("/meet/members").permitAll()
           
 
           .antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")

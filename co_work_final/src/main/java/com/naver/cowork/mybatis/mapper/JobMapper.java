@@ -16,6 +16,7 @@ public interface JobMapper {
     public List<Job> jobList();
     public String jobName(String user_id);
     public int jobNo(String user_id);
+    public int jobCheck(Job job);
 
 
 

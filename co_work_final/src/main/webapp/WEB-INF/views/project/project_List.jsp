@@ -124,7 +124,7 @@
 																					<div class="team_icon"
 																						style="display: inline-block;">
 																						<div class="avatar-group-item">
-																							<a href="javascript: void(0);"
+																							<a href="${pageContext.request.contextPath }/member/mypage_Detail"
 																								class="d-inline-block"> <img
 																								src="../resources/assets/images/users/${s.USER_IMG }" alt=""
 																								class="rounded-circle"

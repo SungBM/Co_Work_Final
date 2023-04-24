@@ -122,18 +122,18 @@ ul {
                }         
             })
             
-            $.ajax({
-                    url: '../../meet/dateTest',
-                    type:"get",
-                    data: {
-                        "rev_start_date": arg.startStr.substring(0, 10),
-                        "meet_no" : $("input[name=meet_no]").val()
-                    },
-                    traditional: true,
-                    success: function (resp) {
-                        console.log(resp);
-                    }
-                }) // ajax end
+            // $.ajax({
+            //         url: '../../meet/dateTest',
+            //         type:"get",
+            //         data: {
+            //             "rev_start_date": arg.startStr.substring(0, 10),
+            //             "meet_no" : $("input[name=meet_no]").val()
+            //         },
+            //         traditional: true,
+            //         success: function (resp) {
+            //             console.log(resp);
+            //         }
+            //     }) // ajax end
          },
          eventContent: function(arg) {
             console.log(arg)

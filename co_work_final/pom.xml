@@ -26,6 +26,11 @@
 		    <version>1.18.26</version>
 		    <scope>provided</scope>
 		</dependency>
+		<dependency>
+		    <groupId>net.sf.ehcache</groupId>
+		    <artifactId>ehcache</artifactId>
+		    <version>2.10.3</version>
+		</dependency>
 
 		<!-- 부하테ㅡ트 캐시 교체 알고리즘 -->
 		<dependency>
