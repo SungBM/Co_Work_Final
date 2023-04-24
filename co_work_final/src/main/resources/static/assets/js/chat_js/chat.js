@@ -1,31 +1,25 @@
 $(function(){
-	myname = $("li.myinfo").find("#my_name").val() 
-    let yourid = "";
-    let roomNumber = 0;
-    const token= $("meta[name='_csrf']").attr("content");
-    const header= $("meta[name='_csrf_header']").attr("content");
+	myname = $("li.myinfo").find("#my_name").val() //현재 페이지에서 id가 "my_name"인 요소의 값을 가져와서 myname 변수에 할당
+    let yourid = ""; //상대방의 id를 담을 변수 초기화
+    let roomNumber = 0; //채팅방 번호를 담을 변수 초기화
+    const token= $("meta[name='_csrf']").attr("content");  //csrf 토근 값을 가져와서 token변수에 할당
+    const header= $("meta[name='_csrf_header']").attr("content"); //csrf 토큰 헤더 이름을 가져와서 header 변수에 할당
     $('body > div.main-content > div > div > div.d-lg-flex > div.chat-leftsidebar.me-lg-4 > div > div.py-4.border-bottom > div > div.flex-grow-1 > h5').text(myname);
-    let sessionId = '';
-    let message = '';
+    let sessionId = ''; //세션 id를 담을 변수 초기화
+    let message = ''; //메시지를 담을 변수 초기와
       
     $('.chat-list li').on('dblclick', function(){
       console.log("dblclick");
-      yourid = $(this).find("#user_id").val()  //yourid 변수에 현재 클릭한 li 요소 내부에서 id가 "user_id_인 요소의 값(value)을 할당
-      yourname = $(this).find("#user_name").val()
+      yourid = $(this).find("#user_id").val()  //현재 더블클릭한 li요소 내부에서 id가 "user_id"인 요소의 값(value)을 가져와서 yourid 변수에 할당
+      yourname = $(this).find("#user_name").val() //"						  "user_name"인 요소의 값을 가져와서 yourname 변수에 할당
       
       $("body > div.main-content > div > div > div.d-lg-flex > div.w-100.user-chat > div > div.p-4.border-bottom > div > div.col-md-4.col-9 > h5").text(yourname);
       
       
-      getRoom(yourid); //getRoom() 함수를 호출하여 yourid변수를 인자로 전달
-
-      //ws = new WebSocket("ws://" + location.host + "/cowork/chating/" + roomNumber);
-      //====================================위에 지우면 안됨
-      //myname
-      
-
+      getRoom(yourid); //getRoom() 함수를 호출하여 yourid변수를 인자로 전달하여 채팅방 번호를 가져오는 함수 호출
 	}) //('.chat-list li').on('dblclick', function()
       
-//검색
+//회원 리스트 검색
 $(document).ready(function(){
 	$('#search_word').on('input', function(){
 		var value = $(this).val().toLowerCase();
@@ -39,13 +33,13 @@ $(document).ready(function(){
 
 //채팅방 있는지 확인하기 
 
-	function getRoom(yourid){
+	function getRoom(yourid){ //yourid인자를 받아와서 실행
       console.log(yourid);
       $.ajax({
-        url: '../chat/getRoom',
+        url: '../chat/getRoom',  //컨트롤러로 보냄
         type: 'get',
         data: {yourid : yourid}, //요청 시 함께 보낼 데이터 지정. yourid변수 값을 yourid라는 키로 전달
-        success: function(result){ // 0이면 채팅방 없음, 1이면 채팅방 있음
+        success: function(result){ // 0이면 채팅방 없음, 1이면 채팅방 있음. 요청이 성공적으로 완료된 경우 실행될 콜백 함수
           if(result == 0){
             createRoom(yourid); //createRoom()함수를 호출하여 yourid변수를 인자로 전달
           }else{
@@ -54,8 +48,8 @@ $(document).ready(function(){
           }
         }, error: function(error) {
           console.log("error");
-	  }
-	});//$.ajax
+	       }
+	  });//$.ajax
     } //getRoom()
 
    
@@ -78,20 +72,16 @@ $(document).ready(function(){
         }, error: function(error) {
             console.log("error");
         }
-     });//$.ajax
-     
-			
+     });//$.ajax	
 	} //createRoom()
    
    
 	var ws; //웹소켓 객체를 저장할 전역 변수
 	
-	
 	function wsOpen(){
    	  //웹소켓을 열고 서버에 연결한다.
       //웹소켓 전송시 현재 방의 번호를 URL에 포함해서 보낸다.
 	ws = new WebSocket("ws://" + location.host + "/cowork/chating/"+roomNumber);
-	
 	
     function getList(roomNumber){
     	$.ajax({
@@ -105,7 +95,8 @@ $(document).ready(function(){
         success: function(result){
          $(result).each(function(index, item){
          	if(item.chat_SENDER == myname){
-         		let myOutput = '';
+         	//나의 메시지를 출력할 HTML 코드를 생성하는 변수 선언하여 HTML 코드를 문자열로 조합.
+         		let myOutput = '';  
 		        myOutput += '<li class="right">'
 		        myOutput += ' <div class="conversation-list">'
 		        myOutput +=       '<div class="ctext-wrap">'
@@ -118,6 +109,7 @@ $(document).ready(function(){
 		        myOutput += ' </div>'
 		        myOutput += '</li>'
 		        console.log(myOutput);
+		        //나의 메시지를 출력할 위치에 HTML 코드를 추가합니다.
 		        $("#fix > div.simplebar-wrapper > div.simplebar-mask > div > div > div").append(myOutput);
 		        $(".chat-input").val('');
 						//$("#chating").append("<p class='me'>나 :" + d.msg + "</p>");	
@@ -144,7 +136,6 @@ $(document).ready(function(){
             console.log("error");
         }
     	}); //$.ajax
-    	
     }  
     getList(roomNumber);
 
@@ -202,11 +193,7 @@ $(document).ready(function(){
 				console.log("onmessage");
       
 			}//else if
-			
-			    
-
-      
-			}//if msg != null
+		}//if msg != null
 			
 			//스크롤바 하단에 고정하기
 			var chatContainer = $("#fix > div.simplebar-wrapper > div.simplebar-mask > div > div");
@@ -227,12 +214,8 @@ $(document).ready(function(){
       
 	wsEvt(); 
 	console.log("wsOpen");
-	
-	
     }//function wsOpen()
    		 
-   		 
-   		
     	$("#btnImage").click(function(){
     	let mm ="상대방이 대화방을 나갔습니다. 대화를 종료합니다.";
     	send(mm)
@@ -243,9 +226,8 @@ $(document).ready(function(){
 		$("#fix > div.simplebar-wrapper > div.simplebar-mask > div > div > div").empty();
 		}, 2000);
 		
-	})
+		})
 	
-      
    function wsEvt() {  //wsEvt() 함수 호출(=웹소켓 연결이 열릴때(ws.onOpen이벤트)동작하는 함수 정의
       ws.onopen = function(data){
          //웹소켓이 열릴 때 동작하는 함수 정의
@@ -253,8 +235,8 @@ $(document).ready(function(){
       }
    }
    
-	document.addEventListener("keydown", function(e) {
-   let content22 = $(".chat-input").val();
+  document.addEventListener("keydown", function(e) {
+    let content22 = $(".chat-input").val();
       if (e.key === "Enter") { // enter key
          send(content22);
       const content = $(".chat-input").val().trim(); //$(".chat-input")요소의 값에서 앞뒤 공백을 제거한 후 변수에 저장
@@ -262,23 +244,16 @@ $(document).ready(function(){
          alert('내용을 입력하세요')
          return false;
       }
-      
-      
-	}//document.addEventListener("keydown", function(e)     
+  }//document.addEventListener("keydown", function(e)     
 	
 	btnSend.onclick = function(){
 	   let content = $(".chat-input").val();
 	
 		send(content);
-	}
-	
-   })//$("#btnSend").on("click", function(){
-   
-   
-   	
+	   }
+   })//$("#btnSend").on("click", function()
 
-      
-      
+
 	function send(message) {
       $.ajax({ 
      	url : "../chat/chatSave",  //컨트롤러 주소
@@ -288,7 +263,7 @@ $(document).ready(function(){
         { // 데이터를 전송하기 전에 헤더에 csrf값을 설정합니다.
               jqXHR.setRequestHeader(header, token);
         },
-      	async: false,   //끝나고나서 일 처리해라
+      	async: false,   // 비동기적 처리말고 요청이 끝날 때까지 대기
 		success : function(result){
 			if(result == 1){
 			  console.log("성공");
@@ -297,6 +272,7 @@ $(document).ready(function(){
           console.log("저장실패error :" + error);
 	  }
 	})
+	//웹소켓 메시지 옵션 설정
       var option ={
  //     	if(msg.value.trim() != ''){
          type: "message", //웹소켓 메시지 타입
@@ -312,14 +288,7 @@ $(document).ready(function(){
       console.log("sessionId =" + sessionId);
       console.log("myname =" + myname);
       console.log(".chat-input =" + message);
-     
-     
-	}//function send()
-     
-     
-  
-
-   
+	 }//function send()
 }) //ready
 
 

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.FreeBoardMapper">
+
+<select id="getFreeListCount" resultType="int">
+	select count(*) from FREEBOARD
+</select>
+
+<select id="freeBoardList" parameterType="map" resultType="FreeBoard">
+	select * from 
+		  ( select rownum rnum, b.*
+		    from 
+		         (select FREEBOARD.*, nvl(CNT, 0) CNT
+		         from
+		         FREEBOARD left outer join(select FREEBOARD_NUM, count(*) CNT
+		         						from COMMENTS
+		         						group by FREEBOARD_NUM)c
+		          on FREEBOARD.FREEBOARD_NUM = c.FREEBOARD_NUM
+		          order by FREEBOARD_RE_REF desc, 
+		          FREEBOARD_RE_SEQ asc) b
+		    where rownum &lt;=  #{end}     
+		   ) 
+	  where rnum &gt;= #{start} and rnum  &lt;=  #{end}
+</select>
+
+<insert id="insertFreeBoard" parameterType="FreeBoard">
+	<selectKey resultType="int" 	order="BEFORE" 		keyProperty="FREEBOARD_NUM">
+		select nvl(max(FREEBOARD_NUM),0)+1 from FREEBOARD
+	</selectKey>
+	insert into FREEBOARD
+	(FREEBOARD_NUM,
+	 FREEBOARD_NAME, FREEBOARD_PASS, FREEBOARD_SUBJECT, 
+	 FREEBOARD_CONTENT, FREEBOARD_FILE, FREEBOARD_ORIGINAL, 
+	 FREEBOARD_RE_REF, 
+	 FREEBOARD_RE_LEV, FREEBOARD_RE_SEQ,FREEBOARD_READCOUNT,
+	 FREEBOARD_DATE)
+	 values
+	 (#{FREEBOARD_NUM},
+	  #{FREEBOARD_NAME},#{FREEBOARD_PASS},#{FREEBOARD_SUBJECT},
+	  #{FREEBOARD_CONTENT},#{FREEBOARD_FILE, jdbcType=VARCHAR},#{FREEBOARD_ORIGINAL, jdbcType=VARCHAR},
+	  #{FREEBOARD_NUM},
+	  #{FREEBOARD_RE_LEV},#{FREEBOARD_RE_SEQ},#{FREEBOARD_READCOUNT},
+	    sysdate)
+</insert>
+
+<update id="setReadCountUpdate" parameterType="int">
+	update FREEBOARD
+	set FREEBOARD_READCOUNT = FREEBOARD_READCOUNT+1
+	where FREEBOARD_NUM=#{number}
+</update>
+
+<select id="getDetail" parameterType="int" resultType="FreeBoard">
+	select *
+	from FREEBOARD
+	where FREEBOARD_NUM=#{number}
+</select>
+
+<select id="isFreeBoardWriter" parameterType="map" resultType="FreeBoard">
+	select * from FREEBOARD
+	where FREEBOARD_NUM=#{num}
+	and FREEBOARD_PASS=#{pass}
+</select>
+
+<update id="freeBoardModify" parameterType="FreeBoard">
+	update FREEBOARD
+	set
+		FREEBOARD_SUBJECT=#{FREEBOARD_SUBJECT},
+		FREEBOARD_CONTENT=#{FREEBOARD_CONTENT},
+		FREEBOARD_FILE=#{FREEBOARD_FILE, jdbcType=VARCHAR},
+		FREEBOARD_ORIGINAL=#{FREEBOARD_ORIGINAL, jdbcType=VARCHAR}
+	where FREEBOARD_NUM=#{FREEBOARD_NUM}
+</update>
+
+<insert id="freeBoardReply" parameterType="FreeBoard">
+	<selectKey resultType="int" order="BEFORE" keyProperty="FREEBOARD_NUM">
+		select nvl(max(FREEBOARD_NUM),0)+1 from FREEBOARD
+	</selectKey>
+	insert into FREEBOARD
+	(FREEBOARD_NUM,
+	 FREEBOARD_NAME, FREEBOARD_PASS, FREEBOARD_SUBJECT, 
+	 FREEBOARD_CONTENT, 
+	 FREEBOARD_RE_REF, 
+	 FREEBOARD_RE_LEV, FREEBOARD_RE_SEQ,FREEBOARD_READCOUNT,
+	 FREEBOARD_DATE)
+	 values
+	 (#{FREEBOARD_NUM},
+	  #{FREEBOARD_NAME},#{FREEBOARD_PASS},#{FREEBOARD_SUBJECT},
+	  #{FREEBOARD_CONTENT}, #{FREEBOARD_RE_REF},
+	  #{FREEBOARD_RE_LEV},#{FREEBOARD_RE_SEQ},#{FREEBOARD_READCOUNT},
+	    sysdate)
+</insert>
+
+<update id="freeBoardReplyUpdate" parameterType="freeboard">
+	update FREEBOARD
+	set FREEBOARD_RE_SEQ=#{FREEBOARD_RE_SEQ}+1
+	where FREEBOARD_RE_REF=#{FREEBOARD_RE_REF}
+	and FREEBOARD_RE_SEQ <![CDATA[>]]> #{FREEBOARD_RE_SEQ}
+</update>
+
+<delete id="freeBoardDelete" parameterType="freeboard">
+	<![CDATA[
+	  	delete from FREEBOARD
+			where 	FREEBOARD_RE_REF = #{FREEBOARD_RE_REF}
+			and 	FREEBOARD_RE_LEV >= #{FREEBOARD_RE_LEV}
+			and 	FREEBOARD_RE_SEQ >= #{FREEBOARD_RE_SEQ}
+			and 	FREEBOARD_RE_SEQ <= (
+										nvl((SELECT min(FREEBOARD_RE_SEQ)-1
+										FROM FREEBOARD 	
+										WHERE FREEBOARD_RE_REF=#{FREEBOARD_RE_REF}
+										AND FREEBOARD_RE_LEV=#{FREEBOARD_RE_LEV}
+										AND FREEBOARD_RE_SEQ>#{FREEBOARD_RE_SEQ}) , 	
+										(SELECT max(FREEBOARD_RE_SEQ) 	
+										FROM FREEBOARD
+										WHERE FREEBOARD_RE_REF=#{FREEBOARD_RE_REF} ))
+										)
+	  ]]>
+</delete>
+
+
+</mapper>
+
+

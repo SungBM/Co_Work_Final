@@ -582,17 +582,16 @@
                                                     <i class="bx bx-envelope"></i> <span>이메일</span>
                                             </a></li> -->
 
-                                        <li><a href="javascript: void(0);"
-                                               class="has-arrow waves-effect"> <i class="bx bx-detail"></i>
-                                            <span>커뮤니티</span>
-                                        </a>
-                                            <ul class="sub-menu" aria-expanded="false">
-                                                <li><a id="notice_List"
-                                                       href="${pageContext.request.contextPath }/notice/noticeList">공지사항
-                                                    게시판</a></li>
-                                                <!--  <li><a>자유 게시판</a></li>-->
-                                            </ul>
-                                        </li>
+                                     		<li><a href="javascript: void(0);"
+                                        class="has-arrow waves-effect"> <i class="bx bx-detail"></i>
+                                          <span>커뮤니티</span>
+                                      </a>
+                                        <ul class="sub-menu" aria-expanded="false">
+                                          <li><a id="notice_List"
+                                            href="${pageContext.request.contextPath }/notice/noticeList">공지사항
+                                              게시판</a></li>
+                                          <li><a id="freeBoard" href="${pageContext.request.contextPath}/freeBoard/freeBoardList" >자유 게시판</a></li>
+                                        </ul></li>
 
                                         <li><a href="javascript: void(0);"
                                                class="has-arrow waves-effect"> <i class="bx bx-list-check"></i>
