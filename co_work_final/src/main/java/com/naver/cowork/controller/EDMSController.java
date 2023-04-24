@@ -105,7 +105,7 @@ public class EDMSController {
 		    Map<String, Object> documents = documentsList.get(0);
 		    Map<String, Object> users = usersList.get(0);
 		    Map<String, Object> bstrip = bstripList.get(0); 
-
+//test
 		    mv.addObject("documents", documents);
 		    mv.addObject("users", users);
 		    mv.addObject("bstrip", bstrip); 
