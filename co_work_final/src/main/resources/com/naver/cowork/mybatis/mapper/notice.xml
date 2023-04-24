@@ -34,7 +34,7 @@
 
 
 	<select id="getListCount" parameterType="map" resultType="int">
-		select count(*) from notice		
+		select count(*) from notice
 		  <include refid="search_"/>
 	</select>
 	

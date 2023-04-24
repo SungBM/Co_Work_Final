@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling  // 스케쥴러 적용합니다.
 @EnableCaching
+
 public class SpringSecurityWarApplication {
 
 	public static void main(String[] args) {

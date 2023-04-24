@@ -1,4 +1,6 @@
 package com.naver.cowork.controller;
+
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,6 +17,8 @@ import java.util.Objects;
 import java.security.Principal;
 import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.EDMS;
+import com.naver.cowork.domain.Edms;
+import com.naver.cowork.service.EdmsService;
 import com.naver.cowork.domain.MySaveFolder;
 import com.naver.cowork.domain.PageDto;
 import com.naver.cowork.service.*;
@@ -22,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +35,11 @@ import com.naver.cowork.domain.Dept;
 import com.naver.cowork.domain.Member;
 import com.naver.cowork.service.EDMSService;
 
+
 @Controller
 @RequestMapping("/edms")
 public class EDMSController {
+
 	  private static final Logger logger = LoggerFactory.getLogger(EDMSController.class);
 	  private EDMSService edmsService;
     private MemberService memberservice;
@@ -41,10 +48,11 @@ public class EDMSController {
     private CompanyService companyservice;
     private MySaveFolder mysavefolder;
     private MeetingRoomService meetservice;
+    private EdmsService edmsService;
 	
     @Autowired
     public EDMSController(MemberService memberService, DeptService deptservice, JobService jobservice,
-                          MySaveFolder mysavefolder, CompanyService companyservice, MeetingRoomService meetservice, EDMSService edmsservice) {
+                          MySaveFolder mysavefolder, CompanyService companyservice, MeetingRoomService meetservice, EDMSService edmsservice, EdmsService edmsService) {
         this.memberservice = memberService;
         this.deptservice = deptservice;
         this.jobservice = jobservice;
@@ -52,6 +60,7 @@ public class EDMSController {
         this.companyservice = companyservice;
         this.meetservice = meetservice;
         this.edmsservice = edmsservice;
+        this.edmsService = edmsService;
     }
 
 	@GetMapping("/edmsApprovalLine")
@@ -84,12 +93,48 @@ public class EDMSController {
 		
 		return mv;
 	}
-	@GetMapping("/edmsList")
+
+  @RequestMapping(value = "/edmsList", method=RequestMethod.GET)
 	public ModelAndView edmsList(ModelAndView mv) {
-		mv.setViewName("edms/edmsList");
 		
-		return mv;
+	    List<Edms> edmslist = edmsService.getEdmsList();
+	    String docNum = edmslist.get(0).getDOCUMENT_FORM_CODE();
+	    
+		mv.setViewName("edms/edms");
+		mv.addObject("docNum",docNum);
+	    mv.addObject("edmslist", edmslist);
+	    
+	    return mv;
 	}
+	@RequestMapping(value = "/approvalOpinion", method=RequestMethod.GET)
+	public void approvalOpinion(HttpServletResponse response,String apNum) throws Exception{
+		int apNumVal = 0;
+		if( apNum != null ) {
+			apNumVal = Integer.parseInt(apNum);
+		}
+		Edms edms = edmsService.getApprovalOpinion(apNumVal);
+		
+		String edmsVal = edms.getAPPROVAL_STATE() + "@";
+		edmsVal += edms.getUSER_CARD() + "@";
+		edmsVal += edms.getAPPROVAL_OPINION()+ "@";
+		edmsVal += edms.getAPPROVAL_DATE();
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(edmsVal);
+		
+	}
+	
+	@RequestMapping(value = "/edmsDetail", method=RequestMethod.GET)
+	public ModelAndView edmsDetail(ModelAndView mv) {
+		
+	    List<Edms> edmsdetail = edmsService.getEdmsDetail();
+
+		mv.setViewName("edms/edms");
+	    mv.addObject("edmsdetail", edmsdetail);
+	    
+	    return mv;
+	}
+
   @GetMapping("/approvalList")
     public ModelAndView approvalList(ModelAndView mv, Principal principal, Criteria cri) {
         String user_id = principal.getName();
@@ -145,3 +190,4 @@ public class EDMSController {
   
   
 }
+

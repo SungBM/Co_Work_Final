@@ -1,13 +1,14 @@
 package com.naver.cowork.service;
 
-import com.naver.cowork.domain.Dept;
-import com.naver.cowork.mybatis.mapper.DeptMapper;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.naver.cowork.domain.Dept;
+import com.naver.cowork.mybatis.mapper.DeptMapper;
 
 @Service
 public class DeptServiceImpl implements DeptService {
@@ -38,8 +39,10 @@ public class DeptServiceImpl implements DeptService {
         return dao.insert(dept);
     }
 
+
     //@Cacheable(value = "deptList")
     public List<Dept> deptList() {
+    	
         return dao.deptList();
     }
     
