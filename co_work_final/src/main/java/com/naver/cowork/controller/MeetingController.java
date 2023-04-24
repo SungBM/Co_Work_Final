@@ -53,7 +53,6 @@ public class MeetingController {
       List<MeetReservation> mr = meetservice.getMeetList(cri);
       int total = meetservice.getMeetCount(cri);
       PageDto pageMaker = new PageDto(cri, total);
-      
       mv.setViewName("meeting/meetRevStat");
       
       mv.addObject("list", mr);
@@ -67,10 +66,7 @@ public class MeetingController {
       List<MeetReservation> mr = meetservice.getReserv(meet_no);
       MeetingRoom mRoom = new MeetingRoom();
       String myId = principal.getName();
-      
       mRoom = meetservice.meetRoomSelect(meet_no);
-      logger.info(mRoom.getMeet_info());
-      logger.info("mr",mr);
       mv.setViewName("meeting/meetRev");
       mv.addObject("list", mr);
       mv.addObject("roomInfo", mRoom);

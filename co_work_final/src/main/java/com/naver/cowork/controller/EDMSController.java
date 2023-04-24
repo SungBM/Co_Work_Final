@@ -102,10 +102,4 @@ public class EDMSController {
         List<EDMS> getAppLine = edmsservice.getAppLine(document_no);
         return getAppLine;
     }
-
-    @GetMapping("/searchMyDoc")
-    public String searchMyDoc(){
-
-        return "redirect:";
-    }
 }

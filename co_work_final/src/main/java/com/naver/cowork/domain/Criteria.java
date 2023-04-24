@@ -24,16 +24,16 @@ public class Criteria {
 		this.viewSize = viewSize;
 		this.skip = (pageNum - 1) * viewSize;
 	}
-	
+
 	public Criteria() {
 		this(1, 10);
 	}
-	
+
 	public void setPageNum(int pageNum) {
 		this.pageNum = pageNum;
 		this.skip = (this.pageNum - 1) * viewSize;
 	}
-	
+
 	public String makeQueryString(int pageNum) {
 		UriComponents uriComponents = UriComponentsBuilder.newInstance()
 				.queryParam("pageNum", pageNum)
@@ -49,5 +49,5 @@ public class Criteria {
 				.encode();
 		return uriComponents.toUriString();
 	}
-	
+
 }

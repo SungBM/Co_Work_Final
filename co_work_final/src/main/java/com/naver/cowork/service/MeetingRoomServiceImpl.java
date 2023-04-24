@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.naver.cowork.domain.Criteria;
@@ -26,6 +27,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
         return dao.meetingRoomAll();
     }
 
+    @Cacheable(value="deptList")
     public List<MeetReservation> getReserv(int meet_no) {
         return dao.getReserv(meet_no);
     }
@@ -47,6 +49,7 @@ public class MeetingRoomServiceImpl implements MeetingRoomService {
     public int meetDelete(int rev_no) {
         return dao.meetDelete(rev_no);
     }
+
 
     public List<MeetReservation> getMeetRev(String user_id) {
         List<MeetReservation> list = dao.getMeetRev(user_id);

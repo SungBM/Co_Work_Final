@@ -77,6 +77,8 @@
             <!-- end page title -->
             <div class="row">
                 <div class="col-lg-12">
+                    <button type="button" class="btn btn-light">새로 작성</button>
+
                     <div class="card">
                         <form action="myDoc" type="get">
                             <div class="card-body border-bottom">
