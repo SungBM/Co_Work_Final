@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.naver.cowork.mybatis.mapper.EdmsMapper">
+	<resultMap id="edmsResultMap" type="edms">
+	    <result property="APPROVAL_NUM" column="APPROVAL_NUM"/>
+		<result property="USER_CARD" column="USER_CARD"/>
+	    <result property="USER_NAME" column="USER_NAME"/>
+	    <result property="JOB_NAME" column="JOB_NAME"/>
+	    <result property="DEPT_NAME" column="DEPT_NAME"/>
+	    <result property="APPROVAL_DATE" column="APPROVAL_DATE"/>
+	    <result property="APPROVAL_STATE" column="APPROVAL_STATE"/>
+	</resultMap>
+	
+	<select id="getApprovalOpinion" parameterType="int" resultType="Edms">
+			SELECT
+			AL.APPROVAL_OPINION,
+			AL.APPROVAL_DATE,
+			AL.APPROVAL_STATE,
+			UI.USER_CARD 
+	    FROM 
+	    	USER_INFO UI 
+	      	INNER JOIN APPROVAL_LINE AL ON UI.USER_ID = AL.APPROVAL_USER_ID 
+	    WHERE APPROVAL_NUM = #{apNumVal} 
+	
+	    	
+	</select>
+	
+	<select id="getEdmsList" resultMap="edmsResultMap">
+		SELECT
+			AL.APPROVAL_NUM,
+			AL.DOCUMENT_FORM_CODE,
+			UI.USER_CARD, 
+		    UI.USER_NAME, 
+		    CASE WHEN UI.USER_DEPT = DP.DEPT_NO THEN DP.DEPT_NAME ELSE '' END AS USER_DEPT, 
+		    CASE WHEN UI.USER_JOB = JB.JOB_NO THEN JB.JOB_NAME ELSE '' END AS USER_JOB, 
+		    AL.APPROVAL_DATE, 
+		    AL.APPROVAL_STATE
+	    FROM 
+	    	USER_INFO UI 
+	      	INNER JOIN APPROVAL_LINE AL ON UI.USER_ID = AL.APPROVAL_USER_ID 
+	   	   	LEFT JOIN DEPT DP ON UI.USER_DEPT = DP.DEPT_NO
+	    	LEFT JOIN JOB JB ON UI.USER_JOB = JB.JOB_NO
+		ORDER BY 
+	    	AL.APPROVAL_LEVEL ASC
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="getEdmsDetail" resultMap="edmsResultMap">
+		SELECT
+			AL.APPROVAL_NUM,
+		    UI.USER_NAME,
+		    UI.USER_CARD,
+		    CASE WHEN UI.USER_DEPT = DP.DEPT_NO THEN DP.DEPT_NAME ELSE '' END AS USER_DEPT,
+		    CASE WHEN UI.USER_JOB = JB.JOB_NO THEN JB.JOB_NAME ELSE '' END AS USER_JOB,
+		    AL.APPROVAL_DATE,
+		    AL.APPROVAL_STATE,
+		    AL.APPROVAL_OPINION
+		FROM
+		    USER_INFO UI
+		    INNER JOIN APPROVAL_LINE AL ON UI.USER_ID = AL.APPROVAL_USER_ID
+		    LEFT JOIN DEPT DP ON UI.USER_DEPT = DP.DEPT_NO
+		    LEFT JOIN JOB JB ON UI.USER_JOB = JB.JOB_NO
+		WHERE
+		    AL.APPROVAL_NUM = #{APPROVAL_NUM}
+		ORDER BY
+		    AL.APPROVAL_DATE ASC
+	</select>
+
+</mapper>

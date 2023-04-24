@@ -50,8 +50,7 @@ textarea{
 <title>공지사항</title>
 </head>
 <body>
-<div class="main-content">
-<<<<<<< HEAD
+<div class="main-content">	
 	<div class="page-content">
 		<div class="container-fluid">
 			<!-- start page title -->
@@ -65,11 +64,13 @@ textarea{
 	        <!-- end page title -->  
 	        
 			         <!-- 공지 작성 -->
-         <sec:authorize access="hasRole('ROLE_ADMIN')">
+        <!-- 
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+        </sec:authorize>
+        --> 
             <div class="write-button">
                <button type="button" class="btn btn-info" id="write-button">작성</button>
             </div>
-         </sec:authorize> 
 
 				<!-- 상단기능 -->
 				<form action="noticeList">

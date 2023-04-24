@@ -27,6 +27,8 @@ public class SecurityConfig  {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+		  .antMatchers("/api/ehcache/all").permitAll() //캐시 테스트
+		
 		  .antMatchers("/resources/**/**").permitAll()
           .antMatchers("/member/main").permitAll()
           .antMatchers("/member/login").permitAll()
