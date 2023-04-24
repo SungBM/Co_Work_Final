@@ -3,6 +3,7 @@ package com.naver.cowork.service;
 import com.naver.cowork.domain.Job;
 import com.naver.cowork.mybatis.mapper.JobMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class JobServiceImpl implements JobService {
     }
 
 
+    @Cacheable(value = "jobList")
     public List<Job> jobAll() {
         return dao.jobAll();
     }

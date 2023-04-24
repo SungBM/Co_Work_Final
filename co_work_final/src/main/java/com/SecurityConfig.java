@@ -63,8 +63,8 @@ public class SecurityConfig  {
           
 
           .antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")
-          .antMatchers("/member/info").access("hasRole('ROLE_ADMIN')")
-          .antMatchers("/**").access("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')");
+          .antMatchers("/member/info").access("hasRole('ROLE_ADMIN')");
+         // .antMatchers("/**").access("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')");
 		http.formLogin().loginPage("/member/login")
 				.loginProcessingUrl("/member/loginProcess")
 				.usernameParameter("id")
