@@ -1,5 +1,18 @@
 package com.naver.cowork.controller;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import javax.script.ScriptContext;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.security.Key;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.security.Principal;
 import com.naver.cowork.domain.Criteria;
 import com.naver.cowork.domain.EDMS;
 import com.naver.cowork.domain.MySaveFolder;
@@ -10,35 +23,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.script.ScriptContext;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.security.Key;
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import org.springframework.web.bind.annotation.PostMapping;
+import com.naver.cowork.domain.BsTrip;
+import com.naver.cowork.domain.Dept;
+import com.naver.cowork.domain.Member;
+import com.naver.cowork.service.EDMSService;
 
 @Controller
-@RequestMapping("/approval")
+@RequestMapping("/edms")
 public class EDMSController {
-
-    private static final Logger logger = LoggerFactory.getLogger(EDMSController.class);
+	  private static final Logger logger = LoggerFactory.getLogger(EDMSController.class);
+	  private EDMSService edmsService;
     private MemberService memberservice;
     private DeptService deptservice;
     private JobService jobservice;
     private CompanyService companyservice;
     private MySaveFolder mysavefolder;
     private MeetingRoomService meetservice;
-    private EDMSService edmsservice;
-
+	
     @Autowired
     public EDMSController(MemberService memberService, DeptService deptservice, JobService jobservice,
                           MySaveFolder mysavefolder, CompanyService companyservice, MeetingRoomService meetservice, EDMSService edmsservice) {
@@ -51,7 +54,43 @@ public class EDMSController {
         this.edmsservice = edmsservice;
     }
 
-    @GetMapping("/approvalList")
+	@GetMapping("/edmsApprovalLine")
+	public ModelAndView edmsApprovalLine(ModelAndView mv,Principal principal) {
+		String loginId = principal.getName();
+		Member loginUser = edmsService.getUsersInfo(loginId);
+		List<Dept> deptList = edmsService.getDeptList();
+		String docNum = edmsService.generateDocumentNumber();
+    
+		
+		mv.addObject("loginUser",loginUser);
+		mv.addObject("deptList",deptList);
+		mv.addObject("docNum",docNum);
+		mv.setViewName("edms/CreateEdms");
+		
+		return mv;
+	}
+	
+	@GetMapping("/addBsTrip")
+	public String addBsTrip(BsTrip bst,Principal principal) {
+		bst.setUSERID(principal.getName());
+		edmsService.insertBsTripForm(bst);
+		
+		return "main/main";
+	}
+	
+	@GetMapping("/edmsCreateNew")
+	public ModelAndView edmsCreateNew(ModelAndView mv) {
+		mv.setViewName("edms/createNewPopup");
+		
+		return mv;
+	}
+	@GetMapping("/edmsList")
+	public ModelAndView edmsList(ModelAndView mv) {
+		mv.setViewName("edms/edmsList");
+		
+		return mv;
+	}
+  @GetMapping("/approvalList")
     public ModelAndView approvalList(ModelAndView mv, Principal principal, Criteria cri) {
         String user_id = principal.getName();
         cri.setUser_id(user_id);
@@ -102,4 +141,7 @@ public class EDMSController {
         List<EDMS> getAppLine = edmsservice.getAppLine(document_no);
         return getAppLine;
     }
+  
+  
+  
 }

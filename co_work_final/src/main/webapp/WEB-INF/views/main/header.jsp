@@ -72,10 +72,10 @@
                             class="logo-sm"> <img
                             src="${pageContext.request.contextPath }/resources/assets/images/logo-light.svg"
                             alt="" height="22">
-						</span> <span class="logo-lg"> <img
+                  </span> <span class="logo-lg"> <img
                             src="${pageContext.request.contextPath }/resources/image/logo1.png"
                             style="width: 200px; margin-top: 20px;">
-						</span>
+                  </span>
                     </a>
                 </div>
 
@@ -379,10 +379,10 @@
                                                    class="text-reset notification-item">
                                                     <div class="d-flex">
                                                         <div class="avatar-xs me-3">
-																<span
+                                                <span
                                                                         class="avatar-title bg-primary rounded-circle font-size-16">
-																	<i class="bx bx-cart"></i>
-																</span>
+                                                   <i class="bx bx-cart"></i>
+                                                </span>
                                                         </div>
                                                         <div class="flex-grow-1">
                                                             <h6 class="mb-1" key="t-your-order">Your order is
@@ -419,10 +419,10 @@
                                                     class="text-reset notification-item">
                                                 <div class="d-flex">
                                                     <div class="avatar-xs me-3">
-																<span
+                                                <span
                                                                         class="avatar-title bg-success rounded-circle font-size-16">
-																	<i class="bx bx-badge-check"></i>
-																</span>
+                                                   <i class="bx bx-badge-check"></i>
+                                                </span>
                                                     </div>
                                                     <div class="flex-grow-1">
                                                         <h6 class="mb-1" key="t-shipped">Your item is
@@ -564,7 +564,7 @@
                                                        id="project_list">전체</a>
                                                 </li>
 
-                                                <!-- 	<li><a>진행</a></li>
+                                                <!--    <li><a>진행</a></li>
                                                     <li><a>마감</a></li>
                                                     <li><a>즐겨찾기</a></li> -->
                                             </ul>
@@ -617,7 +617,7 @@
                                             <span>부가서비스</span>
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
-                                                <!-- 	<li><a>전자 결재</a></li> -->
+                                                <!--    <li><a>전자 결재</a></li> -->
                                                 <li><a href="${pageContext.request.contextPath }/meet/rev">예약</a></li>
                                                 <li><a href="${pageContext.request.contextPath }/meet/revstat">예약내역</a>
                                                 </li>
@@ -639,9 +639,9 @@
                                                        href="${pageContext.request.contextPath }/member/modifyPassword">비밀번호
                                                     변경</a></li>
                                                 <!-- <li><a id="mysecurity" href="${pageContext.request.contextPath }/member/mysecurity">보안(미구현)</a></li>
-													<li><a>알림(미구현)</a></li>
-													<li><a>접속기기(미구현)</a></li>
-													 -->
+                                       <li><a>알림(미구현)</a></li>
+                                       <li><a>접속기기(미구현)</a></li>
+                                        -->
                                             </ul>
                                         </li>
 
@@ -658,7 +658,7 @@
                                                     <li><a id="meetinfo"
                                                            href="${pageContext.request.contextPath }/admin/meetManage">회의실</a>
                                                     </li>
-                                                    <!--  	<li><a>조직도 관리(미구현)</a></li>
+                                                    <!--     <li><a>조직도 관리(미구현)</a></li>
                                                         <li><a>회의실 예약 현황(미구현)</a></li>-->
                                                 </ul>
                                             </li>
@@ -670,7 +670,7 @@
                                                     <li><a id="membersinfo"
                                                            href="${pageContext.request.contextPath }/admin/members">구성원
                                                         관리</a></li>
-                                                    <!-- 	<li><a>구성원 초대(미구현)</a></li> -->
+                                                    <!--    <li><a>구성원 초대(미구현)</a></li> -->
                                                 </ul>
                                             </li>
 

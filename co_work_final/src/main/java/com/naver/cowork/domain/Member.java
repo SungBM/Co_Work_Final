@@ -16,6 +16,8 @@ public class Member {
     private String user_auth = "ROLE_MEMBER";
     private Object user_dept;
     private Object user_job;
+    private String dname;
+    private String jname;
     private String user_fax;
     private String user_intro;
     private String user_card;

@@ -252,7 +252,9 @@
 	<select id="getProjectDetailList" resultType="project_board">
        SELECT PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_CREATER_NAME, 
        		  PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CREATE_DATE, PRO_BOARD_NUM
-       		  FROM Project_Board order by PRO_BOARD_END desc
+       		  FROM Project_Board 
+       		  WHERE PRO_BOARD_STATE ='진행중' order by PRO_BOARD_END ASC
+       		  
     </select>
 
 
