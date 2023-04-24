@@ -1,6 +1,5 @@
 package com.naver.cowork.mybatis.mapper;
 
-import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,8 +9,18 @@ import com.naver.cowork.domain.Dept;
 import com.naver.cowork.domain.DocumentForm;
 import com.naver.cowork.domain.Member;
 
+import com.naver.cowork.domain.Calendar;
+import com.naver.cowork.domain.Criteria;
+import com.naver.cowork.domain.EDMS;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.HashMap;
+import java.util.List;
+
+
 @Mapper
 public interface EDMSMapper {
+
 
 	int insertDocForm(DocumentForm docForm);
 
@@ -28,6 +37,16 @@ public interface EDMSMapper {
 	Member getUsersInfo(String loginId);
 
 	int getSerialNumber();
+
+  public List<EDMS> getMyDoc(Criteria cri);
+    
+  public List<EDMS> getMyDocApp(Criteria cri);
+
+  public int getCountDoc(String user_id);
+
+  public int getCountDocApp(String user_id);
+
+  public List<EDMS> getAppLine(int document_no);
 
 
 

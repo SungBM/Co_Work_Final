@@ -2,7 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-
+<head>
+	<title>CO-WORK</title>
+</head>
 <body>
 <jsp:include page="../main/header.jsp"/>
 <div class="main-content">

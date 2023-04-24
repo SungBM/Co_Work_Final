@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.naver.cowork.domain.Job;
 import com.naver.cowork.mybatis.mapper.JobMapper;
@@ -28,10 +29,12 @@ public class JobServiceImpl implements JobService {
         return dao.jmaxNo();
     }
 
+    @Transactional
     public int delete(int job_no) {
         return dao.delete(job_no);
     }
 
+    @Transactional
     public int insert(Job job) {
         return dao.insert(job);
     }
@@ -49,5 +52,8 @@ public class JobServiceImpl implements JobService {
         return dao.jobNo(user_id);
     }
 
+    public int jobCheck(Job job){
+        return dao.jobCheck(job);
+    }
 
 }

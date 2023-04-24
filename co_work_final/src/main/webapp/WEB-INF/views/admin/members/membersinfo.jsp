@@ -7,7 +7,8 @@
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 <meta name="_csrf" content="${_csrf.token}"/>
 <title>구성원 관리</title>
-<script type="text/javascript" src="${pageContext.request.contextPath }/resources/assets/js/admin_js/members.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath }/resources/assets/js/admin_js/members.js"></script>
 
 <style>
     th, tr {
@@ -34,9 +35,8 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                      
-                        <!-- Tab panes -->
 
+                        <!-- Tab panes -->
                         <div class="tab-content p-3 text-muted">
                             <div class="tab-pane active" id="home-1" role="tabpanel">
                                 <div class="table-responsive">
@@ -163,43 +163,48 @@
                                     </table>
                                 </div>
                                 <div class="row">
-									<div class="col-lg-12">
-										<ul
-											class="pagination pagination-rounded justify-content-center mt-4">
-											<c:if test="${pageMaker.getCri().pageNum > 1}">
-												<li class="page-item"><a href="../admin/members?pageNum=${pageMaker.getCri().pageNum-1 }"
-													class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
-											</c:if>
-											<c:if test="${pageMaker.getCri().pageNum == 1 }">
-												<li class="page-item disabled"><a href=""
-													class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
-											</c:if>
-											<c:forEach begin="${pageMaker.getPageStart() }"
-												end="${pageMaker.getPageEnd() }" var="idx">
-												<c:if test="${idx == pageMaker.getCri().pageNum }">
-													<li class="page-item active"><a
-														href="../admin/members?pageNum=${idx }" class="page-link">${idx }</a></li>
-												</c:if>
-												<c:if test="${idx != pageMaker.getCri().pageNum }">
-													<li class="page-item"><a
-														href="../admin/members?pageNum=${idx }" class="page-link">${idx }</a></li>
-												</c:if>
-											</c:forEach>
-											<c:if test="${pageMaker.getCri().pageNum < pageMaker.getPageEnd()}">
-												<li class="page-item"><a
-													href="../admin/members?pageNum=${pageMaker.getCri().pageNum+1 }"
-													class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-												</li>
-											</c:if>
-											<c:if test="${pageMaker.getCri().pageNum == pageMaker.getPageEnd()}">
-												<li class="page-item disabled"><a
-													href=".."
-													class="page-link"><i class="mdi mdi-chevron-right"></i></a>
-												</li>
-											</c:if>
-										</ul>
-									</div>
-								</div>
+                                    <div class="col-lg-12">
+                                        <ul
+                                                class="pagination pagination-rounded justify-content-center mt-4">
+                                            <c:if test="${pageMaker.getCri().pageNum > 1}">
+                                                <li class="page-item"><a
+                                                        href="../admin/members?pageNum=${pageMaker.getCri().pageNum-1 }"
+                                                        class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
+                                            </c:if>
+                                            <c:if test="${pageMaker.getCri().pageNum == 1 }">
+                                                <li class="page-item disabled"><a href=""
+                                                                                  class="page-link"><i
+                                                        class="mdi mdi-chevron-left"></i></a></li>
+                                            </c:if>
+
+                                            <c:forEach begin="${pageMaker.getPageStart() }"
+                                                       end="${pageMaker.getPageEnd() }" var="idx">
+                                                <c:if test="${idx == pageMaker.getCri().pageNum }">
+                                                    <li class="page-item active"><a
+                                                            href="../admin/members?pageNum=${idx }"
+                                                            class="page-link">${idx }</a></li>
+                                                </c:if>
+                                                <c:if test="${idx != pageMaker.getCri().pageNum }">
+                                                    <li class="page-item"><a
+                                                            href="../admin/members?pageNum=${idx }"
+                                                            class="page-link">${idx }</a></li>
+                                                </c:if>
+                                            </c:forEach>
+                                            <c:if test="${pageMaker.next}">
+                                                <li class="page-item"><a
+                                                        href="../admin/members?pageNum=${pageMaker.getCri().pageNum+1 }"
+                                                        class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                                </li>
+                                            </c:if>
+                                            <c:if test="${!pageMaker.next}">
+                                                <li class="page-item disabled"><a
+                                                        href=".."
+                                                        class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tab-pane" id="profile-1" role="tabpanel">
@@ -467,7 +472,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -560,5 +565,4 @@
     </div>
 </div>
 </body>
-<script src="${pageContext.request.contextPath }/resources/assets/js/admin_js/members.js"></script>
 </html>

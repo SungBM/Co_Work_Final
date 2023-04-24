@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,10 +30,12 @@ public class CalServiceImpl implements CalService {
 		return dao.calAll(user_id);
 	}
 
+	@Transactional
 	public int calInsert(Calendar calendar) {
 		return dao.calInsert(calendar);
 	}
 
+	@Transactional
 	public int calUpdate(Calendar calendar) {
 		return dao.calUpdate(calendar);
 	}
@@ -42,6 +45,7 @@ public class CalServiceImpl implements CalService {
 		return dao.calSelectList(user_id, cal_type);
 	}
 
+	@Transactional
 	public int calDelete(int cal_no) {
 		return dao.calDelete(cal_no);
 	}
