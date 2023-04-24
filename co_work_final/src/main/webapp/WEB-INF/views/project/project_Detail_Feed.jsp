@@ -166,6 +166,23 @@ a:hover {
  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+		function sendAjaxRequest(url, method, data, successCallback, errorCallback) {
+		    $.ajax({
+		        url: url,
+		        method: method,
+		        data: data,
+		        dataType: 'json',
+		        success: function(response) {
+		            successCallback(response);
+		        },
+		        error: function(xhr, status, error) {
+		            errorCallback(xhr, status, error);
+		        }
+		    });
+		}
+		
+		
+		
 		var page = 1;
 		var commentCount = 0;
 	
@@ -1175,7 +1192,11 @@ a:hover {
 		    $("#sticky").stop().animate({"top":position+currentPosition+"px"},500);
 		  });
 		$("#ProjectDetailList").click(function(){
-			location.href = "../project/ProjectDetailList"
+			var id = $(this).attr('idVal');
+			var pNum = $(this).attr('pNum');
+			console.log(id);
+			console.log(pNum);
+			location.href = "../project/ProjectDetailList?id="+id+"&pNum="+pNum+"";
 		});
 		
 		$(".search").click(function(){
@@ -1203,13 +1224,8 @@ a:hover {
 				}
 			}
 		});
-		for(var i=0;i<10;i++){
-			var idval = '#'+i;
-			if(i>1){
-				$(idval).hide();
-			}
-			
-		}
+		
+	
 		var count = 2;
 		$(window).scroll(function() {
 		    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
@@ -1243,6 +1259,18 @@ a:hover {
 			$(this).parent().hide();
 			$(this).parent().next().show();
 		});
+		
+		for(var i = 2; i<11; i++){
+			var id = "#"+i;
+			$(id).hide();
+		}
+		
+		$(window).scroll(function() {
+			   if($(window).scrollTop() + $(window).height() == $(document).height()) {
+			       // 여기에 새로운 콘텐츠를 로드하는 코드를 추가합니다.
+			   }
+		});
+	
 
 		
 	});
@@ -1279,7 +1307,7 @@ a:hover {
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="" id="ProjectDetailList" role="tab">
+                            <a class="nav-link" data-bs-toggle="tab" href="" id="ProjectDetailList" idVal="${id }" pNum="${pNum }" role="tab">
                                	<i class="mdi mdi-playlist-check"></i>
                                 LIST
                             </a>

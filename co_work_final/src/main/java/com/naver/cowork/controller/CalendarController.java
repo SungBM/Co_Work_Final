@@ -7,7 +7,7 @@ import com.naver.cowork.domain.Member;
 import com.naver.cowork.domain.MySaveFolder;
 import com.naver.cowork.service.CalService;
 import com.naver.cowork.service.MemberService;
-import com.naver.cowork.task.SendMail;
+//import com.naver.cowork.task.SendMail;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Principal;
@@ -50,14 +50,14 @@ public class CalendarController {
 	private MemberService meberService;
 	private CalService calservice;
 	private PasswordEncoder passwordEncoder;
-	private SendMail sendMail;
+	//private SendMail sendMail;
 	private MySaveFolder mysavefolder;
 
 	@Autowired
-	public CalendarController(MemberService meberService, SendMail sendMail, PasswordEncoder passwordEncoder,
+	public CalendarController(MemberService meberService, //SendMail sendMail, PasswordEncoder passwordEncoder,
 			MySaveFolder mysavefolder, CalService calservice) {
 		this.meberService = meberService;
-		this.sendMail = sendMail;
+	//	this.sendMail = sendMail;
 		this.passwordEncoder = passwordEncoder;
 		this.mysavefolder = mysavefolder;
 		this.calservice = calservice;

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import com.naver.cowork.domain.MySaveFolder;
 import com.naver.cowork.domain.Proboard_check_user;
 import com.naver.cowork.domain.Project;
@@ -124,11 +126,12 @@ public class ProjectController {
 	
 
 	@RequestMapping(value = "/ProjectDetailList" , method =  RequestMethod.GET)
-	public ModelAndView project_detail_list(ModelAndView mv) {
+	public ModelAndView project_detail_list(ModelAndView mv,String id,int pNum) {
 		
 		List<Project_Board> detaillist = projectService.getProjectDetailList();
 		mv.addObject("ProjectDetailList", detaillist);
-		
+		mv.addObject("id", id);
+		mv.addObject("pNum", pNum);
 			
 		mv.setViewName("project/project_detail_List");
 		
@@ -136,8 +139,11 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/add")
-	  public String showaddPage() {
-	      return "project/add";
+	  public ModelAndView showaddPage(ModelAndView mv,String id, int pNum) {
+	      mv.setViewName("project/add");
+	      mv.addObject("id",id);
+	      mv.addObject("pNum",pNum);
+	      return mv;
 	}
 	
 	@PostMapping("/submit")
@@ -145,6 +151,7 @@ public class ProjectController {
 	                   @RequestParam("PRO_BOARD_SUBJECT") String PRO_BOARD_SUBJECT, 
 	                        @RequestParam("PRO_BOARD_CONTENT") String PRO_BOARD_CONTENT,
 	                        @RequestParam("uploadfile") MultipartFile uploadfile) {
+			System.out.println("컨트롤러 넘어옴");
 	       model.addAttribute("PRO_BOARD_SUBJECT", PRO_BOARD_SUBJECT);
 	       model.addAttribute("PRO_BOARD_CONTENT", PRO_BOARD_CONTENT);
 	       model.addAttribute("uploadfile", uploadfile);
@@ -152,7 +159,7 @@ public class ProjectController {
 	       //board.setPRO_BOARD_FILE(null);
 	       projectService.insertProjectBoard(board);
 	       System.out.println(PRO_BOARD_SUBJECT);
-	       return "redirect:/project/ProjectDetailList";
+	       return "redirect:/project/ProjectDetailList?id="+board.getPRO_BOARD_CREATER_ID()+"&pNum="+board.getPROJECT_NUM()+"";
 	}
 	
 	@PostMapping("/add")
@@ -229,6 +236,7 @@ public class ProjectController {
 		mv.addObject("pblist",pb_list);
 		mv.addObject("projectName",project_Name);
 		mv.addObject("id",id);
+		mv.addObject("pNum",pNum);
 		mv.addObject("bmBoard",bmBoard);
 		mv.setViewName("project/project_Detail_Feed");
 		

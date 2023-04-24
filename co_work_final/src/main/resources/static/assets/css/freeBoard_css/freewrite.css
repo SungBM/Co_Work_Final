@@ -1,0 +1,46 @@
+<style>
+
+textarea{
+	resize: none;
+}
+
+#upfile{display:none}
+img{width:20px;}
+
+.container-fluid{
+	width:80%;
+	margin: 0 auto;
+}
+
+.float-date{
+	float: right;	
+}
+
+#user_id{
+	width:80px;
+	text-align: center;
+}
+.form-content{
+	margin-top: 0.1em;
+}
+
+.bottom-active{
+	margin-top: 0.1em;
+}
+.button{
+	float:right;
+}
+
+label {
+	text-align: left;
+}
+
+form[action=down] > input[type=submit]{
+    position: relative;
+    top: -20px;
+    left: 10px;
+    border: none;
+    cursor : pointer;
+}
+	
+</style>

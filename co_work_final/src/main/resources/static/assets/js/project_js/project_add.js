@@ -3,6 +3,7 @@ $(function(){
       $("#submit_add").click(function(){
 		console.log("add Click");
 		var queryString = $("#project_Add").serialize();
+		console.log(id);
 		console.log(queryString);
 			$.ajax({
             url: "ProjectAddProcess" , //매개변수로 넘겨받은 url주소

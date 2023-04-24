@@ -1,0 +1,33 @@
+.container{width:60%}
+h1{font-size:1.5rem; text-align:center; color:#1a92b9}
+#upfile{display:none}  /*ÆÄÀÏÃ·ºÎ Ä­ ¾Èº¸ÀÌ°Ô ¼û±è */
+
+#upfile{display:none}
+
+textarea{
+	resize: none;
+}
+.container-fluid{
+	width:80%;
+	margin: 0 auto;
+}
+.float-date{
+	float: right;
+}
+#user_id{
+	width:80px;
+	text-align: center;
+}
+.form-content{
+	margin-top: 0.1em;
+}
+.bottom-active{
+	margin-top: 0.1em;
+}
+.button{
+	float:right;
+}
+.file-value {
+	height:50px;
+	text-align: right
+}

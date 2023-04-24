@@ -64,14 +64,13 @@ textarea{
            <!-- end page title -->  
            
          <!-- 공지 작성 -->
-         <sec:authorize access="isAuthenticated()">
-         <sec:authentication property="principal" var="pinfo" />  <!-- principal은 시큐리티가 가지고 있는 기술. principal로 아이디값을 불러올 수 있음-->
-            <c:if test="${noticedata.USER_ID == pinfo.username || pinfo.username == 'ADMINTEST'}">
+
+           <sec:authorize access="hasRole('ROLE_ADMIN')">
             <div class="write-button">
                <button type="button" class="btn btn-info" id="write-button">작성</button>
             </div>
-            </c:if>
-         </sec:authorize> 
+         	</sec:authorize> 
+
             <!-- 상단기능 -->
             <form action="noticeList">
                <div class="search_area">
@@ -176,7 +175,7 @@ textarea{
                               <c:param name="page" value="${a }" />
                            </c:url>
                            <li class="page-item">
-                              <a href="${go }" class="page-link">${a }</a>
+                              <a href="javascript:go(${a })" class="page-link">${a }</a>
                            </li>
                         </c:if>
                      </c:forEach>
@@ -193,7 +192,7 @@ textarea{
                            <c:param name="page" value="${page+1 }" />
                         </c:url>
                         <li class="page-item">
-                           <a href="${next }" class="page-link">&nbsp;&gt;</a>
+                           <a href="javascript:go(${page+1 })" class="page-link">&nbsp;&gt;</a>
                         </li>                  
                      </c:if>
                      
@@ -209,7 +208,7 @@ textarea{
                            <c:param name="page" value="${maxpage }" />
                         </c:url>
                         <li class="page-item">
-                           <a href="${end }" class="page-link">&nbsp;&gt;&gt;</a>
+                           <a href="javascript:go(${maxpage })" class="page-link">&nbsp;&gt;&gt;</a>
                         </li>
                      </c:if>
                   </ul>
@@ -218,12 +217,14 @@ textarea{
       
          <%-- 게시글이 없는 경우 --%>
          <c:if test="${listcount == 0 && empty search_word }">
+            <h3 style="text-align:center">등록된 글이 없습니다.</h3>
          </c:if>
          <c:if test="${listcount == 0 && !empty search_word }">
             <h3 style="text-align:center">검색 결과가 없습니다.</h3>
          </c:if>
       </div>
    </div>
+
 </div>       
    <!-- 하단푸터 -->
 <jsp:include page="../../main/footer.jsp"></jsp:include>

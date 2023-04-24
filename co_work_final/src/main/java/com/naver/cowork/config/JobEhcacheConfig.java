@@ -6,6 +6,7 @@ import net.sf.ehcache.config.Configuration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
+
 @EnableCaching
 @org.springframework.context.annotation.Configuration
 public class JobEhcacheConfig {
@@ -15,6 +16,8 @@ public class JobEhcacheConfig {
         config.setName("jobList");
 
         config.addCache(getCacheConfiguration("jobList",6*1));//6초
+
+
         return CacheManager.newInstance(config);
     }
 
@@ -32,4 +35,6 @@ public class JobEhcacheConfig {
 
         return cacheConfiguration;
     }
+
 }
+

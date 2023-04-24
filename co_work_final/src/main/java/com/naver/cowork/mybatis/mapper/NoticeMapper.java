@@ -23,7 +23,7 @@ public interface NoticeMapper {
 	//글 등록
 	public void insertNotice(Notice notice);
 	
-	// 글 수정
+	//글 수정
 	public int noticeModify(Notice modifyNotice);
 	
 	//글 삭제
@@ -40,3 +40,7 @@ public interface NoticeMapper {
 
 	
 }
+
+
+
+

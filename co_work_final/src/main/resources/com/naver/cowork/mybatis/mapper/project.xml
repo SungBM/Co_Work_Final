@@ -4,12 +4,14 @@
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.ProjectMapper">
 	 <insert id="insertProjectBoard">
-     INSERT INTO PROJECT_BOARD (PRO_BOARD_CARTEGORY, PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CONTENT, PRO_BOARD_CREATER_NAME, PRO_BOARD_CREATER_ID, PRO_BOARD_FILE, PRO_BOARD_NUM)
-      VALUES ('글', #{PRO_BOARD_SUBJECT}, '진행', '높음', #{PRO_BOARD_START}, #{PRO_BOARD_END}, #{PRO_BOARD_CONTENT}, 'HTA123', 'HTA123', #{PRO_BOARD_FILE, jdbcType=VARCHAR}, seq_project_board.nextval)
+
+     INSERT INTO PROJECT_BOARD (PRO_BOARD_CARTEGORY, PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CONTENT, PRO_BOARD_CREATER_NAME, PRO_BOARD_CREATER_ID, PRO_BOARD_FILE, PRO_BOARD_NUM,PROJECT_NUM)
+      VALUES ('글', #{PRO_BOARD_SUBJECT}, '진행중', 'LOW', #{PRO_BOARD_START}, #{PRO_BOARD_END}, #{PRO_BOARD_CONTENT}, #{PRO_BOARD_CREATER_ID}, #{PRO_BOARD_CREATER_ID}, #{PRO_BOARD_FILE, jdbcType=VARCHAR}, seq_project_board.nextval, #{PROJECT_NUM})
+
      </insert>
      
      <select id="getAllProjects" resultType="Project">
-        SELECT * FROM PROJECT
+        SELECT * FROM PROJECT 
     </select>
 
     <select id="getProjectsByCreatorId" resultType="Project">
@@ -252,7 +254,9 @@
 	<select id="getProjectDetailList" resultType="project_board">
        SELECT PRO_BOARD_SUBJECT, PRO_BOARD_STATE, PRO_BOARD_PRIORITY, PRO_BOARD_CREATER_NAME, 
        		  PRO_BOARD_START, PRO_BOARD_END, PRO_BOARD_CREATE_DATE, PRO_BOARD_NUM
-       		  FROM Project_Board
+       		  FROM Project_Board 
+       		  WHERE PRO_BOARD_STATE ='진행중' order by PRO_BOARD_END ASC
+       		  
     </select>
 
 

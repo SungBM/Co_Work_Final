@@ -43,4 +43,10 @@
 		from dept
 		where dept_name = #{dept_name}
 	</select>
+
+	<select id="deptCheck" resultType="int">
+		select count(dept_name)
+		from dept
+		where dept_name = #{dept_name}
+	</select>
 </mapper>
