@@ -41,4 +41,9 @@
 		from job
 		where job_name = #{job_name}
 	</select>
+	<select id="jobCheck" resultType="int">
+		select count(job_name)
+		from job
+		where job_name = #{job_name}
+	</select>
 </mapper>

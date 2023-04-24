@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.util.AntPathMatcher;
 
 import com.naver.security.CustomAccessDeniedHandler;
 import com.naver.security.CustomUserDetailsService;
@@ -26,8 +25,8 @@ public class SecurityConfig  {
 	// <security:http> 설정 부분
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-		.antMatchers("/api/ehcache/all").permitAll()
+		http.authorizeRequests().antMatchers("/api/ehcache/all").permitAll() //캐시 테스트
+		
 		  .antMatchers("/resources/**/**").permitAll()
           .antMatchers("/member/main").permitAll()
           .antMatchers("/member/login").permitAll()
@@ -61,6 +60,7 @@ public class SecurityConfig  {
           .antMatchers("/meet/meetManage").permitAll()
           .antMatchers("/meet/meetAdd").permitAll()
           .antMatchers("/meet/meetAddProcess").permitAll()
+          .antMatchers("/meet/members").permitAll()
           
 
           .antMatchers("/member/list").access("hasRole('ROLE_ADMIN')")

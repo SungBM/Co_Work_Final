@@ -1,8 +1,11 @@
 package com.naver.cowork.domain;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class PageDto {
 
 	private int pageStart; // 페이지 시작 번호
@@ -19,19 +22,14 @@ public class PageDto {
 		this.pageEnd = (int)(Math.ceil(cri.getPageNum() / 10.0)) * 10;  // 페이지 끝 번호
 		this.pageStart = this.pageEnd - 9;  // 페이지 시작 번호
 		int realEnd = (int)(Math.ceil(total * 1.0 / cri.getViewSize()));  // 전체 마지막 페이지 번호
-		System.out.println("pagestart = " + pageStart);
-		
+
 		if(realEnd < pageEnd) {
 			this.pageEnd = realEnd;
 		}  // 페이지 끝 번호 유효성 확인
-		System.out.println("pageend = " + pageEnd);
-		System.out.println("realned = " + realEnd);
 		
 		this.prev = this.pageStart > 1;  // 이전버튼 값 초기화
 		this.next = this.pageEnd < realEnd;  // 다음버튼 값 초기화
-		System.out.println("prev = " + prev);
-		System.out.println("next = " + next);
-		System.out.println("realend = " + realEnd);
+
 	}
 	
 }

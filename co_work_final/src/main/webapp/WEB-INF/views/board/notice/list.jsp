@@ -224,6 +224,7 @@ textarea{
          </c:if>
       </div>
    </div>
+
 </div>       
    <!-- 하단푸터 -->
 <jsp:include page="../../main/footer.jsp"></jsp:include>

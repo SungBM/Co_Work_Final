@@ -10,7 +10,7 @@
 <style>
 #meetImg {
 	width: 100%;
-	height: 150px;
+	height: 220px;
 }
 
 ul {
@@ -60,7 +60,7 @@ strong {
 
 									<img
 										src="../upload${mr.meet_img}"
-										id="meetImg">
+										id="meetImg" style="height: 250px !important">
 								</div>
 								<div class="meetTitle mb-3">
 									<strong class="font-size-15">${mr.meet_name }</strong>
