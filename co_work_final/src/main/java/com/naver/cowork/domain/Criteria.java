@@ -11,7 +11,7 @@ public class Criteria {
 	private int viewSize;  // 한 페이지 출력 data
 	private int skip;  // 페이지 skip
 	private String user_id;
-	private int document_no;
+	private String DOCUMENT_FORM_CODE;
 	private String startDate;
 	private String endDate;
 	private String searchSelect;
@@ -39,7 +39,7 @@ public class Criteria {
 				.queryParam("pageNum", pageNum)
 				.queryParam("viewSize", viewSize)
 				.queryParam("user_id", user_id)
-				.queryParam("document_no", document_no)
+				.queryParam("DOCUMENT_FORM_CODE", DOCUMENT_FORM_CODE)
 				.queryParam("startDate", startDate)
 				.queryParam("endDate", endDate)
 				.queryParam("searchSelect", searchSelect)

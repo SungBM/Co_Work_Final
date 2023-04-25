@@ -6,7 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class Edms {
+public class Approval {
+	
+	
 	private int APPROVAL_NUM;
 	private String DOCUMENT_FORM_CODE;
 	private String APPROVAL_USER_ID;

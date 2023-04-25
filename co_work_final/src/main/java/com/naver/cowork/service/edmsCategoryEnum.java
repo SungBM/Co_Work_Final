@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public enum edmsCategoryEnum {
-    USECAR(1);
+    BSTRIP(1);
 
     @Getter
     @Setter

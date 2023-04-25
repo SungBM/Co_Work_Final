@@ -12,6 +12,27 @@
 </style>
 <script>
     $(function () {
+    	$(".edmsAddComment").click(function(){
+    		var docNum = $(this).parent().prev().prev().text();
+    		var loginId = $("#loginId").text();
+    		console.log(loginId + " : loginId");
+    		console.log(docNum + " : docNum");
+    		location.href="${pageContext.request.contextPath }/edms/edmsaddcomments?document_form_code="+docNum+"&approval_user_id="+loginId+"";
+    	});
+    	
+    	$("#detailApproval").click(function(){
+    		var docNum = $("#docNum").attr('values');
+    		alert(docNum);
+    		location.href="${pageContext.request.contextPath }/edms/edmsList?docNum="+docNum+"";
+    	});
+    	$('#createNew').on('click', function() {
+	  	 	var width = 600;
+	  	    var height = 800;
+	  	    var left = (screen.width / 2) - (width / 2);
+	  	    var top = (screen.height / 2) - (height / 2);
+	  	    window.open('${pageContext.request.contextPath }/edms/edmsCreateNew', '', 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top);
+	  });
+    	
         $('#datePicker, #datePicker1').datepicker({
             format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
             endDate: '0d',	//달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
@@ -77,7 +98,7 @@
             <!-- end page title -->
             <div class="row">
                 <div class="col-lg-12">
-                    <button type="button" class="btn btn-light">새로 작성</button>
+                    <button type="button"  id="createNew" class="btn btn-light">새로 작성</button>
 
                     <div class="card">
                         <form action="myDoc" type="get">
@@ -149,8 +170,8 @@
                                 <tr>
                                     <td>${list.DOCUMENT_FORM_CODE}</td>
                                     <td>${list.CATEGORY_RESULT}</td>
-                                    <td><a class="text-dark text-decoration-underline"
-                                           href="">${list.DOCUMENT_TITLE}</a></td>
+                                    <td><a class="text-dark text-decoration-underline edmsAddComment" id="edmsAddComment"
+                                                               href="javascript:void(0)">${list.DOCUMENT_TITLE}</a></td>
                                     <td>${list.DOCUMENT_FORM_DATE}</td>
                                     <td>
                                         <a name="appLine" href=""
@@ -230,6 +251,7 @@
      aria-modal="true" role="dialog">
     <div class="offcanvas-body">
         <span class="font-size-16 fw-bold mb-3">결재선</span>
+         <button class="btn btn-light" id="detailApproval"  style="float: right;">결재선 상세보기</button>
         <div id="display">
 
         </div>
@@ -238,8 +260,12 @@
     </div>
 </div>
 <script>
+
+
+
     function resultHtml(data) {
-        var html = '<table class="table align-middle table-hover table-bordered table-sm mt-3">';
+    	var html = '<input type="hidden" id="docNum" values = "' +data[0].document_FORM_CODE+ '">' 
+        html += '<table class="table align-middle table-hover table-bordered table-sm mt-3">';
         html += '<thead>';
         html += '<tr>';
         html += '<th scope="col" class="">순번</th>';
@@ -261,7 +287,13 @@
             html += '<tr>';
             html += '<td>' + parseInt(i + 1) + '</td>';
             html += '<td>' + data[i].user_NAME + ' ' + data[i].job_NAME + ' | ' + data[i].dept_NAME + '</td>';
-            html += '<td>' + data[i].state_RESULT + '</td>';
+            if(data[i].approval_STATE == 0) {
+            	html += '<td class="text-primary">' + data[i].state_RESULT + '</td>';
+            } else if (data[i].approval_STATE == 1){
+            	html += '<td class="text-success">' + data[i].state_RESULT + '</td>';
+            } else if (data[i].approval_STATE == -1){
+            	html += '<td class="text-danger">' + data[i].state_RESULT + '</td>';
+            }
             html += '<td>결재</td>';
             html += '<td>' + data[i].approval_DATE_RESULT + '</td>';
 
@@ -269,5 +301,7 @@
         }
         $("#display").empty();
         $("#display").append(html);
+        
+        
     }
 </script>

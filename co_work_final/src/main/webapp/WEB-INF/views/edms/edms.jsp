@@ -27,12 +27,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0 font-size-18">출차신청서 &nbsp|&nbsp ${docNum }</h4>
+                    <h4 class="mb-sm-0 font-size-18">출장 신청서 &nbsp|&nbsp ${docNum }</h4>
 
                     <div class="page-title-right">	
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">전자결재</a></li>
-                            <li class="breadcrumb-item active">출차신청서 &nbsp|&nbsp ${docNum }</li><!-- ${DOCUMENT_FORM_CODE } -->
+                            <li class="breadcrumb-item active">출장 신청서 &nbsp|&nbsp ${docNum }</li><!-- ${DOCUMENT_FORM_CODE } -->
                         </ol>
                     </div>
 
@@ -48,15 +48,16 @@
                         <h4 class="card-title mb-4">현재 문서 의견 </h4>
 
                         <div class="table-responsive">
-                            <table class="table align-middle">
+                            <table class="table ">
 	                            <thead>
 	                            	<tr>
 	                            		<td> </td>
-	                            		<td>결재자</td>
-	                            		<td>직위</td>
-	                            		<td>부서</td>
-	                            		<td>등록일자</td>
-	                            		<td>상태</td>
+	                            		<td style="font-weight: bold">결재자</td>
+	                            		<td style="font-weight: bold">직위</td>
+	                            		<td style="font-weight: bold">부서</td>
+	                            		<td style="font-weight: bold" width="20%">등록일자</td>
+	                            		<td style="font-weight: bold">상태</td>
+	                            		<td style="font-weight: bold">결과</td>
 	                            	</tr>
 	                            </thead>
                                 <tbody>
@@ -72,17 +73,29 @@
 	                                            </h5>
 	                                        </td>
 	                                        <td>${e.USER_JOB}</td>
+	                                        
 	                                        <td>${e.USER_DEPT}</td>
-	                                        <td>${e.APPROVAL_DATE}</td>
+	                                         <c:if test="${e.APPROVAL_STATE eq '0' }">
+	                                         <td style="font-weight: bold">　　　　　- </td>
+	                                         
+	                                        </c:if>
+	                                         <c:if test="${e.APPROVAL_STATE ne '0' }">
+	                                         <td>${e.APPROVAL_DATE}</td>
+	                                        </c:if>
+	                                       
 	                                        <c:if test="${e.APPROVAL_STATE eq '-1' }">
                                             	<td class="text-danger">반려</td>
+                                            	<td><i class="mdi mdi-close-octagon-outline text-danger" style="font-size: 20px;"></i></td>
 											</c:if>
                                             <c:if test="${e.APPROVAL_STATE eq '0' }">
                                                 <td class="text-primary">대기</td>
+                                                <td><i class="mdi mdi-minus-circle-outline text-primary" style="font-size: 20px;"></i></td>
                                             </c:if>
                                             <c:if test="${e.APPROVAL_STATE eq '1' }">
                                                 <td class="text-success">승인</td>
+                                                <td><i class="mdi mdi-check-circle-outline text-success" style="font-size: 20px;"></i></td>
                                             </c:if>
+                                            
 	                                    </tr>
 									</c:forEach>
                                 </tbody>
@@ -100,7 +113,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex">            
-                            <img id="apUserCard" src="" alt="" class="avatar-sm me-4" style="display: none;">
+                            <img id="apUserCard" src="${pageContext.request.contextPath }/resources/assets/images/users/avatar-1.jpg" alt="" class="avatar-sm me-4" style="display: none;">
 
                             <div class="flex-grow-1 overflow-hidden">
                                 <h5 class="text-truncate font-size-15">의견 내용</h5>

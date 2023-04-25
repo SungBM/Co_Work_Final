@@ -599,13 +599,13 @@
                                         </a>
                                             <ul class="sub-menu" aria-expanded="false">
                                                 <li><a id="EDMS_List"
-                                                       href="${pageContext.request.contextPath }/approval/approvalList">대쉬보드</a>
+                                                       href="${pageContext.request.contextPath }/edms/approvalList">대쉬보드</a>
                                                 </li>
                                                 <li><a id="EDMS_myDoc"
-                                                       href="${pageContext.request.contextPath }/approval/myDoc">기안함</a>
+                                                       href="${pageContext.request.contextPath }/edms/myDoc">기안함</a>
                                                 </li>
                                                 <li><a id="EDMS_myDocApp"
-                                                       href="${pageContext.request.contextPath }/approval/myDocApp">결재함</a>
+                                                       href="${pageContext.request.contextPath }/edms/myDocApp">결재함</a>
                                                 </li>
                                             </ul>
 
