@@ -1,0 +1,45 @@
+<style>
+
+textarea{
+   resize: none;
+}
+.container-fluid{
+   width:90%;
+   margin: 0 auto;
+}
+
+.form-control{
+	width: 180%;
+}
+
+
+.form-select{
+   display: inline-block;
+   width:10%;
+}
+.search-bar{
+   display: inline-block;
+   width:50%;
+}
+.search-button{
+   display: inline-block;
+}
+.write-button{
+   float: right;
+}
+.rows{
+   float: right;
+}
+.gray{
+   color: gray;
+}
+#donwloadFile:hover {
+	color: blue;
+}
+
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(1){width:13%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(2){width:40%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(3){width:16%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(4){width:16%}
+   div > div > table > thead > tr:nth-child(2) > th:nth-child(5){width:13%}
+</style>

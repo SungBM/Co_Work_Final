@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.naver.cowork.domain.Dept;
-import com.naver.cowork.mybatis.mapper.EdmsMapper;
 import com.naver.cowork.service.DeptService;
 import com.naver.cowork.service.EdmsService;
 
@@ -51,7 +50,7 @@ public class EDMSController {
 	    Map<String, Object> documents = documentsList.get(0);
 	    Map<String, Object> users = usersList.get(0);
 	    Map<String, Object> bstrip = bstripList.get(0); 
-//test
+
 	    mv.addObject("documents", documents);
 	    mv.addObject("users", users);
 	    mv.addObject("bstrip", bstrip); 
