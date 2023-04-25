@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.security.Principal;
 import com.naver.cowork.domain.Criteria;
-import com.naver.cowork.domain.EDMS;
 import com.naver.cowork.domain.Edms;
 import com.naver.cowork.service.EdmsService;
 import com.naver.cowork.domain.MySaveFolder;
@@ -33,7 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.naver.cowork.domain.BsTrip;
 import com.naver.cowork.domain.Dept;
 import com.naver.cowork.domain.Member;
-import com.naver.cowork.service.EDMSService;
+import com.naver.cowork.service.EdmsService;
 
 
 @Controller
@@ -41,7 +40,6 @@ import com.naver.cowork.service.EDMSService;
 public class EDMSController {
 
 	  private static final Logger logger = LoggerFactory.getLogger(EDMSController.class);
-	  private EDMSService edmsService;
     private MemberService memberservice;
     private DeptService deptservice;
     private JobService jobservice;
@@ -52,14 +50,13 @@ public class EDMSController {
 	
     @Autowired
     public EDMSController(MemberService memberService, DeptService deptservice, JobService jobservice,
-                          MySaveFolder mysavefolder, CompanyService companyservice, MeetingRoomService meetservice, EDMSService edmsservice, EdmsService edmsService) {
+                          MySaveFolder mysavefolder, CompanyService companyservice, MeetingRoomService meetservice, EdmsService edmsservice, EdmsService edmsService) {
         this.memberservice = memberService;
         this.deptservice = deptservice;
         this.jobservice = jobservice;
         this.mysavefolder = mysavefolder;
         this.companyservice = companyservice;
         this.meetservice = meetservice;
-        this.edmsservice = edmsservice;
         this.edmsService = edmsService;
     }
 
@@ -139,9 +136,9 @@ public class EDMSController {
     public ModelAndView approvalList(ModelAndView mv, Principal principal, Criteria cri) {
         String user_id = principal.getName();
         cri.setUser_id(user_id);
-        List<EDMS> docList = edmsservice.getMyDoc(cri);
-        int getCountDoc = edmsservice.getCountDoc(user_id);
-        int getCountDocApp = edmsservice.getCountDocApp(user_id);
+        List<Edms> docList = edmsService.getMyDoc(cri);
+        int getCountDoc = edmsService.getCountDoc(user_id);
+        int getCountDocApp = edmsService.getCountDocApp(user_id);
         mv.addObject("docList", docList);
         mv.addObject("getCountDoc", getCountDoc);
         mv.addObject("getCountDocApp", getCountDocApp);
@@ -155,8 +152,8 @@ public class EDMSController {
         cri.setUser_id(user_id);
         cri.setEndDate(cri.getEndDate() + " 23:59:59");
         logger.info(cri.getSearchSelect());
-        List<EDMS> docList = edmsservice.getMyDoc(cri);
-        int total = edmsservice.getCountDoc(user_id);
+        List<Edms> docList = edmsService.getMyDoc(cri);
+        int total = edmsService.getCountDoc(user_id);
         PageDto pageMaker = new PageDto(cri, total);
         mv.addObject("docList", docList);
         mv.addObject("pageMaker", pageMaker);
@@ -170,8 +167,8 @@ public class EDMSController {
         cri.setUser_id(user_id);
         cri.setEndDate(cri.getEndDate() + " 23:59:59");
         logger.info(cri.getSearchSelect());
-        List<EDMS> docAppList = edmsservice.getMyDocApp(cri);
-        int total = edmsservice.getCountDocApp(user_id);
+        List<Edms> docAppList = edmsService.getMyDocApp(cri);
+        int total = edmsService.getCountDocApp(user_id);
         PageDto pageMaker = new PageDto(cri, total);
         mv.addObject("docAppList", docAppList);
         mv.addObject("pageMaker", pageMaker);
@@ -181,9 +178,9 @@ public class EDMSController {
 
     @ResponseBody
     @GetMapping("/getAppLine")
-    public List<EDMS> getAppLine(@RequestParam Map<String, Object> param, HttpServletResponse response) {
+    public List<Edms> getAppLine(@RequestParam Map<String, Object> param, HttpServletResponse response) {
         int document_no = Integer.parseInt(String.valueOf(param.get("data")));
-        List<EDMS> getAppLine = edmsservice.getAppLine(document_no);
+        List<Edms> getAppLine = edmsService.getAppLine(document_no);
         return getAppLine;
     }
   

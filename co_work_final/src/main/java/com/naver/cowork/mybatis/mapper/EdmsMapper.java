@@ -7,11 +7,12 @@ import com.naver.cowork.domain.ApprovalLine;
 import com.naver.cowork.domain.BsTrip;
 import com.naver.cowork.domain.Dept;
 import com.naver.cowork.domain.DocumentForm;
+import com.naver.cowork.domain.Edms;
 import com.naver.cowork.domain.Member;
 
 import com.naver.cowork.domain.Calendar;
 import com.naver.cowork.domain.Criteria;
-import com.naver.cowork.domain.EDMS;
+import com.naver.cowork.domain.Edms;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.List;
 
 
 @Mapper
-public interface EDMSMapper {
+public interface EdmsMapper {
 
 
 	int insertDocForm(DocumentForm docForm);
@@ -38,15 +39,21 @@ public interface EDMSMapper {
 
 	int getSerialNumber();
 
-  public List<EDMS> getMyDoc(Criteria cri);
+  public List<Edms> getMyDoc(Criteria cri);
     
-  public List<EDMS> getMyDocApp(Criteria cri);
+  public List<Edms> getMyDocApp(Criteria cri);
 
   public int getCountDoc(String user_id);
 
   public int getCountDocApp(String user_id);
 
-  public List<EDMS> getAppLine(int document_no);
+  public List<Edms> getAppLine(int document_no);
+
+  public List<Edms> getEdmsList();
+
+  public List<Edms> getEdmsDetail();
+
+public Edms getApprovalOpinion(int apNumVal);
 
 
 

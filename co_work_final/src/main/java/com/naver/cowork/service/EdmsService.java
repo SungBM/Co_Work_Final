@@ -10,7 +10,7 @@ import com.naver.cowork.domain.Dept;
 import com.naver.cowork.domain.Member;
 import com.naver.cowork.domain.ChatVO;
 import com.naver.cowork.domain.Criteria;
-import com.naver.cowork.domain.EDMS;
+import com.naver.cowork.domain.Edms;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public interface EDMSService {
+public interface EdmsService {
 
 	public String insertBsTripForm(BsTrip bst);
 
@@ -29,11 +29,19 @@ public interface EDMSService {
 	public Member getUsersInfo(String loginId);
 	
 	public String generateDocumentNumber();
-  public List<EDMS> getMyDoc(Criteria cri);
+  public List<Edms> getMyDoc(Criteria cri);
 
-  public List<EDMS> getMyDocApp(Criteria cri);
+  public List<Edms> getMyDocApp(Criteria cri);
 
   public int getCountDoc(String user_id);
 
   public int getCountDocApp(String user_id);
-  public List<EDMS> getAppLine(int document_no);
+  public List<Edms> getAppLine(int document_no);
+
+  public List<Edms> getEdmsDetail();
+
+  public List<Edms> getEdmsList();
+
+public Edms getApprovalOpinion(int apNumVal);
+
+}
