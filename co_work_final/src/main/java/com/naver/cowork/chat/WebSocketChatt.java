@@ -36,7 +36,7 @@ public class WebSocketChatt {
 		System.out.println("receive message : " + msg);
 		for(Session s : clients) {
 			System.out.println("send data : " + msg);
-			s.getBasicRemote().sendText(msg);  //주소지
+			s.getBasicRemote().sendText(msg);  //주소지. 메시지를 모든 클라이언트에게 전송
 
 		}
 	}

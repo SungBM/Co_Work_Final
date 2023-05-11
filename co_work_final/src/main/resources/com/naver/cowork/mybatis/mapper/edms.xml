@@ -1,8 +1,335 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.naver.cowork.mybatis.mapper.EDMSMapper">
+<resultMap id="edmsResultMap" type="edms">
+	    <result property="APPROVAL_NUM" column="APPROVAL_NUM"/>
+		<result property="USER_CARD" column="USER_CARD"/>
+	    <result property="USER_NAME" column="USER_NAME"/>
+	    <result property="JOB_NAME" column="JOB_NAME"/>
+	    <result property="DEPT_NAME" column="DEPT_NAME"/>
+	    <result property="APPROVAL_DATE" column="APPROVAL_DATE"/>
+	    <result property="APPROVAL_STATE" column="APPROVAL_STATE"/>
+</resultMap>
+
+<select id="selectApprovalLine2" resultType="list">
+select u.user_name,
+	   j.job_name, 
+	   d.dept_name, 
+	   a.approval_state, 
+	   a.approval_date
+from approval_line a
+	inner join user_info u
+		on u.user_id = a.approval_user_id
+	inner join dept d
+		on u.user_dept = d.dept_no
+	inner join job j
+		on u.user_job = j.job_no
+where a.document_form_code = #{document_form_code}
+order by a.approval_level asc
+</select>
+
+
+<select id="selectBstripColumns2" resultType="map">
+  SELECT BSTRIPDATE, BSTRIPDESTINATION, BSTRIPSTOPOVER, BSTRIPLOCATION, BSTRIPLOCATIONBSCONTENT, BSTRIPPERDIEM, 
+  BSTRIPROOMCHARGE, BSTRIPTRANSPORTATIONCOST, BSTRIPEXTRACOST, BSTRIPALLCOST
+  FROM BSTRIP
+  WHERE DOCUMENT_FORM_CODE = #{DOCUMENT_FORM_CODE}
+</select>
+
+<update id="updateDocNowLevel" parameterType="map">
+	UPDATE DOCUMENT_FORM 
+	SET APPROVAL_NOW_LEVEL = APPROVAL_NOW_LEVEL + 1
+	WHERE DOCUMENT_FORM_CODE = #{document_form_code}
+</update>
+
+
+<update id="updateOpinion2" parameterType="map">
+    UPDATE APPROVAL_LINE 
+    SET APPROVAL_OPINION = #{opinion},
+    APPROVAL_STATE = #{approval_state}
+    WHERE DOCUMENT_FORM_CODE = #{document_form_code} AND APPROVAL_USER_ID = #{approval_user_id}
+</update>
+
+
+<select id="getDocumentForm2" resultType="map">
+    SELECT DOCUMENT_FORM_CODE, DOCUMENT_FORM_DATE,
+           CASE DOCUMENT_STATE
+              WHEN -1 THEN '반려'
+              WHEN 1 THEN '완료'
+              ELSE '진행중'
+           END AS DOCUMENT_STATE_STR
+    FROM DOCUMENT_FORM
+    WHERE DOCUMENT_FORM_CODE = #{DOCUMENT_FORM_CODE}
+</select>
+
+
+<select id="selectUserId2" resultType="map">
+  SELECT USER_INFO.USER_ID,
+	   DEPT.DEPT_NAME, 
+	   USER_INFO.USER_NAME,
+	   JOB.JOB_NAME,
+	   APPROVAL_STATE,
+	   APPROVAL_DATE
+  FROM APPROVAL_LINE
+  INNER JOIN USER_INFO USER_INFO ON APPROVAL_LINE.APPROVAL_USER_ID = USER_INFO.USER_ID
+  INNER JOIN DEPT DEPT ON DEPT_NO = USER_INFO.USER_DEPT
+  INNER JOIN JOB JOB ON JOB_NO = USER_INFO.USER_JOB
+  WHERE DOCUMENT_FORM_CODE = #{DOCUMENT_FORM_CODE}
+  ORDER BY APPROVAL_LEVEL ASC
+</select>
+	
+	<select id="getApprovalOpinion" parameterType="int" resultType="Edms">
+			SELECT
+			AL.APPROVAL_OPINION,
+			AL.APPROVAL_DATE,
+			AL.APPROVAL_STATE,
+			UI.USER_CARD 
+	    FROM 
+	    	USER_INFO UI 
+	      	INNER JOIN APPROVAL_LINE AL ON UI.USER_ID = AL.APPROVAL_USER_ID 
+	    WHERE APPROVAL_NUM = #{apNumVal} 
+	
+	    	
+	</select>
+	
+	<select id="getEdmsList" resultMap="edmsResultMap" parameterType="String">
+		SELECT
+			AL.APPROVAL_NUM,
+			AL.DOCUMENT_FORM_CODE,
+			UI.USER_CARD, 
+		    UI.USER_NAME, 
+		    CASE WHEN UI.USER_DEPT = DP.DEPT_NO THEN DP.DEPT_NAME ELSE '' END AS USER_DEPT, 
+		    CASE WHEN UI.USER_JOB = JB.JOB_NO THEN JB.JOB_NAME ELSE '' END AS USER_JOB, 
+		    AL.APPROVAL_DATE, 
+		    AL.APPROVAL_STATE
+	    FROM 
+	    	USER_INFO UI 
+	      	INNER JOIN APPROVAL_LINE AL ON UI.USER_ID = AL.APPROVAL_USER_ID 
+	   	   	LEFT JOIN DEPT DP ON UI.USER_DEPT = DP.DEPT_NO
+	    	LEFT JOIN JOB JB ON UI.USER_JOB = JB.JOB_NO
+	    WHERE 
+	       	AL.DOCUMENT_FORM_CODE = #{docNum}
+		ORDER BY 
+	    	AL.APPROVAL_LEVEL ASC
+	</select>
+	
+	
+	
+	<select id="getEdmsDetail" resultMap="edmsResultMap">
+		SELECT
+			AL.APPROVAL_NUM,
+		    UI.USER_NAME,
+		    UI.USER_CARD,
+		    CASE WHEN UI.USER_DEPT = DP.DEPT_NO THEN DP.DEPT_NAME ELSE '' END AS USER_DEPT,
+		    CASE WHEN UI.USER_JOB = JB.JOB_NO THEN JB.JOB_NAME ELSE '' END AS USER_JOB,
+		    AL.APPROVAL_DATE,
+		    AL.APPROVAL_STATE,
+		    AL.APPROVAL_OPINION
+		FROM
+		    USER_INFO UI
+		    INNER JOIN APPROVAL_LINE AL ON UI.USER_ID = AL.APPROVAL_USER_ID
+		    LEFT JOIN DEPT DP ON UI.USER_DEPT = DP.DEPT_NO
+		    LEFT JOIN JOB JB ON UI.USER_JOB = JB.JOB_NO
+		WHERE
+		    AL.APPROVAL_NUM = #{APPROVAL_NUM}
+		ORDER BY
+		    AL.APPROVAL_DATE ASC
+	</select>
+  
+
+<select id="getDocumentForm" resultType="map">
+    SELECT DOCUMENT_FORM_CODE, DOCUMENT_FORM_DATE,
+           CASE DOCUMENT_STATE
+              WHEN -1 THEN '반려'
+              WHEN 1 THEN '완료'
+              ELSE '진행중'
+           END AS DOCUMENT_STATE_STR
+    FROM DOCUMENT_FORM
+</select>
+
+
+<select id="selectUserId" resultType="map">
+  SELECT USER_INFO.USER_ID, USER_INFO.USER_DEPT, USER_INFO.USER_NAME
+  FROM APPROVAL_LINE
+  INNER JOIN USER_INFO ON APPROVAL_LINE.APPROVAL_USER_ID = USER_INFO.USER_ID
+</select>
+
+
+<update id="updateOpinion">
+    UPDATE APPROVAL_LINE SET APPROVAL_OPINION = #{param1}
+    WHERE APPROVAL_NUM = '16'
+</update>
+
+<select id="selectBstripColumns" resultType="map">
+  SELECT BSTRIPDATE, BSTRIPDESTINATION, BSTRIPSTOPOVER, BSTRIPLOCATION, BSTRIPLOCATIONBSCONTENT, BSTRIPPERDIEM, 
+  BSTRIPROOMCHARGE, BSTRIPTRANSPORTATIONCOST, BSTRIPEXTRACOST, BSTRIPALLCOST
+  FROM BSTRIP
+</select>
+
+
+
+      <select id="getMyDoc" resultType="edms">
+        <![CDATA[
+            select rn,
+               DOCUMENT_FORM_CODE,
+               DOCUMENT_TITLE,
+               DOCUMENT_CATEGORY_NUM,
+               DOCUMENT_FORM_DATE,
+               DOCUMENT_STATE,
+               approval_date,
+               approval_state,
+               USER_NAME,
+               dept_name,
+               job_name
+        from (select rownum rn,
+                     z.DOCUMENT_FORM_CODE,
+                     z.DOCUMENT_TITLE,
+                     z.DOCUMENT_CATEGORY_NUM,
+                     z.DOCUMENT_FORM_DATE,
+                     z.DOCUMENT_STATE,
+                     z.approval_date,
+                     z.approval_state,
+                     z.USER_NAME,
+                     z.dept_name,
+                     z.job_name
+
+              from (select d.DOCUMENT_FORM_CODE,
+                           d.DOCUMENT_TITLE,
+                           d.DOCUMENT_CATEGORY_NUM,
+                           d.DOCUMENT_FORM_DATE,
+                           d.DOCUMENT_STATE,
+                           a.approval_date,
+                           a.approval_state,
+                           u.USER_NAME,
+                           d.dept_name,
+                           j.job_name
+                    from DOCUMENT_FORM d
+                             inner join approval_line a
+                                        on a.document_form_code = d.document_form_code AND a.approval_level = d.approval_now_level
+                             inner join user_info u
+                                        on a.approval_user_id = u.user_id
+                             inner join dept d
+                                        on u.user_dept = d.dept_no
+                             inner join job j
+                                        on u.user_job = j.job_no
+                    where d.user_id = #{user_id}
+                    order by DOCUMENT_FORM_DATE DESC) z)
+        ]]>
+        <if test="startDate != null">
+            and document_form_date between TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS') and TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
+        </if>
+        <if test="searchData != null">
+            and document_title LIKE '%'||#{searchData}||'%'
+        </if>
+
+
+
+    </select>
+
+    <select id="getMyDocApp" resultType="edms">
+        <![CDATA[
+              select rn,
+               DOCUMENT_CATEGORY_NUM,
+               DOCUMENT_TITLE,
+               DOCUMENT_FORM_CODE,
+               USER_NAME,
+               dept_name,
+               job_name,
+               DOCUMENT_FORM_DATE,
+               approval_level,
+               approval_date
+        from (select rownum rn,
+                     z.DOCUMENT_CATEGORY_NUM,
+                     z.DOCUMENT_TITLE,
+                     z.DOCUMENT_FORM_CODE,
+                     z.USER_NAME,
+                     z.dept_name,
+                     z.job_name,
+                     z.DOCUMENT_FORM_DATE,
+                     z.approval_level,
+                     z.approval_date
+              from (select d.DOCUMENT_CATEGORY_NUM,
+                           d.DOCUMENT_TITLE,
+                           d.DOCUMENT_FORM_CODE,
+                           u.USER_NAME,
+                           d.dept_name,
+                           j.job_name,
+                           d.DOCUMENT_FORM_DATE,
+                           a.approval_level,
+                           a.approval_date
+
+                    from DOCUMENT_FORM d
+                             inner join approval_line a
+                                        on a.document_form_code = d.document_form_code AND a.approval_level <= d.approval_now_level
+
+                             inner join user_info u
+                                        on a.approval_user_id = u.user_id
+                             inner join dept d
+                                        on u.user_dept = d.dept_no
+                             inner join job j
+                                        on u.user_job = j.job_no
+                    where a.approval_user_id = #{user_id}
+                    order by DOCUMENT_FORM_DATE DESC) z)
+        ]]>
+        <if test="startDate != null">
+            and document_form_date between TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS') and TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
+        </if>
+        <if test="searchSelect == 's_title'">
+            and document_title LIKE '%'||#{searchData}||'%'
+        </if>
+        <if test="searchSelect == 's_name'">
+            and user_name LIKE '%'||#{searchData}||'%'
+        </if>
+		order by rn desc
+    </select>
+
+   <select id="getCountDoc" resultType="int">
+        select COUNT(d.DOCUMENT_FORM_CODE)
+        from DOCUMENT_FORM d
+                 inner join approval_line a
+                            on a.document_form_code = d.document_form_code AND a.approval_level = d.approval_now_level
+                 inner join user_info u
+                            on a.approval_user_id = u.user_id
+                 inner join dept d
+                            on u.user_dept = d.dept_no
+                 inner join job j
+                            on u.user_job = j.job_no
+        where d.user_id = #{user_id}
+    </select>
+
+
+
+     <select id="getCountDocApp" resultType="int">
+        <![CDATA[
+        select COUNT(d.DOCUMENT_CATEGORY_NUM)
+        from DOCUMENT_FORM d
+                 inner join approval_line a
+                            on a.DOCUMENT_FORM_CODE = d.document_form_code AND a.approval_level <= a.approval_level
+
+                 inner join user_info u
+                            on a.approval_user_id = u.user_id
+                 inner join dept d
+                            on u.user_dept = d.dept_no
+                 inner join job j
+                            on u.user_job = j.job_no
+        where a.approval_user_id = #{user_id}
+        ]]>
+    </select>
+
+    <select id="getAppLine" resultType="edms">
+        select u.user_name, j.job_name, d.dept_name, a.DOCUMENT_FORM_CODE,a.approval_state, a.approval_date
+        from approval_line a
+                 inner join user_info u
+                            on u.user_id = a.approval_user_id
+                 inner join dept d
+                            on u.user_dept = d.dept_no
+                 inner join job j
+                            on u.user_job = j.job_no
+        where a.DOCUMENT_FORM_CODE = #{DOCUMENT_FORM_CODE}
+        ORDER BY a.APPROVAL_LEVEL ASC
+    </select>
 	<select id="getSerialNumber" resultType="int">
 		  select max(serialnumber) from DOCUMENT_FORM
 	</select>
@@ -75,7 +402,6 @@
 			APPROVAL_NUM,
 			DOCUMENT_FORM_CODE,
 			APPROVAL_USER_ID,
-			APPROVAL_DATE,
 			APPROVAL_STATE,
 			APPROVAL_LEVEL
 		)
@@ -84,7 +410,6 @@
 			approval_seq.NEXTVAL,
 			#{DOCUMENT_FORM_CODE},
 			#{APPROVAL_USER_ID},
-			SYSDATE,
 			0,
 			#{APPROVAL_LEVEL}
 			
@@ -122,5 +447,6 @@
 			
 		)
 	</insert>
+
 
 </mapper>

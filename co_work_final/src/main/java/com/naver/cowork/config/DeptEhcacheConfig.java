@@ -9,7 +9,10 @@ import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.Configuration;
 import org.springframework.context.annotation.Bean;
 
+
+
 import javax.servlet.http.HttpServletRequest;
+
 
 @org.springframework.context.annotation.Configuration
 public class DeptEhcacheConfig {
@@ -18,7 +21,10 @@ public class DeptEhcacheConfig {
         Configuration config = new Configuration();
         config.setName("deptList");
 
+
         config.addCache(getCacheConfiguration("deptList",6*10));//60초
+
+
         return CacheManager.newInstance(config);
     }
 
@@ -36,4 +42,8 @@ public class DeptEhcacheConfig {
 
         return cacheConfiguration;
     }
+
+
 }
+
+

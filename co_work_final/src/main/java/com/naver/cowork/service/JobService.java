@@ -22,5 +22,5 @@ public interface JobService {
     public int jobNo(String user_id);
 
 
-
+    public int jobCheck(Job job);
 }

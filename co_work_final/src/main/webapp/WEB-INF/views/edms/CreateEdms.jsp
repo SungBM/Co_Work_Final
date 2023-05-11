@@ -449,7 +449,7 @@ ul
   letter-spacing:.05pt'>신청자</span></b><b><span style='font-family:"Arial Unicode MS",serif;
   letter-spacing:.05pt'>   </span></b><b><span lang=ZH-CN style='font-family:
   "Gulim",sans-serif;letter-spacing:.05pt'>소속</span></b><b><span
-  style='font-family:"Gulim",sans-serif;letter-spacing:.05pt'> :</span></b><b> <input type="text" id="bstripDept" value="${ loginUser.dname} / ${loginUser.jname}" style="border: none; font-size: 15px; margin-bottom: 2px; text-align: center;margin-left: 0px; font-weight: bold"></b></p>
+  style='font-family:"Gulim",sans-serif;letter-spacing:.05pt'> :</span></b><b> <input type="text" id="bstripDept" value="${ loginUser.dname} / ${loginUser.jname}" style="border: none; font-size: 15px; margin-bottom: 2px; text-align: center;margin-left: 0px; font-weight: bold" readonly="readonly"></b></p>
   </td>
   <td width=79 colspan=2 style='width:59.4pt;border:none;padding:8.5pt 8.5pt 8.5pt 8.5pt;
   height:27.0pt'>
@@ -457,7 +457,7 @@ ul
       
       <label for="bstripName"
   style='width: 70px; font-size: 15px; font-weight: bold; margin-bottom: -10px;'>이름 : </label>
-      <input type="text" id="bstripName" value="${loginUser.user_name }" style="border: none; font-size: 15px; margin-bottom: 2px; font-weight: bold">
+      <input type="text" id="bstripName" value="${loginUser.user_name }" style="border: none; font-size: 15px; margin-bottom: 2px; font-weight: bold" readonly="readonly">
  </div>  
   </td>
   <td width=95 colspan=2 style='width:71.6pt;border:none;padding:8.5pt 8.5pt 8.5pt 8.5pt;
@@ -596,8 +596,9 @@ $(function(){
 			data : data,
 			contentType : "application/json",
 			success: function(res){
-				window.location.href="${pageContext.request.contextPath }/edms/edmsList";
+				
 				alert("등록완료!");
+				history.go(-1);
 			}
 		});
 		
@@ -732,8 +733,6 @@ $(function(){
 	            $('#bstripAllCost').val(totalCost.toLocaleString('en'));
 	        }
 	    });
-	    
-	
 
 });
 
