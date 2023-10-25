@@ -16,6 +16,7 @@ public class MailFormSenders extends SendMailService {
 		return super.sendMail(vo);
 	}
 
+	
 	public MailVO setMailInfo(String from,String to){
 	        MailVO mail = new MailVO();
 	    	mail.setFrom(from);
