@@ -97,7 +97,7 @@ public class ProjectController {
 				prog = 100;
 				p.setProject_prog(prog);
 				p.setProject_state(PJStateEnum.OVERDEADLINE.getState());
-				p.setProject_priority(PJPriorityEnum.NONEPRIORITY.getPriority());
+				p.setProject_priority(PJPriorityEnum.DEAD.getPriority());
 			} else {
 				p.setProject_prog(prog);
 			}

@@ -308,7 +308,7 @@ ul
   background:#BFBFFF;padding:8.5pt 8.5pt 8.5pt 8.5pt;height:29.05pt'>
   <p class=a align=center style='margin-top:4.8pt;margin-right:1.25pt;
   margin-bottom:.8pt;margin-left:1.25pt;text-align:center;line-height:normal;
-  word-break:normal; font-weight: bold'> 출 장 지</p>
+  word-break:normal; font-weight: bold'>출장 <br>용무</p>
   </td>
   <td width=574 colspan=9 style='width:430.75pt;border:solid black 1.0pt;
   border-bottom:none;padding:8.5pt 8.5pt 8.5pt 8.5pt;height:29.05pt'>

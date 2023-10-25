@@ -7,7 +7,8 @@ public enum PJPriorityEnum {
 	LOWPRIORITY("낮음"),
 	NONEPRIORITY("없음"),
 	HIGHPRIORITY("높음"),
-	NEEDCONFIRM("요청 확인");
+	NEEDCONFIRM("요청 확인"),
+	DEAD("마감");
 	@Getter
 	@Setter
 	private String priority;

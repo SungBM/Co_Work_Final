@@ -11,8 +11,8 @@ $(function(){
 		   y = event.clientY; 
 		   var win_x = $( window ).width();
 		   var win_y = $( window ).height();
-		   var rx = ( win_x - x ) + 430;
-		   var ry = ( y  )  -400;
+		   var rx = ( win_x - x ) + 100;
+		   var ry = ( y  )  -430;
 		   console.log("윈 x : " + win_x + "윈 y" + win_y);
 		   console.log('x좌표:' +x + ', y좌표:' + y);
 		   console.log('차이 x:' + rx + ', 차이 y:' + ry);
@@ -44,22 +44,20 @@ $(function(){
 		
 		$(".badge").each(function(){
 			var state = $(this).attr("aria-valuenow");
+			console.log(state + "state")
 			state = String(state).trim();
 			switch(state) {
-				case "마감 임박" :
-					$(this).addClass('bg-danger');
+				case "높음" :
+					$(this).css('background-color','#F46A6A');
 					break;
-				case "진행중" :
-					$(this).addClass('bg-info');
+				case "낮음" :
+					$(this).css('background-color','#50A5F1');
 					break;
 				case "마감" :
 					$(this).css('background-color','darkgray');
 					break;	
-				case "요청 확인" :
-					$(this).addClass('bg-danger');
-					break;
-				case "1" :
-					$(this).css('background-color','#556ee6');
+				case "없음" :
+					$(this).addClass('bg-warning');
 					break;
 			}
 			

@@ -120,6 +120,9 @@ table {
 										     <c:if test="${list.APPROVAL_STATE == 0}">
 										    <td><p class="text-muted mb-2">  　  </p></td>
 										     </c:if>
+										     <c:if test="${list.APPROVAL_STATE == -1}">
+										    <td><p class="text-danger mb-2" style="">${list.USER_NAME } ${list.JOB_NAME }<br>${list.APPROVAL_DATE }</p></td>
+										     </c:if>
 										   </c:forEach>
 										  </tr>
 										</table>
@@ -169,7 +172,7 @@ table {
 														style='width: 51.9pt; border-top: solid black 1.0pt; border-left: solid black 1.0pt; border-bottom: none; border-right: none; padding: 8.5pt 8.5pt 8.5pt 8.5pt; height: 55.8pt'>
 														 <div style=" display: flex;">
 													      <p
-													  style='float: left;width: 250px; font-size: 15px; margin-bottom: -10px;margin-left:-62px; padding-bottom: 5px;'>목적지 : ${bstrip.BSTRIPDESTINATION }</p>
+													  style='float: left;width: 250px; font-size: 15px; margin-bottom: -10px;margin-left:-22px; padding-bottom: 5px;'>목적지 : ${bstrip.BSTRIPDESTINATION }</p>
 													 </div>  
 													</td>
 													<td width=187 colspan=3
@@ -526,7 +529,7 @@ table {
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex">            
-                            <img id="apUserCard" src="${pageContext.request.contextPath }/resources/assets/images/users/avatar-1.jpg" alt="" class="avatar-sm me-4">
+                            <img id="apUserCard" src="${pageContext.request.contextPath }/resources/assets/images/users/avatar-4.jpg" alt="" class="avatar-sm me-4">
                             <div class="flex-grow-1 overflow-hidden">
                                 <h5 class="text-truncate font-size-15" style="margin-left: -1160px;font-weight: bold;">승인상태</h5>
                                 

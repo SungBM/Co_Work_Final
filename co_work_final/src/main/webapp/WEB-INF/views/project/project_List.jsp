@@ -9,7 +9,8 @@
 <link href="${pageContext.request.contextPath }/resources/assets/css/project_Css/project.css" rel="stylesheet" type="text/css" />
 <style>
 .page-content{
-	margin-left: 400px;
+	margin-left: 320px;
+	width: 1500px;
 }
 #icon_id{
 	display: none;
@@ -90,7 +91,7 @@
                                     		미정
                                     </c:if></td>
 										<td><span class="badge "
-											aria-valuenow="${p.project_state }" style="width: 50%">${p.project_priority }</span></td>
+											aria-valuenow="${p.project_priority }" style="width: 50%">${p.project_priority }</span></td>
 										<td>
 											<div class="avatar-group" id="${p.project_num }">
 												<c:forEach var='u' items="${p.project_parti  }"

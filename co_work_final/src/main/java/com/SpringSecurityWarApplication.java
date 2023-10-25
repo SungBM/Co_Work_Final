@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling  // 스케쥴러 적용합니다.
 @EnableCaching
 public class SpringSecurityWarApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityWarApplication.class, args);
 	}

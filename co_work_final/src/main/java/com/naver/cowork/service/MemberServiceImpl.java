@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -86,7 +87,8 @@ public class MemberServiceImpl implements MemberService {
 //		}
 //		return dao.getSearchListCount(map);
 //	}
-
+    
+    @Cacheable(value = "members")
     public List<Member> members(Criteria cri){
         return dao.members(cri);
     }

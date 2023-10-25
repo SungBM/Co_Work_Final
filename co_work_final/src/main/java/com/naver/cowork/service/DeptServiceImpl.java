@@ -39,14 +39,11 @@ public class DeptServiceImpl implements DeptService {
         return dao.insert(dept);
     }
 
-
-
-    //@Cacheable(value = "deptList")
+    @Cacheable(value = "deptList")
     public List<Dept> deptList() {
     	
         return dao.deptList();
     }
-    
 
     public String deptName(String user_id) {
         return dao.deptName(user_id);

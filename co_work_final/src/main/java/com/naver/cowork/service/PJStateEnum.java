@@ -16,6 +16,4 @@ public enum PJStateEnum {
 	private PJStateEnum(String state) {
 		this.state = state;
 	}
-	
-
 }

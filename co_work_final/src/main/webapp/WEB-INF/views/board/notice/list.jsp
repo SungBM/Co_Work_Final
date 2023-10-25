@@ -60,17 +60,22 @@ textarea{
                     <h4 class="mb-sm-0 font-size-18">커뮤니티 > 공지사항</h4>
                </div>   
               </div>
+           
          </div>
+           <div class="write-button">
+               <button type="button" class="btn btn-info" id="write-button">작성</button>
+            </div>
            <!-- end page title -->  
            
          <!-- 공지 작성 -->
-
-           <sec:authorize access="hasRole('ROLE_ADMIN')">
-            <div class="write-button">
+			<!-- 
+           <sec:authorize access="hasRole('ROLE_ADMIN')"> 
+           <div class="write-button">
                <button type="button" class="btn btn-info" id="write-button">작성</button>
-            </div>
+            </div>-->
+            	<!-- 
          	</sec:authorize> 
-
+-->
             <!-- 상단기능 -->
             <form action="noticeList">
                <div class="search_area">

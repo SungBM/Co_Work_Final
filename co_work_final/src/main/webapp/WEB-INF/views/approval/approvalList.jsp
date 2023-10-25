@@ -224,7 +224,13 @@
             	html += '<td class="text-danger">' + data[i].state_RESULT + '</td>';
             }
             
-            html += '<td>결재</td>';
+            if(data[i].approval_STATE == 0) {
+            	html += '<td class="text-primary">대기</td>';
+            } else if (data[i].approval_STATE == 1){
+            	html += '<td class="text-success">승인</td>';
+            } else if (data[i].approval_STATE == -1){
+            	html += '<td class="text-danger">반려</td>';
+            }
             html += '<td>' + data[i].approval_DATE_RESULT + '</td>';
 
             console.log(data[i])

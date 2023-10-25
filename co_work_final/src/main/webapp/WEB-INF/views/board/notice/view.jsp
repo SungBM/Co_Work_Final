@@ -98,9 +98,19 @@ label {
 								</c:if>
 							</label>
 						</div>
+							<div class="button-admin">
+							<a href="#">	
+								<button class="btn btn-danger" onclick="confirmDelete()" data-toggle="modal"
+		 							data-target="#myModal">삭제</button>
+							</a>
+							<a href="modifyView?num=${noticedata.NOTICE_NUM}">
+								<button class="btn btn-info">수정</button>
+							</a>
+							</div>
+						<!--  
 						<sec:authorize access="isAuthenticated()">
-						<sec:authentication property="principal" var="pinfo" />  <!-- principal은 시큐리티가 가지고 있는 기술. principal로 아이디값을 불러올 수 있음-->
-			 			<c:if test="${noticedata.USER_ID == pinfo.username || pinfo.username == 'admin1'}">
+						<sec:authentication property="principal" var="pinfo" /> 
+			 			<c:if test="${noticedata.USER_ID == pinfo.username || pinfo.username == 'ADMINTEST'}">
 							<%--href의 주소를 #으로 설정합니다. --%>
 							<div class="button-admin">
 							<a href="#">	
@@ -113,6 +123,7 @@ label {
 							</div>
 						</c:if>
 						</sec:authorize> 
+						-->
 						<div class="button-user">
 							<a href="noticeList">
 								<button type=reset class="btn btn-secondary">목록</button>

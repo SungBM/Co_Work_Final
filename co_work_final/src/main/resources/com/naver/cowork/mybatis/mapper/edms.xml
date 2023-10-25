@@ -172,7 +172,7 @@ order by a.approval_level asc
 
       <select id="getMyDoc" resultType="edms">
         <![CDATA[
-            select rn,
+                   select rn,
                DOCUMENT_FORM_CODE,
                DOCUMENT_TITLE,
                DOCUMENT_CATEGORY_NUM,
@@ -216,6 +216,8 @@ order by a.approval_level asc
                                         on u.user_job = j.job_no
                     where d.user_id = #{user_id}
                     order by DOCUMENT_FORM_DATE DESC) z)
+                       where rn > #{skip}
+          and rn <= #{viewSize} * #{pageNum}
         ]]>
         <if test="startDate != null">
             and document_form_date between TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS') and TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
@@ -230,7 +232,7 @@ order by a.approval_level asc
 
     <select id="getMyDocApp" resultType="edms">
         <![CDATA[
-              select rn,
+                     select rn,
                DOCUMENT_CATEGORY_NUM,
                DOCUMENT_TITLE,
                DOCUMENT_FORM_CODE,
@@ -271,7 +273,9 @@ order by a.approval_level asc
                              inner join job j
                                         on u.user_job = j.job_no
                     where a.approval_user_id = #{user_id}
-                    order by DOCUMENT_FORM_DATE DESC) z)
+                    order by DOCUMENT_FORM_DATE asc) z)
+                       where rn > #{skip}
+          	and rn <= #{viewSize} * #{pageNum}
         ]]>
         <if test="startDate != null">
             and document_form_date between TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI:SS') and TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI:SS')
@@ -307,7 +311,6 @@ order by a.approval_level asc
         from DOCUMENT_FORM d
                  inner join approval_line a
                             on a.DOCUMENT_FORM_CODE = d.document_form_code AND a.approval_level <= a.approval_level
-
                  inner join user_info u
                             on a.approval_user_id = u.user_id
                  inner join dept d

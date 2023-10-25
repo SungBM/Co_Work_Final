@@ -22,7 +22,6 @@
     	
     	$("#detailApproval").click(function(){
     		var docNum = $("#docNum").attr('values');
-    		alert(docNum);
     		location.href="${pageContext.request.contextPath }/edms/edmsList?docNum="+docNum+"";
     	});
     	$('#createNew').on('click', function() {
@@ -153,6 +152,7 @@
                     <table class="table table-bordered align-middle nowrap">
                         <thead>
                         <tr>
+                            <th scope="col">문서번호</th>
                             <th scope="col">양식</th>
                             <th scope="col">기안제목</th>
                             <th scope="col">기안자</th>
@@ -163,6 +163,7 @@
                         <tbody>
                         <c:forEach items="${docAppList}" var="list">
                             <tr>
+                            	<td>${list.DOCUMENT_FORM_CODE}</td>
                                 <td>${list.CATEGORY_RESULT}</td>
                                 <td><a class="text-dark text-decoration-underline edmsAddComment" id="edmsAddComment"
                                                                href="javascript:void(0)">${list.DOCUMENT_TITLE}</a></td>
@@ -282,7 +283,13 @@
             } else if (data[i].approval_STATE == -1){
             	html += '<td class="text-danger">' + data[i].state_RESULT + '</td>';
             }
-            html += '<td>결재</td>';
+            if(data[i].approval_STATE == 0) {
+            	html += '<td class="text-primary">대기</td>';
+            } else if (data[i].approval_STATE == 1){
+            	html += '<td class="text-success">승인</td>';
+            } else if (data[i].approval_STATE == -1){
+            	html += '<td class="text-danger">반려</td>';
+            }
             html += '<td>' + data[i].approval_DATE_RESULT + '</td>';
 
             console.log(data[i])

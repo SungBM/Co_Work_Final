@@ -90,9 +90,6 @@ $(function(){
 								<button class="btn btn-link waves-effect">댓글</button>
 									<span id="count">${count }</span>
 									
-						<sec:authentication property="principal" var="pinfo" />  <!-- principal은 시큐리티가 가지고 있는 기술. principal로 아이디값을 불러올 수 있음-->
-						<sec:authorize access="isAuthenticated()">
-			 			<c:if test="${freeboarddata.USER_ID == pinfo.username || pinfo.username == pinfo.username}">
 			 				<a href="freemodifyView?num=${freeboarddata.FREEBOARD_NUM }">
 			 					<button class="btn btn-success waves-effect waves-light">수정</button>
 			 				</a>
@@ -101,8 +98,6 @@ $(function(){
 								<button class="btn btn-danger waves-effect waves-light" data-bs-toggle="modal"
 		 							data-bs-target="#freeMyModal">삭제</button>
 							</a>
-							</c:if>
-							</sec:authorize>
 							<a href="freeReplyView?num=${freeboarddata.FREEBOARD_NUM}">
 								<button class="btn btn-info">답변</button>
 							</a>

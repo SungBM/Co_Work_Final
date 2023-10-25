@@ -89,9 +89,7 @@ public class ProjectServiceImpl implements ProjectService {
 			p.setParti_count(user_count);
 			p.setProject_parti_forModal(user_list);
 		}
-
 		return list;
-
 	}
 
 	@Transactional

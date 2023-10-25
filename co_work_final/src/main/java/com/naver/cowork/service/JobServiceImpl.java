@@ -39,7 +39,7 @@ public class JobServiceImpl implements JobService {
         return dao.insert(job);
     }
     
-    //@Cacheable(value = "jobList")
+    @Cacheable(value = "jobList")
     public List<Job> jobList() {
         return dao.jobList();
     }

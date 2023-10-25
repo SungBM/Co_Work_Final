@@ -134,16 +134,24 @@ public class EDMSServiceImpl implements EDMSService {
 		for (EDMS e : docList) {
 			if (e.getDOCUMENT_STATE() == edmsResultEnum.WAIT.getValue()) {
 				e.setSTATE_RESULT("대기");
-			} else if (e.getDOCUMENT_STATE() == edmsResultEnum.ING.getValue()) {
-				e.setSTATE_RESULT("진행중");
+			} else if (e.getDOCUMENT_STATE() == edmsResultEnum.COMPLETE.getValue()) {
+				e.setSTATE_RESULT("승인 [" + e.getAPPROVAL_DATE().substring(0,10) + "]");
 			} else if (e.getDOCUMENT_STATE() == edmsResultEnum.REJECT.getValue()) {
-				e.setSTATE_RESULT("반려");
+				e.setSTATE_RESULT("반려 [" + e.getAPPROVAL_DATE().substring(0,10) + "]");
 			} else {
 				e.setSTATE_RESULT(e.getAPPROVAL_DATE());
 			}
 
 			if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.BSTRIP.getValue()) {
-				e.setCATEGORY_RESULT("출장 신청서");
+				e.setCATEGORY_RESULT(edmsCategoryEnum.BSTRIP.getDocName());
+			} else if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.VACATION.getValue()) {
+				e.setCATEGORY_RESULT(edmsCategoryEnum.VACATION.getDocName());
+			} else if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.DAYOFF.getValue()) {
+				e.setCATEGORY_RESULT(edmsCategoryEnum.DAYOFF.getDocName());
+			} else if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.PAYORDER.getValue()) {
+				e.setCATEGORY_RESULT(edmsCategoryEnum.PAYORDER.getDocName());
+			} else if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.OVERTIME.getValue()) {
+				e.setCATEGORY_RESULT(edmsCategoryEnum.OVERTIME.getDocName());
 			}
 		}
 		return docList;
@@ -160,9 +168,19 @@ public class EDMSServiceImpl implements EDMSService {
 			} else {
 				e.setAPPROVAL_DATE_RESULT("완료");
 			}
-
+			
 			if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.BSTRIP.getValue()) {
-				e.setCATEGORY_RESULT("차량신청서");
+				e.setCATEGORY_RESULT(edmsCategoryEnum.BSTRIP.getDocName());
+			} else if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.VACATION.getValue()) {
+				System.out.println(e.getDOCUMENT_CATEGORY_NUM() + "cn"); 
+				System.out.println(edmsCategoryEnum.VACATION.getValue() + "VACATIONnum"); 
+				e.setCATEGORY_RESULT(edmsCategoryEnum.VACATION.getDocName());
+			} else if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.DAYOFF.getValue()) {
+				e.setCATEGORY_RESULT(edmsCategoryEnum.DAYOFF.getDocName());
+			} else if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.PAYORDER.getValue()) {
+				e.setCATEGORY_RESULT(edmsCategoryEnum.PAYORDER.getDocName());
+			} else if (e.getDOCUMENT_CATEGORY_NUM() == edmsCategoryEnum.OVERTIME.getValue()) {
+				e.setCATEGORY_RESULT(edmsCategoryEnum.OVERTIME.getDocName());
 			}
 		}
 		return docAppList;
